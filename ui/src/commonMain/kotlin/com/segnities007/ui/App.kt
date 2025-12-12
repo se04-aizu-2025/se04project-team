@@ -1,4 +1,4 @@
-package dotnet.sort
+package com.segnities007.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -16,9 +16,12 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-import dotnet.composeapp.generated.resources.Res
-import dotnet.composeapp.generated.resources.compose_multiplatform
+import dotnet.ui.generated.resources.Res
+import dotnet.ui.generated.resources.compose_multiplatform
 
+/**
+ * Main App composable that serves as the entry point for the UI.
+ */
 @Composable
 @Preview
 fun App() {
