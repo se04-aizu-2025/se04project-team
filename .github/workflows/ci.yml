@@ -6,30 +6,36 @@ on:
   pull_request:
     branches: [ main, master, develop ]
 
+# Concurrency group: cancel previous runs for PRs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+
 jobs:
-  build:
+  build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'gradle'  # Built-in Gradle caching
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          cache-read-only: false
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -37,41 +43,39 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --no-daemon --stacktrace
 
-      - name: Run tests
-        run: ./gradlew test --no-daemon
+      - name: Run all tests
+        run: ./gradlew allTests --no-daemon --continue
 
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
+          name: test-reports-${{ github.run_id }}
           path: |
             **/build/reports/tests/**
             **/build/test-results/**
+          retention-days: 7
 
-  lint:
-    name: Code Quality Check
+  code-quality:
+    name: Code Quality
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'gradle'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          cache-read-only: false
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -82,11 +86,18 @@ jobs:
       - name: Run detekt
         run: ./gradlew detekt --no-daemon
 
-      - name: Upload lint reports
+      - name: Upload ktlint report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lint-reports
-          path: |
-            **/build/reports/ktlint/
-            **/build/reports/detekt/
+          name: ktlint-report-${{ github.run_id }}
+          path: '**/build/reports/ktlint/**'
+          retention-days: 7
+
+      - name: Upload detekt report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detekt-report-${{ github.run_id }}
+          path: 'build/reports/detekt/**'
+          retention-days: 7
