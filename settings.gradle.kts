@@ -34,3 +34,5 @@ plugins {
 
 include(":composeApp")
 include(":presentation")
+include(":domain")
+include(":data")
