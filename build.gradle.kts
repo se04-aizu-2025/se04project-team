@@ -13,24 +13,6 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.23.4"
 }
 
-// ktlint configuration
-subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
-
-    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-        version.set("1.1.1")
-        android.set(false)
-        outputToConsole.set(true)
-        outputColorName.set("RED")
-
-        // buildディレクトリとgeneratedディレクトリを除外
-        filter {
-            exclude("**/build/**")
-            exclude("**/generated/**")
-        }
-    }
-}
-
 // detekt configuration
 detekt {
     buildUponDefaultConfig = true
