@@ -50,9 +50,9 @@ fi
 echo "✅ detekt passed"
 echo ""
 
-# テスト実行
+# テスト実行（KMP用にallTests使用）
 echo "🧪 Running tests..."
-./gradlew test --daemon
+./gradlew allTests --daemon || ./gradlew check --daemon
 TEST_RESULT=$?
 
 if [ $TEST_RESULT -ne 0 ]; then
@@ -61,10 +61,13 @@ if [ $TEST_RESULT -ne 0 ]; then
     echo ""
     echo "💡 Fix suggestions:"
     echo "   1. Run tests locally:"
-    echo "      ./gradlew test --info"
+    echo "      ./gradlew allTests --info"
     echo ""
-    echo "   2. View test reports:"
-    echo "      open build/reports/tests/test/index.html"
+    echo "   2. Or run specific platform tests:"
+    echo "      ./gradlew jvmTest jsTest wasmJsTest"
+    echo ""
+    echo "   3. Skip tests (not recommended):"
+    echo "      git push --no-verify"
     echo ""
     exit 1
 fi
