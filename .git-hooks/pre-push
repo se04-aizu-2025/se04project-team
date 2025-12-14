@@ -50,21 +50,22 @@ fi
 echo "✅ detekt passed"
 echo ""
 
-# JVMテストのみ実行（JS/WasmJsは遅いのでCIで実行）
-echo "🧪 Running JVM tests..."
-./gradlew jvmTest --daemon
+# 全プラットフォームテスト実行（JVM + JS + WasmJs）
+echo "🧪 Running all tests (JVM + JS + WasmJs)..."
+echo "⏱️  This may take several minutes..."
+./gradlew allTests --daemon
 TEST_RESULT=$?
 
 if [ $TEST_RESULT -ne 0 ]; then
     echo ""
-    echo "❌ JVM tests failed"
+    echo "❌ Tests failed"
     echo ""
     echo "💡 Fix suggestions:"
     echo "   1. Run tests locally:"
-    echo "      ./gradlew jvmTest --info"
+    echo "      ./gradlew allTests --info"
     echo ""
-    echo "   2. Full test suite (slow):"
-    echo "      ./gradlew allTests"
+    echo "   2. Run specific platform tests:"
+    echo "      ./gradlew jvmTest jsTest wasmJsTest"
     echo ""
     echo "   3. Skip tests (not recommended):"
     echo "      git push --no-verify"
@@ -72,9 +73,7 @@ if [ $TEST_RESULT -ne 0 ]; then
     exit 1
 fi
 
-echo "✅ JVM tests passed"
-echo ""
-echo "ℹ️  Note: JS/WasmJs tests will run in CI"
+echo "✅ All tests passed (JVM + JS + WasmJs)"
 echo ""
 echo "========================================="
 echo "✅ All pre-push checks passed! Proceeding with push..."
