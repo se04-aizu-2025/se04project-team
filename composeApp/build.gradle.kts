@@ -23,7 +23,7 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":ui"))
+            implementation(project(":presentation"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

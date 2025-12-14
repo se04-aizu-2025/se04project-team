@@ -33,4 +33,4 @@ plugins {
 }
 
 include(":composeApp")
-include(":ui")
+include(":presentation")
