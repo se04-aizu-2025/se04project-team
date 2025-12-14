@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.androidKotlinMultiplatformLibrary) apply false
     alias(libs.plugins.androidLint) apply false
-    
+
     // Code quality plugins
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.4"
@@ -16,12 +16,19 @@ plugins {
 // ktlint configuration
 subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    
+
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
         version.set("1.1.1")
         android.set(false)
         outputToConsole.set(true)
         outputColorName.set("RED")
+
+        // 生成ファイルを除外
+        filter {
+            exclude("**/generated/**")
+            exclude("**/build/**")
+            exclude { it.file.path.contains("generated") }
+        }
     }
 }
 

@@ -2,28 +2,78 @@
 # Pre-commit hook: コミット前にktlintとdetektを実行
 
 echo "🔍 Running code quality checks..."
+echo ""
 
 # ktlintでフォーマットとチェック
 echo "📝 Running ktlint format..."
-./gradlew ktlintFormat --daemon || {
-    echo "❌ ktlint format failed"
-    exit 1
-}
+./gradlew ktlintFormat --daemon
+KTLINT_FORMAT_RESULT=$?
 
-echo "✅ Running ktlint check..."
-./gradlew ktlintCheck --daemon || {
-    echo "❌ ktlint check failed"
-    echo "💡 Run './gradlew ktlintFormat' to fix formatting issues"
+if [ $KTLINT_FORMAT_RESULT -ne 0 ]; then
+    echo ""
+    echo "❌ ktlint format failed"
+    echo ""
+    echo "💡 Fix suggestions:"
+    echo "   1. View the error report:"
+    echo "      cat build/reports/ktlint/**/ktlint*.txt"
+    echo ""
+    echo "   2. Try manual format:"
+    echo "      ./gradlew ktlintFormat"
+    echo ""
+    echo "   3. If you want to commit anyway (not recommended):"
+    echo "      git commit --no-verify"
+    echo ""
     exit 1
-}
+fi
+
+echo "✅ ktlint format passed"
+echo ""
+
+echo "📋 Running ktlint check..."
+./gradlew ktlintCheck --daemon
+KTLINT_CHECK_RESULT=$?
+
+if [ $KTLINT_CHECK_RESULT -ne 0 ]; then
+    echo ""
+    echo "❌ ktlint check failed"
+    echo ""
+    echo "💡 Fix suggestions:"
+    echo "   1. Run format again:"
+    echo "      ./gradlew ktlintFormat"
+    echo ""
+    echo "   2. Check the report:"
+    echo "      cat build/reports/ktlint/**/ktlint*.txt"
+    echo ""
+    exit 1
+fi
+
+echo "✅ ktlint check passed"
+echo ""
 
 # detektで静的解析
 echo "🔎 Running detekt..."
-./gradlew detekt --daemon || {
-    echo "❌ detekt check failed"
-    echo "💡 Check detekt report in build/reports/detekt/"
-    exit 1
-}
+./gradlew detekt --daemon
+DETEKT_RESULT=$?
 
+if [ $DETEKT_RESULT -ne 0 ]; then
+    echo ""
+    echo "❌ detekt check failed"
+    echo ""
+    echo "💡 Fix suggestions:"
+    echo "   1. View the HTML report:"
+    echo "      open build/reports/detekt/detekt.html"
+    echo ""
+    echo "   2. Or view text report:"
+    echo "      cat build/reports/detekt/detekt.txt"
+    echo ""
+    echo "   3. Fix the issues manually or suppress if needed"
+    echo ""
+    exit 1
+fi
+
+echo "✅ detekt passed"
+echo ""
+echo "========================================="
 echo "✅ All checks passed! Proceeding with commit..."
+echo "========================================="
 exit 0

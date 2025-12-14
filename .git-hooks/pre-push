@@ -2,27 +2,76 @@
 # Pre-push hook: プッシュ前にテストとコード品質チェックを実行
 
 echo "🚀 Running pre-push checks..."
+echo ""
 
 # ktlintチェック
 echo "📝 Running ktlint..."
-./gradlew ktlintCheck --daemon || {
+./gradlew ktlintCheck --daemon
+KTLINT_RESULT=$?
+
+if [ $KTLINT_RESULT -ne 0 ]; then
+    echo ""
     echo "❌ ktlint check failed"
+    echo ""
+    echo "💡 Fix suggestions:"
+    echo "   1. Auto-fix formatting:"
+    echo "      ./gradlew ktlintFormat"
+    echo ""
+    echo "   2. Then commit:"
+    echo "      git add . && git commit -m 'Fix formatting'"
+    echo ""
+    echo "   3. If you want to push anyway (not recommended):"
+    echo "      git push --no-verify"
+    echo ""
     exit 1
-}
+fi
+
+echo "✅ ktlint passed"
+echo ""
 
 # detekt
 echo "🔎 Running detekt..."
-./gradlew detekt --daemon || {
+./gradlew detekt --daemon
+DETEKT_RESULT=$?
+
+if [ $DETEKT_RESULT -ne 0 ]; then
+    echo ""
     echo "❌ detekt check failed"
+    echo ""
+    echo "💡 Fix suggestions:"
+    echo "   1. View the report:"
+    echo "      open build/reports/detekt/detekt.html"
+    echo ""
+    echo "   2. Fix issues and commit"
+    echo ""
     exit 1
-}
+fi
+
+echo "✅ detekt passed"
+echo ""
 
 # テスト実行
 echo "🧪 Running tests..."
-./gradlew test --daemon || {
-    echo "❌ Tests failed"
-    exit 1
-}
+./gradlew test --daemon
+TEST_RESULT=$?
 
+if [ $TEST_RESULT -ne 0 ]; then
+    echo ""
+    echo "❌ Tests failed"
+    echo ""
+    echo "💡 Fix suggestions:"
+    echo "   1. Run tests locally:"
+    echo "      ./gradlew test --info"
+    echo ""
+    echo "   2. View test reports:"
+    echo "      open build/reports/tests/test/index.html"
+    echo ""
+    exit 1
+fi
+
+echo "✅ tests passed"
+echo ""
+echo "========================================="
 echo "✅ All pre-push checks passed! Proceeding with push..."
+echo "========================================="
 exit 0

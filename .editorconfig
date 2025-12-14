@@ -1,2 +1,12 @@
-# ktlint configuration
-disabled_rules=import-ordering,no-wildcard-imports
+[*.{kt,kts}]
+# ktlint configuration - Composeと互換性のため
+# ワイルドカードインポートは禁止（この行をコメントアウト）
+# ktlint_standard_no-wildcard-imports = disabled
+
+# Compose関数名（大文字始まり）は許可
+ktlint_standard_function-naming = disabled
+ktlint_standard_filename = disabled
+
+# Allow main.kt files
+[**/main.kt]
+ktlint_standard_filename = disabled

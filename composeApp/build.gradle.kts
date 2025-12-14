@@ -9,18 +9,18 @@ plugins {
 
 kotlin {
     jvm()
-    
+
     js {
         browser()
         binaries.executable()
     }
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
         binaries.executable()
     }
-    
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.presentation)
@@ -42,7 +42,6 @@ kotlin {
         }
     }
 }
-
 
 compose.desktop {
     application {
