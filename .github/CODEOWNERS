@@ -1,0 +1,26 @@
+# CODEOWNERS
+# これらのファイルが変更されると、指定されたユーザーが自動的にレビュアーとして割り当てられます
+
+# デフォルトオーナー
+* @segnities007
+
+# アーキテクチャとドキュメント
+/doc/ @segnities007
+ARCHITECTURE.md @segnities007
+README.md @segnities007
+
+# GitHub設定
+/.github/ @segnities007
+
+# Gradle設定
+*.gradle.kts @segnities007
+gradle.properties @segnities007
+
+# Presentation Layer
+/presentation/ @segnities007
+
+# Domain Layer
+/domain/ @segnities007
+
+# Data Layer
+/data/ @segnities007

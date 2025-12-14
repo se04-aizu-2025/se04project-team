@@ -1,0 +1,29 @@
+#!/bin/bash
+# Pre-commit hook: コミット前にktlintとdetektを実行
+
+echo "🔍 Running code quality checks..."
+
+# ktlintでフォーマットとチェック
+echo "📝 Running ktlint format..."
+./gradlew ktlintFormat --daemon || {
+    echo "❌ ktlint format failed"
+    exit 1
+}
+
+echo "✅ Running ktlint check..."
+./gradlew ktlintCheck --daemon || {
+    echo "❌ ktlint check failed"
+    echo "💡 Run './gradlew ktlintFormat' to fix formatting issues"
+    exit 1
+}
+
+# detektで静的解析
+echo "🔎 Running detekt..."
+./gradlew detekt --daemon || {
+    echo "❌ detekt check failed"
+    echo "💡 Check detekt report in build/reports/detekt/"
+    exit 1
+}
+
+echo "✅ All checks passed! Proceeding with commit..."
+exit 0

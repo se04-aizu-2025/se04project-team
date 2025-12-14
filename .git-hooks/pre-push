@@ -1,0 +1,28 @@
+#!/bin/bash
+# Pre-push hook: プッシュ前にテストとコード品質チェックを実行
+
+echo "🚀 Running pre-push checks..."
+
+# ktlintチェック
+echo "📝 Running ktlint..."
+./gradlew ktlintCheck --daemon || {
+    echo "❌ ktlint check failed"
+    exit 1
+}
+
+# detekt
+echo "🔎 Running detekt..."
+./gradlew detekt --daemon || {
+    echo "❌ detekt check failed"
+    exit 1
+}
+
+# テスト実行
+echo "🧪 Running tests..."
+./gradlew test --daemon || {
+    echo "❌ Tests failed"
+    exit 1
+}
+
+echo "✅ All pre-push checks passed! Proceeding with push..."
+exit 0
