@@ -23,11 +23,10 @@ subprojects {
         outputToConsole.set(true)
         outputColorName.set("RED")
 
-        // 生成ファイルを除外
+        // buildディレクトリとgeneratedディレクトリを除外
         filter {
-            exclude("**/generated/**")
             exclude("**/build/**")
-            exclude { it.file.path.contains("generated") }
+            exclude("**/generated/**")
         }
     }
 }
