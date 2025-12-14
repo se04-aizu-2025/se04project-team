@@ -159,41 +159,6 @@ refactor/短い説明
 
 ---
 
-## マージ戦略
-
-### 推奨: Squash and Merge
-
-**メリット**:
-- コミット履歴がクリーンに保たれる
-- 1つのPRが1つのコミットになる
-- Git historyが読みやすい
-
-**設定方法**:
-GitHub Settings → General → Pull Requests
-- ✅ Allow squash merging
-- ❌ Allow merge commits (無効化推奨)
-- ❌ Allow rebase merging (無効化推奨)
-
-### マージメッセージのフォーマット
-
-```
-[Type] Short description (#PR番号)
-
-Longer description if needed.
-
-- Change 1
-- Change 2
-```
-
-**Type**:
-- `[Feature]` - 新機能
-- `[Bug]` - バグ修正
-- `[Refactor]` - リファクタリング
-- `[Docs]` - ドキュメント
-- `[Test]` - テスト追加
-
----
-
 ## PR作成のワークフロー
 
 ### 1. ブランチを切る
@@ -444,31 +409,3 @@ git push origin hotfix/critical-fix
 
 # mainとdevelopの両方にPRを作成
 ```
-
----
-
-## まとめ: 設定チェックリスト
-
-GitHub Settings → Branches で以下を確認:
-
-### main ブランチ
-- [x] Require pull request reviews
-- [x] Require status checks (build, lint)
-- [x] Require conversation resolution
-- [x] Require signed commits (推奨)
-- [x] Require linear history (推奨)
-- [x] Restrict pushes
-- [x] Prevent force pushes
-- [x] Prevent deletion
-
-### develop ブランチ  
-- [x] Require pull request reviews
-- [x] Require status checks (build, lint)
-- [x] Require conversation resolution
-- [x] Restrict pushes
-
-### Repository Settings
-- [x] Allow squash merging only
-- [x] Automatically delete head branches
-
-これらの設定により、コードの品質と安全性が大幅に向上します！
