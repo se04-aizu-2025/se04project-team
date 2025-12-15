@@ -1,0 +1,20 @@
+root = true
+
+[*.{kt,kts}]
+# ktlint configuration - Composeと互換性のため
+ktlint_standard_no-wildcard-imports = disabled
+
+# Compose関数名（大文字始まり）は許可
+ktlint_standard_function-naming = disabled
+ktlint_standard_filename = disabled
+
+# build/generatedディレクトリ全体でktlintを完全に無効化
+[**/build/**]
+ktlint_disabled = true
+
+[**/generated/**]
+ktlint_disabled = true
+
+# Allow main.kt files
+[**/main.kt]
+ktlint_standard_filename = disabled

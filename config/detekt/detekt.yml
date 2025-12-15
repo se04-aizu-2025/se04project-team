@@ -1,0 +1,40 @@
+detekt:
+  maxIssues: 0
+  buildUponDefaultConfig: true
+  
+build:
+  maxIssues: 0
+
+style:
+  maxLineLength: 120
+  FunctionNaming:
+    active: true
+  ClassNaming:
+    active: true
+  VariableNaming:
+    active: true
+
+complexity:
+  LongMethod:
+    threshold: 60
+  LongParameterList:
+    functionThreshold: 6
+  TooManyFunctions:
+    thresholdInFiles: 20
+
+naming:
+  FunctionNaming:
+    functionPattern: '[a-z][a-zA-Z0-9]*'
+  ClassNaming:
+    classPattern: '[A-Z][a-zA-Z0-9]*'
+  PackageNaming:
+    packagePattern: '[a-z]+(\.[a-z][a-z0-9]*)*'
+
+potential-bugs:
+  active: true
+
+performance:
+  active: true
+
+empty-blocks:
+  active: true

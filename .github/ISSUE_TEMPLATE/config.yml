@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussion
+    url: https://github.com/segnities007/dotnet/discussions
+    about: 質問やディスカッションはこちら
+  - name: 📖 Documentation
+    url: https://github.com/segnities007/dotnet/blob/main/doc/ARCHITECTURE.md
+    about: プロジェクトのアーキテクチャドキュメント
