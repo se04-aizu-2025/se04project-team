@@ -4,12 +4,16 @@ import dotnet.sort.algorithm.BubbleSortAlgorithm
 import dotnet.sort.model.SortAlgorithm
 import dotnet.sort.model.SortResult
 import dotnet.sort.model.SortType
+import org.koin.core.annotation.Single
 
 /**
  * ソート実行ユースケース。
  * UI層などのクライアントから要求を受け取り、指定されたアルゴリズムでソートを実行します。
  */
-class ExecuteSortUseCase {
+@Single
+class ExecuteSortUseCase(
+    val buddleSortAlgorithm: BubbleSortAlgorithm
+) {
 
     /**
      * ソートを実行します。
@@ -21,7 +25,7 @@ class ExecuteSortUseCase {
      */
     fun execute(type: SortType, input: List<Int>): SortResult {
         val algorithm: SortAlgorithm = when (type) {
-            SortType.BUBBLE -> BubbleSortAlgorithm()
+            SortType.BUBBLE -> buddleSortAlgorithm
         }
 
         return algorithm.sort(input)
