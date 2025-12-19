@@ -37,6 +37,7 @@ dotnet/
 | [アーキテクチャ](./doc/ARCHITECTURE.md) | システム設計・構成 |
 | [ブランチ戦略](./doc/BRANCH_STRATEGY.md) | Git ブランチ運用 |
 | [CI/CD](./doc/CI_CD.md) | 継続的インテグレーション・デリバリー |
+| [プルリクエストガイド](./doc/PULL_REQUEST.md) | PRの作成方法とレビュープロセス |
 
 ## クイックスタート
 
