@@ -62,11 +62,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build --stacktrace --build-cache
+      # PR時は check のみ（高速）、main/develop push時は build も実行
+      - name: Run checks (compile, test)
+        run: ./gradlew check --stacktrace --build-cache
 
-      - name: Run all tests
-        run: ./gradlew allTests --continue --build-cache
+      # main/develop にマージされた時のみ本番ビルドを実行
+      - name: Production Build
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
+        run: ./gradlew build --stacktrace --build-cache
 
       - name: Upload test reports
         if: always()
