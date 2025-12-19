@@ -1,55 +1,63 @@
-This is a Kotlin Multiplatform project targeting Web, Desktop (JVM).
+# dotnet
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+Kotlin Multiplatform を使用した **Web** および **Desktop (JVM)** 対応のクロスプラットフォームアプリケーションです。
 
-### Build and Run Desktop (JVM) Application
+## 技術スタック
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+| カテゴリ | 技術 |
+|----------|------|
+| **言語** | Kotlin |
+| **UI フレームワーク** | Compose Multiplatform |
+| **ターゲット** | Desktop (JVM), Web (Wasm/JS) |
+| **ビルドツール** | Gradle (Kotlin DSL) |
+| **コード品質** | ktlint, detekt |
 
-### Build and Run Web Application
+## アーキテクチャ
 
-To build and run the development version of the web app, use the run configuration from the run widget
-in your IDE's toolbar or run it directly from the terminal:
-- for the Wasm target (faster, modern browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :composeApp:wasmJsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :composeApp:wasmJsBrowserDevelopmentRun
-    ```
-- for the JS target (slower, supports older browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :composeApp:jsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :composeApp:jsBrowserDevelopmentRun
-    ```
+```
+dotnet/
+├── composeApp/     # Compose Multiplatform アプリケーション
+├── presentation/   # プレゼンテーション層
+├── domain/         # ドメイン層 (ビジネスロジック)
+└── data/           # データ層
+```
 
----
+## プロジェクト構成
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+- **[composeApp](./composeApp/src)** - クロスプラットフォーム共有コード
+  - `commonMain` - 全ターゲット共通のコード
+  - `jvmMain` - Desktop (JVM) 固有のコード
+  - `wasmJsMain` / `jsMain` - Web 固有のコード
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+## ドキュメント
+
+| ドキュメント | 説明 |
+|--------------|------|
+| [開発環境セットアップ & 実行ガイド](./doc/GETTING_STARTED.md) | ビルド・実行方法 |
+| [アーキテクチャ](./doc/ARCHITECTURE.md) | システム設計・構成 |
+| [ブランチ戦略](./doc/BRANCH_STRATEGY.md) | Git ブランチ運用 |
+| [CI/CD](./doc/CI_CD.md) | 継続的インテグレーション・デリバリー |
+| [プルリクエストガイド](./doc/PULL_REQUEST.md) | PRの作成方法とレビュープロセス |
+
+## クイックスタート
+
+### デスクトップアプリを実行
+
+```shell
+./gradlew :composeApp:run
+```
+
+### Web アプリを実行 (Wasm)
+
+```shell
+./gradlew :composeApp:wasmJsBrowserDevelopmentRun
+```
+
+> [!TIP]
+> 詳細な実行方法は [開発環境セットアップ & 実行ガイド](./doc/GETTING_STARTED.md) をご覧ください。
+
+## 参考リンク
+
+- [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
+- [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/)
+- [Kotlin/Wasm](https://kotl.in/wasm/)

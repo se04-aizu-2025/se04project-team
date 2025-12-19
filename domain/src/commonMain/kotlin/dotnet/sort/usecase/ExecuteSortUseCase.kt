@@ -1,0 +1,29 @@
+package dotnet.sort.usecase
+
+import dotnet.sort.algorithm.BubbleSortAlgorithm
+import dotnet.sort.model.SortAlgorithm
+import dotnet.sort.model.SortResult
+import dotnet.sort.model.SortType
+
+/**
+ * ソート実行ユースケース。
+ * UI層などのクライアントから要求を受け取り、指定されたアルゴリズムでソートを実行します。
+ */
+class ExecuteSortUseCase {
+
+    /**
+     * ソートを実行します。
+     *
+     * @param type 使用するソートアルゴリズムの種類 [SortType]
+     * @param input ソート対象の整数リスト
+     * @return [SortResult] ソート結果（整列済みリスト、手順スナップショット、統計情報）
+     * @throws IllegalArgumentException 未実装のアルゴリズムが指定された場合
+     */
+    fun execute(type: SortType, input: List<Int>): SortResult {
+        val algorithm: SortAlgorithm = when (type) {
+            SortType.BUBBLE -> BubbleSortAlgorithm()
+        }
+
+        return algorithm.sort(input)
+    }
+}
