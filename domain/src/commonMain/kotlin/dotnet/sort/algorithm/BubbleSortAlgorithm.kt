@@ -4,6 +4,7 @@ import dotnet.sort.model.ComplexityMetrics
 import dotnet.sort.model.SortAlgorithm
 import dotnet.sort.model.SortResult
 import dotnet.sort.model.SortSnapshot
+import org.koin.core.annotation.Single
 import kotlin.time.measureTime
 
 /**
@@ -13,6 +14,8 @@ import kotlin.time.measureTime
  * - 時間計算量: O(n^2)
  * - 空間計算量: O(1)
  */
+
+@Single
 class BubbleSortAlgorithm : SortAlgorithm {
 
     override fun sort(input: List<Int>): SortResult {

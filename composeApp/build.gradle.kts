@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -24,6 +25,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.presentation)
+            implementation(projects.domain)
+            implementation(projects.data)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -32,6 +35,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -52,5 +57,18 @@ compose.desktop {
             packageName = "dotnet.sort"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", libs.koin.kspCompiler)
+    add("kspJvm", libs.koin.kspCompiler)
+    add("kspJs", libs.koin.kspCompiler)
+    add("kspWasmJs", libs.koin.kspCompiler)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }
