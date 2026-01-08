@@ -5,7 +5,7 @@
 
 ## プロジェクト概要
 
-**SortViz** - ソートアルゴリズム教育ツール
+**DNSort** - ソートアルゴリズム教育ツール
 
 Kotlin Multiplatform を使用した Web/Desktop クロスプラットフォームアプリケーションです。
 ソートアルゴリズムの動作を視覚的に学習できる教育ツールとして開発されています。
@@ -26,7 +26,7 @@ Kotlin Multiplatform を使用した Web/Desktop クロスプラットフォー�
 **Layered Architecture (Clean Architecture-like)** を採用しています。
 
 ```
-sortviz/
+dotnet/
 ├── composeApp/         → Compose Multiplatform アプリ (GUI/CUI エントリポイント)
 ├── presentation/       → Presentation Layer (MVI パターン)
 │   └── designsystem/   → Design System (Atomic Design)
@@ -108,7 +108,8 @@ release/vX.X.X        # リリース
 
 ## コミット・PR
 
-- PR作成時はテンプレート（`.github/pull_request_template.md`）に従う
+- **PRテンプレート**: `.github/pull_request_template.md` を使用すること
+- **PRガイド**: `doc/PULL_REQUEST.md` を参照
 - CI（ktlint, detekt, build, test）がパスするまでマージ不可
 - `develop` ブランチにマージ後、`main` へのリリースPRを作成
 

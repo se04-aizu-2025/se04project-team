@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔢 SortViz（仮）
+# 🔢 DNSort
 
 **ソートアルゴリズム教育ツール for Kotlin Multiplatform**
 
@@ -15,7 +15,7 @@
 
 ## 📖 概要
 
-**SortViz** は、ソートアルゴリズムを視覚的に学習できる教育ツールです。
+**DNSort** は、ソートアルゴリズムを視覚的に学習できる教育ツールです。
 Kotlin Multiplatform を使用し、**Desktop (JVM)** と **Web (Wasm/JS)** の両方で動作します。
 
 ### ✨ 特徴
@@ -124,7 +124,7 @@ dotnet/
 ```bash
 $ ./gradlew runCli --args="--algorithm quick --random 10"
 
-=== SortViz (CLI) ===
+=== DNSort (CLI) ===
 Algorithm: Quick Sort
 Input:  [5, 3, 8, 1, 9, 2, 7, 4, 6, 0]
 Output: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
