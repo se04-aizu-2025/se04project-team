@@ -26,6 +26,7 @@ class ExecuteSortUseCase(
     fun execute(type: SortType, input: List<Int>): SortResult {
         val algorithm: SortAlgorithm = when (type) {
             SortType.BUBBLE -> buddleSortAlgorithm
+            else -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
         }
 
         return algorithm.sort(input)
