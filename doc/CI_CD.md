@@ -137,3 +137,42 @@ git push --no-verify        # pre-pushをスキップ
 - [ ] `./gradlew build` が成功する
 
 これらは GitHub Actions で自動的にチェックされます。
+
+## Dependabot
+
+`.github/dependabot.yml`
+
+**機能**:
+- Gradle依存関係の自動更新（毎週月曜日 09:00 JST）
+- GitHub Actionsの自動更新
+- 関連パッケージのグループ化（kotlin, compose, testing, androidx）
+
+**設定**:
+- 同時オープンPR数: Gradle 5件、Actions 3件
+- ラベル自動付与: `dependencies`
+
+## CodeQL Security Analysis
+
+`.github/workflows/codeql.yml`
+
+**機能**:
+- Kotlin/Java コードのセキュリティ脆弱性を自動検出
+- GitHub Security タブで結果を管理
+
+**トリガー**:
+- `push`: main, master, develop ブランチへのプッシュ
+- `pull_request`: main, master, develop ブランチへのPR
+- `schedule`: 毎週月曜日 15:00 JST
+
+## Stale Issue Management
+
+`.github/workflows/stale.yml`
+
+**機能**:
+- 30日間活動がないIssue/PRに `stale` ラベルを付与
+- さらに7日間活動がない場合は自動クローズ
+
+**除外ラベル**:
+- Issue: `pinned`, `security`, `bug`, `enhancement`
+- PR: `pinned`, `security`, `do-not-close`
+- ドラフトPRは除外
