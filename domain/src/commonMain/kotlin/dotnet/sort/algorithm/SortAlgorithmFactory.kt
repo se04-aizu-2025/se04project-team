@@ -20,7 +20,7 @@ object SortAlgorithmFactory {
             SortType.BUBBLE -> BubbleSortAlgorithm()
             SortType.SELECTION -> SelectionSortAlgorithm()
             SortType.INSERTION -> InsertionSortAlgorithm()
-            SortType.SHELL -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
+            SortType.SHELL -> ShellSortAlgorithm()
             SortType.MERGE -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
             SortType.QUICK -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
             SortType.HEAP -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
