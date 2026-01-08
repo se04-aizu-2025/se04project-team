@@ -188,18 +188,6 @@ git push --no-verify        # pre-pushをスキップ
 **トリガー**:
 - Gradle Wrapper関連ファイルが変更された時のみ
 
-## Dependency Review
-
-`.github/workflows/dependency-review.yml`
-
-**機能**:
-- PRで追加された依存関係の脆弱性をチェック
-- 高・クリティカルな脆弱性でPRをブロック
-- GPL-3.0, AGPL-3.0 ライセンスを拒否
-
-**トリガー**:
-- PRがオープンされた時
-
 ## PR Size Labeler
 
 `.github/workflows/pr-size-labeler.yml`
@@ -209,10 +197,13 @@ git push --no-verify        # pre-pushをスキップ
 - レビュー優先度の判断に活用
 
 **ラベル**:
-| ラベル | 変更行数 | 目安 |
-|--------|----------|------|
-| 🟢 軽微な修正 | ≤10行 | typo修正、1箇所の変更 |
-| 🔵 小さな変更 | ≤100行 | 単一機能の追加・修正 |
-| 🟡 中規模の変更 | ≤500行 | 複数ファイルにまたがる機能 |
-| 🟠 大きな変更 | ≤1000行 | 新機能・リファクタリング |
-| 🔴 要注意：大規模変更 | >1000行 | 分割検討を推奨 |
+| Label | Color |
+|-------|-------|
+| lines: ≤10 | 🟢 |
+| lines: ≤100 | 🔵 |
+| lines: ≤500 | 🟡 |
+| lines: ≤1000 | 🟠 |
+| lines: >1000 | 🔴 |
+
+> ラベルの色は `.github/labels.yml` で定義
+> GitHub で手動作成するか、`gh label create` コマンドで作成してください。
