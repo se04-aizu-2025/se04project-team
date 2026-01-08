@@ -14,6 +14,7 @@ concurrency:
 env:
   JAVA_VERSION: '17'
   JAVA_DISTRIBUTION: 'temurin'
+  GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true'
 
 jobs:
   build-and-test:
@@ -30,21 +31,45 @@ jobs:
         with:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
-          cache: 'gradle'  # Built-in Gradle caching
+          cache: 'gradle'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: false
+          cache-read-only: ${{ github.ref != 'refs/heads/develop' && github.ref != 'refs/heads/main' }}
+
+      # Kotlin/JS および Wasm 用の Node.js キャッシュ
+      - name: Cache Kotlin/JS and Wasm dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.yarn
+            **/node_modules
+            **/kotlin-js-store
+          key: ${{ runner.os }}-kotlin-js-${{ hashFiles('**/yarn.lock', '**/package-lock.json', '**/build.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-kotlin-js-
+
+      # Kotlin/Native (Konan) キャッシュ
+      - name: Cache Kotlin Konan
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ hashFiles('**/build.gradle.kts', '**/gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build --no-daemon --stacktrace
+      # PR時は check のみ（高速）、main/develop push時は build も実行
+      - name: Run checks (compile, test)
+        run: ./gradlew check --stacktrace --build-cache
 
-      - name: Run all tests
-        run: ./gradlew allTests --no-daemon --continue
+      # main/develop にマージされた時のみ本番ビルドを実行
+      - name: Production Build
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
+        run: ./gradlew build --stacktrace --build-cache
 
       - name: Upload test reports
         if: always()
@@ -75,16 +100,28 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: false
+          cache-read-only: ${{ github.ref != 'refs/heads/develop' && github.ref != 'refs/heads/main' }}
+
+      # Kotlin/JS および Wasm 用の Node.js キャッシュ
+      - name: Cache Kotlin/JS and Wasm dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.yarn
+            **/node_modules
+            **/kotlin-js-store
+          key: ${{ runner.os }}-kotlin-js-${{ hashFiles('**/yarn.lock', '**/package-lock.json', '**/build.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-kotlin-js-
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Run ktlint
-        run: ./gradlew ktlintCheck --no-daemon
+        run: ./gradlew ktlintCheck --build-cache
 
       - name: Run detekt
-        run: ./gradlew detekt --no-daemon
+        run: ./gradlew detekt --build-cache
 
       - name: Upload ktlint report
         if: always()

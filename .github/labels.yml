@@ -1,0 +1,17 @@
+# GitHub Labels Configuration
+# Apply with: gh label create "name" --color "hex"
+
+- name: "lines: ≤10"
+  color: "0E8A16"  # Green
+
+- name: "lines: ≤100"
+  color: "1D76DB"  # Blue
+
+- name: "lines: ≤500"
+  color: "FBCA04"  # Yellow
+
+- name: "lines: ≤1000"
+  color: "D93F0B"  # Orange
+
+- name: "lines: >1000"
+  color: "B60205"  # Red
