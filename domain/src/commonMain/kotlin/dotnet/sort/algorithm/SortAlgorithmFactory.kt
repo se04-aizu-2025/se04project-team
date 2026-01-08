@@ -18,7 +18,7 @@ object SortAlgorithmFactory {
     fun create(type: SortType): SortAlgorithm {
         return when (type) {
             SortType.BUBBLE -> BubbleSortAlgorithm()
-            SortType.SELECTION -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
+            SortType.SELECTION -> SelectionSortAlgorithm()
             SortType.INSERTION -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
             SortType.SHELL -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
             SortType.MERGE -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
