@@ -43,9 +43,14 @@ jobs:
           # クエリスイート: security-extended はより詳細なセキュリティチェック
           queries: security-extended
 
-      # Autobuild でプロジェクトをビルド
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      # Kotlin Multiplatform では autobuild が失敗するため、カスタムビルドを使用
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle (for CodeQL)
+        run: ./gradlew jvmMainClasses jvmTestClasses --no-daemon --build-cache
+        env:
+          GRADLE_OPTS: '-Dorg.gradle.daemon=false'
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
