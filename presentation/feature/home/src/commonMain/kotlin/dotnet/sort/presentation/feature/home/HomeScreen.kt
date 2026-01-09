@@ -55,14 +55,14 @@ fun HomeScreen(
             description = "Learn about different sorting algorithms.",
             icon = "🎓",
             onClick = onNavigateToLearn,
-            enabled = false // Placeholder for now
+            enabled = true
         ),
         HomeOption(
             title = "Compare",
             description = "Compare performance of algorithms.",
             icon = "⚖️",
             onClick = onNavigateToCompare,
-            enabled = false // Placeholder for now
+            enabled = true
         ),
         HomeOption(
             title = "Settings",

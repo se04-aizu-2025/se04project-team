@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dotnet.sort.presentation.feature.compare.CompareScreen
 import dotnet.sort.presentation.feature.home.HomeScreen
+import dotnet.sort.presentation.feature.learn.LearnScreen
 import dotnet.sort.presentation.feature.settings.SettingsScreen
 import dotnet.sort.presentation.feature.sort.SortScreen
 
@@ -47,15 +49,15 @@ fun AppNavigation() {
         }
         
         composable<Screen.Learn> {
-             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Learn Screen (Coming Soon)")
-            }
+            LearnScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
         
         composable<Screen.Compare> {
-             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Compare Screen (Coming Soon)")
-            }
+            CompareScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }
