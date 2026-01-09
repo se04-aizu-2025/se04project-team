@@ -11,6 +11,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import dotnet.sort.di.DataModule
 import dotnet.sort.di.DomainModule
+import dotnet.sort.presentation.common.di.CommonModule
+import dotnet.sort.presentation.feature.settings.di.SettingsFeatureModule
 import dotnet.sort.presentation.feature.sort.SortFeatureModule
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
@@ -20,6 +22,8 @@ fun main() {
         modules(
             DataModule().module,
             DomainModule().module,
+            CommonModule,
+            SettingsFeatureModule().module,
             SortFeatureModule().module,
             // TODO: NavigationModule を追加
         )

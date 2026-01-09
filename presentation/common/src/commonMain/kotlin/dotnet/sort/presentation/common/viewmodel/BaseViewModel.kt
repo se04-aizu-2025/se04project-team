@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -11,10 +14,19 @@ import kotlinx.coroutines.launch
  *
  * [viewModelScope] を管理し、エラーハンドリング付きでコルーチンを起動する簡易手段を提供します。
  */
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel<S : UiState, I : Intent>(
+    initialState: S
+) : ViewModel(), UnidirectionalViewModel<S, I> {
+
+    private val _state = MutableStateFlow(initialState)
+    override val state: StateFlow<S> = _state.asStateFlow()
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         handleError(throwable)
+    }
+
+    protected fun updateState(reducer: S.() -> S) {
+        _state.value = _state.value.reducer()
     }
 
     /**

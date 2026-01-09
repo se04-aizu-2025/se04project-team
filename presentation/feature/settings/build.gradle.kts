@@ -25,6 +25,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.material) // For Icons
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
@@ -35,6 +36,7 @@ kotlin {
             implementation(libs.koin.annotations)
             implementation(projects.presentation.common)
             implementation(projects.presentation.designsystem)
+            implementation(projects.domain)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

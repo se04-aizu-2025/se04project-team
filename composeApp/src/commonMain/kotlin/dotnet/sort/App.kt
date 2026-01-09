@@ -1,9 +1,13 @@
 package dotnet.sort
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.presentation.common.viewmodel.ThemeViewModel
 import dotnet.sort.presentation.navigation.AppNavigation
 import org.koin.compose.KoinContext
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * The common entry point for the application.
@@ -17,8 +21,11 @@ import org.koin.compose.KoinContext
  */
 @Composable
 fun App() {
-    SortTheme {
-        KoinContext {
+    KoinContext {
+        val themeViewModel = koinViewModel<ThemeViewModel>()
+        val state by themeViewModel.state.collectAsState()
+
+        SortTheme(darkTheme = state.isDarkTheme) {
             AppNavigation()
         }
     }

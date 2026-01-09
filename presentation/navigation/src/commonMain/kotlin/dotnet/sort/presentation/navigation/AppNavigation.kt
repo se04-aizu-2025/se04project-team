@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dotnet.sort.presentation.feature.home.HomeScreen
+import dotnet.sort.presentation.feature.settings.SettingsScreen
 import dotnet.sort.presentation.feature.sort.SortScreen
 
 /**
@@ -40,9 +41,9 @@ fun AppNavigation() {
         }
 
         composable<Screen.Settings> {
-             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Settings Screen (Coming Soon)")
-            }
+             SettingsScreen(
+                 onBackClick = { navController.popBackStack() }
+             )
         }
         
         composable<Screen.Learn> {
