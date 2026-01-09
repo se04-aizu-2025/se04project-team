@@ -2,11 +2,14 @@ package dotnet.sort.generator
 
 import kotlin.random.Random
 
+import org.koin.core.annotation.Single
+
 /**
  * 配列生成のインターフェース実装。
  *
  * 各種タイプに応じた配列を生成します。
  */
+@Single
 class ArrayGeneratorImpl : ArrayGenerator {
 
     private val random = Random
