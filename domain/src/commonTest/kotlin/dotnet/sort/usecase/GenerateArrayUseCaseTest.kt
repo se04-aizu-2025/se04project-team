@@ -20,20 +20,20 @@ class GenerateArrayUseCaseTest {
     private val useCase = GenerateArrayUseCase(mockGenerator)
 
     @Test
-    fun `invoke with size and type delegates to ArrayGenerator`() {
+    fun `GIVEN size and type WHEN invoke is called THEN delegates to ArrayGenerator`() {
         val result = useCase(5, ArrayGeneratorType.RANDOM)
         assertEquals(5, result.size)
         assertEquals(listOf(1, 2, 3, 4, 5), result)
     }
 
     @Test
-    fun `invoke with size type and range delegates to ArrayGenerator`() {
+    fun `GIVEN size type and range WHEN invoke is called THEN delegates to ArrayGenerator`() {
         val result = useCase(3, ArrayGeneratorType.RANDOM, 10..20)
         assertEquals(3, result.size)
     }
 
     @Test
-    fun `invoke returns empty list for size 0`() {
+    fun `GIVEN size 0 WHEN invoke is called THEN returns empty list`() {
         val result = useCase(0, ArrayGeneratorType.RANDOM)
         assertEquals(emptyList(), result)
     }

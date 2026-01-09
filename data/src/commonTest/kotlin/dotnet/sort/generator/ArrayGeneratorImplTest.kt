@@ -11,20 +11,20 @@ class ArrayGeneratorImplTest {
     // --- RANDOM ---
 
     @Test
-    fun `generate RANDOM creates array of specified size`() {
+    fun `GIVEN RANDOM type WHEN generate is called THEN creates array of specified size`() {
         val result = generator.generate(10, ArrayGeneratorType.RANDOM)
         assertEquals(10, result.size)
     }
 
     @Test
-    fun `generate RANDOM creates values within specified range`() {
+    fun `GIVEN RANDOM type and range WHEN generate is called THEN creates values within specified range`() {
         val range = 1..50
         val result = generator.generate(100, ArrayGeneratorType.RANDOM, range)
         assertTrue(result.all { it in range })
     }
 
     @Test
-    fun `generate RANDOM returns empty list for size 0`() {
+    fun `GIVEN RANDOM type and size 0 WHEN generate is called THEN returns empty list`() {
         val result = generator.generate(0, ArrayGeneratorType.RANDOM)
         assertTrue(result.isEmpty())
     }
@@ -32,13 +32,13 @@ class ArrayGeneratorImplTest {
     // --- ASCENDING ---
 
     @Test
-    fun `generate ASCENDING creates sorted array`() {
+    fun `GIVEN ASCENDING type WHEN generate is called THEN creates sorted array`() {
         val result = generator.generate(10, ArrayGeneratorType.ASCENDING)
         assertEquals(result.sorted(), result)
     }
 
     @Test
-    fun `generate ASCENDING creates array of specified size`() {
+    fun `GIVEN ASCENDING type WHEN generate is called THEN creates array of specified size`() {
         val result = generator.generate(15, ArrayGeneratorType.ASCENDING)
         assertEquals(15, result.size)
     }
@@ -46,13 +46,13 @@ class ArrayGeneratorImplTest {
     // --- DESCENDING ---
 
     @Test
-    fun `generate DESCENDING creates reverse sorted array`() {
+    fun `GIVEN DESCENDING type WHEN generate is called THEN creates reverse sorted array`() {
         val result = generator.generate(10, ArrayGeneratorType.DESCENDING)
         assertEquals(result.sortedDescending(), result)
     }
 
     @Test
-    fun `generate DESCENDING creates array of specified size`() {
+    fun `GIVEN DESCENDING type WHEN generate is called THEN creates array of specified size`() {
         val result = generator.generate(15, ArrayGeneratorType.DESCENDING)
         assertEquals(15, result.size)
     }
@@ -60,13 +60,13 @@ class ArrayGeneratorImplTest {
     // --- PARTIALLY_SORTED ---
 
     @Test
-    fun `generate PARTIALLY_SORTED creates array of specified size`() {
+    fun `GIVEN PARTIALLY_SORTED type WHEN generate is called THEN creates array of specified size`() {
         val result = generator.generate(20, ArrayGeneratorType.PARTIALLY_SORTED)
         assertEquals(20, result.size)
     }
 
     @Test
-    fun `generate PARTIALLY_SORTED creates values within range`() {
+    fun `GIVEN PARTIALLY_SORTED type and range WHEN generate is called THEN creates values within range`() {
         val range = 10..90
         val result = generator.generate(50, ArrayGeneratorType.PARTIALLY_SORTED, range)
         assertTrue(result.all { it in range })
@@ -75,13 +75,13 @@ class ArrayGeneratorImplTest {
     // --- DUPLICATES ---
 
     @Test
-    fun `generate DUPLICATES creates array of specified size`() {
+    fun `GIVEN DUPLICATES type WHEN generate is called THEN creates array of specified size`() {
         val result = generator.generate(30, ArrayGeneratorType.DUPLICATES)
         assertEquals(30, result.size)
     }
 
     @Test
-    fun `generate DUPLICATES contains duplicate values`() {
+    fun `GIVEN DUPLICATES type WHEN generate is called THEN contains duplicate values`() {
         val result = generator.generate(30, ArrayGeneratorType.DUPLICATES)
         val uniqueCount = result.toSet().size
         // 30 elements with ~10 unique values should have duplicates
@@ -89,7 +89,7 @@ class ArrayGeneratorImplTest {
     }
 
     @Test
-    fun `generate DUPLICATES creates values within range`() {
+    fun `GIVEN DUPLICATES type and range WHEN generate is called THEN creates values within range`() {
         val range = 1..50
         val result = generator.generate(30, ArrayGeneratorType.DUPLICATES, range)
         assertTrue(result.all { it in range })
@@ -98,7 +98,7 @@ class ArrayGeneratorImplTest {
     // --- Default Range ---
 
     @Test
-    fun `generate uses default range 1 to 100`() {
+    fun `GIVEN no range WHEN generate is called THEN uses default range 1 to 100`() {
         val result = generator.generate(100, ArrayGeneratorType.RANDOM)
         assertTrue(result.all { it in 1..100 })
     }
