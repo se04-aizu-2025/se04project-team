@@ -17,10 +17,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import androidx.compose.foundation.focusable
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
 import dotnet.sort.presentation.feature.sort.components.MetricsDisplay
@@ -37,9 +47,44 @@ fun SortScreen(
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.state.collectAsState()
+    
+    // Keyboard Focus Requester
+    val focusRequester = remember { FocusRequester() }
+    
+    // Launch effect to request focus when screen is shown
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .onKeyEvent { event ->
+                if (event.type == KeyEventType.KeyDown) {
+                    when (event.key) {
+                        Key.Spacebar -> {
+                            if (state.isPlaying) viewModel.send(SortIntent.PauseSort)
+                            else if (state.sortResult != null) viewModel.send(SortIntent.ResumeSort)
+                            else viewModel.send(SortIntent.StartSort)
+                            true
+                        }
+                        Key.DirectionRight -> {
+                            if (!state.isPlaying && state.sortResult != null) {
+                                viewModel.send(SortIntent.StepForward)
+                                true
+                            } else false
+                        }
+                        Key.DirectionLeft -> {
+                            if (!state.isPlaying && state.sortResult != null) {
+                                viewModel.send(SortIntent.StepBackward)
+                                true
+                            } else false
+                        }
+                        else -> false
+                    }
+                } else false
+            }
+            .focusRequester(focusRequester)
+            .focusable(),
         containerColor = SortTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
