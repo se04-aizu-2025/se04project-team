@@ -14,6 +14,7 @@ import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.SortControlPanel
+import dotnet.sort.presentation.feature.sort.components.SortVisualizer
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
@@ -39,6 +40,15 @@ fun SortScreen(
                 selectedAlgorithm = state.algorithm,
                 onAlgorithmSelected = { viewModel.send(SortIntent.SelectAlgorithm(it)) },
                 enabled = !state.isLoading && !state.isPlaying
+            )
+
+            Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+            SortVisualizer(
+                array = state.currentNumbers,
+                highlightIndices = state.highlightingIndices,
+                description = state.stepDescription,
+                modifier = Modifier.weight(1f) // Fill available space
             )
 
             Spacer(modifier = Modifier.height(SpacingTokens.L))
