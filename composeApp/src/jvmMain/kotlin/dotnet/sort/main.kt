@@ -28,20 +28,8 @@ fun main() {
             onCloseRequest = ::exitApplication,
             title = "DNSort",
         ) {
-            // TODO: Navigation から App Composable を取得
-            AppPlaceholder()
+            App() // Common Entry Point
         }
     }
 }
 
-@Composable
-fun AppPlaceholder() {
-    MaterialTheme {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("DNSort - Coming Soon")
-        }
-    }
-}
