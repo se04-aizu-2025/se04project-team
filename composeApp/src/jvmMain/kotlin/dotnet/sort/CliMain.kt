@@ -2,10 +2,17 @@ package dotnet.sort
 
 fun main(args: Array<String>) {
     val parser = CliParser()
-    val cliArgs = parser.parse(args)
+    val argsToParse = args
+    val cliArgs = if (argsToParse.isEmpty()) {
+        InteractiveMode().run()
+    } else {
+        parser.parse(argsToParse)
+    }
 
-    if (cliArgs.showHelp) {
-        parser.printUsage()
+    if (cliArgs.showHelp || (cliArgs.algorithm == null && cliArgs.size == null)) {
+        if (!argsToParse.isEmpty()) { // Only show usage if arguments were actually provided but invalid/help requested
+             parser.printUsage()
+        }
         return
     }
 
