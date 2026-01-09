@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
@@ -24,12 +23,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            // Presentation layer entry point (navigation aggregates all features)
-            implementation(projects.presentation.navigation)
-            // Domain and Data layers
-            implementation(projects.domain)
-            implementation(projects.data)
-            // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -40,6 +33,11 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.composeViewModel)
+            implementation(libs.koin.annotations)
+            implementation(projects.domain)
+            implementation(projects.presentation.common)
+            implementation(projects.presentation.designsystem)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -47,18 +45,6 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
-        }
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "dotnet.sort.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "dotnet.sort"
-            packageVersion = "1.0.0"
         }
     }
 }

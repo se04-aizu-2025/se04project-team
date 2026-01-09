@@ -33,7 +33,13 @@ plugins {
 }
 
 include(":composeApp")
-include(":presentation")
+include(":presentation:common")
 include(":presentation:designsystem")
+include(":presentation:navigation")
+include(":presentation:feature:home")
+include(":presentation:feature:sort")
+include(":presentation:feature:learn")
+include(":presentation:feature:compare")
+include(":presentation:feature:settings")
 include(":domain")
 include(":data")

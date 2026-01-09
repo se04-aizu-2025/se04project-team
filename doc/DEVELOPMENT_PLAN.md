@@ -737,19 +737,314 @@ sealed class SortIntent {
 
 ## 8. Phase 6: 可視化機能
 
-### PR-31 ~ PR-35
+### PR-32: 自動再生機能
 
-（Phase 5 完了後に詳細化）
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/32` |
+| **サイズ** | 🟢 S (~80行) |
+| **依存** | PR-31 |
+
+**変更ファイル**:
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/SortViewModel.kt`
+
+**変更内容**:
+- `startPlayback()` メソッド: スナップショットを自動的に順次再生
+- `playbackJob: Job?` でコルーチン管理
+- `AnimationTokens.VisualizationDelay` を使用したアニメーション間隔
+
+**完了条件**:
+- [ ] ソート実行後、スナップショットが自動再生される
+- [ ] 再生中は `isPlaying = true` の状態が維持される
+- [ ] 最後のスナップショットで `isComplete = true` になる
 
 ---
+
+### PR-33: 一時停止/再開機能
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/33` |
+| **サイズ** | 🟢 XS (~30行) |
+| **依存** | PR-32 |
+
+**変更ファイル**:
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/SortViewModel.kt`
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/SortIntent.kt`
+
+**変更内容**:
+- `PauseSort` Intent: `playbackJob?.cancel()`, `isPlaying = false`
+- `ResumeSort` Intent: 現在のインデックスから再生を再開
+
+**完了条件**:
+- [ ] 再生中に一時停止できる
+- [ ] 一時停止後に再開できる
+- [ ] 再開時は停止した位置から継続する
+
+---
+
+### PR-34: 速度調整機能
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/34` |
+| **サイズ** | 🟢 S (~60行) |
+| **依存** | PR-32 |
+
+**変更ファイル**:
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/SortViewModel.kt`
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/SortState.kt`
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/components/SpeedControl.kt` (新規)
+
+**変更内容**:
+- `SortState.speedMultiplier: Float` (0.25x ~ 4.0x)
+- `SetSpeed(speedMultiplier: Float)` Intent
+- `SpeedControl` コンポーネント: SortSlider使用
+
+**完了条件**:
+- [ ] スライダーで速度を0.25x〜4xに調整できる
+- [ ] 速度変更が即座に反映される
+- [ ] 現在の速度が表示される
+
+---
+
+### PR-35: ステップ実行機能
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/35` |
+| **サイズ** | 🟢 S (~50行) |
+| **依存** | PR-33 |
+
+**変更ファイル**:
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/SortViewModel.kt`
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/SortIntent.kt`
+
+**変更内容**:
+- `StepForward` Intent: 次のスナップショットへ
+- `StepBackward` Intent: 前のスナップショットへ
+- 一時停止中のみステップ操作可能
+
+**完了条件**:
+- [ ] 一時停止中に1ステップ進める
+- [ ] 一時停止中に1ステップ戻れる
+- [ ] 最初/最後のスナップショットでは適切に制限される
+
+---
+
+### PR-36: MetricsDisplay コンポーネント
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/36` |
+| **サイズ** | 🟢 S (~70行) |
+| **依存** | PR-31 |
+
+**新規ファイル**:
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/components/MetricsDisplay.kt`
+
+**変更内容**:
+```kotlin
+@Composable
+fun MetricsDisplay(metrics: ComplexityMetrics?, modifier: Modifier = Modifier) {
+    // 比較回数、スワップ回数、実行時間、時間/空間計算量を表示
+}
+```
+
+**表示項目**:
+- 比較回数 (Comparisons)
+- スワップ回数 (Swaps)
+- 実行時間 (Execution Time)
+- 時間計算量 (Time Complexity)
+- 空間計算量 (Space Complexity)
+
+**完了条件**:
+- [ ] ソート完了後にメトリクスが表示される
+- [ ] 各統計値が読みやすいフォーマットで表示される
+
+---
+
+### PR-37: DescriptionDisplay (操作説明表示)
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/37` |
+| **サイズ** | 🟢 S (~50行) |
+| **依存** | PR-31 |
+
+**新規ファイル**:
+- `presentation/feature/src/commonMain/kotlin/dotnet/sort/presentation/feature/sort/components/DescriptionDisplay.kt`
+
+**変更内容**:
+```kotlin
+@Composable
+fun DescriptionDisplay(description: String, modifier: Modifier = Modifier) {
+    // 現在のソートステップの説明を表示
+}
+```
+
+**完了条件**:
+- [ ] 各スナップショットの説明テキストが表示される
+- [ ] 説明はアニメーションに同期して更新される
+
+
 
 ## 9. Phase 7: テスト・品質保証
 
-### PR-36 ~ PR-41
+### PR-38: O(n²) アルゴリズムテスト
 
-（各機能実装完了後に詳細化）
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/38` |
+| **サイズ** | 🟢 S (~100行) |
+| **依存** | PR-06, PR-07, PR-08 |
+
+**新規/変更ファイル**:
+- `domain/src/commonTest/kotlin/dotnet/sort/algorithm/SelectionSortAlgorithmTest.kt` (追加テスト)
+- `domain/src/commonTest/kotlin/dotnet/sort/algorithm/InsertionSortAlgorithmTest.kt` (追加テスト)
+- `domain/src/commonTest/kotlin/dotnet/sort/algorithm/ShellSortAlgorithmTest.kt` (追加テスト)
+
+**テスト項目**:
+- 正確性テスト: 各アルゴリズムが正しくソートすること
+- 空配列/1要素配列のエッジケース
+- 既にソート済みの配列（最良ケース）
+- 逆順配列（最悪ケース）
+- 重複要素を含む配列
+- スナップショットが正しく記録されること
+
+**完了条件**:
+- [ ] SelectionSort: 全テスト通過
+- [ ] InsertionSort: 全テスト通過
+- [ ] ShellSort: 全テスト通過
 
 ---
+
+### PR-39: O(n log n) アルゴリズムテスト
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/39` |
+| **サイズ** | 🟢 S (~100行) |
+| **依存** | PR-09, PR-10, PR-11 |
+
+**新規/変更ファイル**:
+- `domain/src/commonTest/kotlin/dotnet/sort/algorithm/MergeSortAlgorithmTest.kt` (追加テスト)
+- `domain/src/commonTest/kotlin/dotnet/sort/algorithm/QuickSortAlgorithmTest.kt` (追加テスト)
+- `domain/src/commonTest/kotlin/dotnet/sort/algorithm/HeapSortAlgorithmTest.kt` (追加テスト)
+
+**テスト項目**:
+- 正確性テスト
+- エッジケース（空配列、1要素、2要素）
+- 大規模配列（100要素以上）でのパフォーマンス確認
+- ピボット選択の妥当性確認（QuickSort）
+- マージ処理の正確性確認（MergeSort）
+- ヒープ構築の正確性確認（HeapSort）
+
+**完了条件**:
+- [ ] MergeSort: 全テスト通過
+- [ ] QuickSort: 全テスト通過
+- [ ] HeapSort: 全テスト通過
+
+---
+
+### PR-40: ArrayGenerator テスト
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/40` |
+| **サイズ** | 🟢 S (~80行) |
+| **依存** | PR-14 |
+
+**変更ファイル**:
+- `data/src/commonTest/kotlin/dotnet/sort/generator/ArrayGeneratorImplTest.kt` (追加テスト)
+
+**テスト項目**:
+- RANDOM: 指定サイズ、範囲内の値
+- ASCENDING: ソート済み確認
+- DESCENDING: 逆順確認
+- PARTIALLY_SORTED: サイズと範囲確認
+- DUPLICATES: 重複存在確認
+- エッジケース: サイズ0、サイズ1
+
+**完了条件**:
+- [ ] 全ArrayGeneratorType で正しく生成される
+- [ ] 範囲指定が正しく適用される
+
+---
+
+### PR-41: ViewModel テスト
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/41` |
+| **サイズ** | 🟡 M (~150行) |
+| **依存** | PR-27 |
+
+**新規ファイル**:
+- `presentation/feature/src/commonTest/kotlin/dotnet/sort/presentation/feature/sort/SortViewModelTest.kt`
+
+**テスト項目**:
+- 初期状態の確認
+- `SelectAlgorithm` Intent のテスト
+- `GenerateArray` Intent のテスト
+- `StartSort` Intent のテスト
+- `PauseSort` / `ResumeSort` Intent のテスト
+- `StepForward` / `StepBackward` Intent のテスト
+- `SetSpeed` Intent のテスト
+- `ResetSort` Intent のテスト
+
+**完了条件**:
+- [ ] 全Intentが正しくStateを更新する
+- [ ] モック UseCase を使用したテスト
+
+---
+
+### PR-42: UseCase テスト
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/42` |
+| **サイズ** | 🟢 S (~60行) |
+| **依存** | PR-15 |
+
+**変更ファイル**:
+- `domain/src/commonTest/kotlin/dotnet/sort/usecase/GenerateArrayUseCaseTest.kt` (追加テスト)
+- `domain/src/commonTest/kotlin/dotnet/sort/usecase/ExecuteSortUseCaseTest.kt` (新規)
+
+**テスト項目**:
+- GenerateArrayUseCase: 委譲の確認
+- ExecuteSortUseCase: 各SortTypeで正しいアルゴリズムが使用される
+
+**完了条件**:
+- [ ] UseCaseが正しくDomain層の機能を呼び出す
+
+---
+
+### PR-43: E2E 動作確認 (GUI)
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/43` |
+| **サイズ** | 🟢 S (~50行) |
+| **依存** | PR-37 |
+
+**内容**:
+- E2E動作確認チェックリストの作成
+- 手動テスト手順書の作成
+
+**確認項目**:
+- [ ] アプリが正常に起動する
+- [ ] アルゴリズム選択が動作する
+- [ ] 配列生成が動作する
+- [ ] ソート実行・可視化が動作する
+- [ ] 一時停止/再開が動作する
+- [ ] ステップ実行が動作する
+- [ ] 速度調整が動作する
+- [ ] メトリクス表示が正しい
+- [ ] リセットが動作する
+
+---
+
 
 ## 10. Phase 8: CUI実装
 

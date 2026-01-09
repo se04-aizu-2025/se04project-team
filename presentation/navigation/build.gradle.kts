@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
@@ -24,22 +23,26 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            // Presentation layer entry point (navigation aggregates all features)
-            implementation(projects.presentation.navigation)
-            // Domain and Data layers
-            implementation(projects.domain)
-            implementation(projects.data)
-            // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.composeViewModel)
+            implementation(libs.koin.annotations)
+            // Common module
+            implementation(projects.presentation.common)
+            // Design System
+            api(projects.presentation.designsystem)
+            // Feature modules (navigation aggregates all features)
+            api(projects.presentation.feature.home)
+            api(projects.presentation.feature.sort)
+            api(projects.presentation.feature.learn)
+            api(projects.presentation.feature.compare)
+            api(projects.presentation.feature.settings)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -47,18 +50,6 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
-        }
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "dotnet.sort.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "dotnet.sort"
-            packageVersion = "1.0.0"
         }
     }
 }
