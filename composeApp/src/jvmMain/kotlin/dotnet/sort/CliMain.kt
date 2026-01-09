@@ -1,11 +1,16 @@
 package dotnet.sort
 
 fun main(args: Array<String>) {
-    println("DNSort CLI Tool")
-    println("Arguments: ${args.joinToString()}")
-    
-    if (args.isEmpty()) {
-        println("No arguments provided. Usage: cli [options]")
+    val parser = CliParser()
+    val cliArgs = parser.parse(args)
+
+    if (cliArgs.showHelp) {
+        parser.printUsage()
         return
     }
+
+    println("DNSort CLI Tool")
+    println("Algorithm: ${cliArgs.algorithm ?: "Not specified"}")
+    println("Size: ${cliArgs.size ?: "Not specified"}")
+    println("Verbose: ${cliArgs.showVerbose}")
 }
