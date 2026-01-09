@@ -22,6 +22,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.domain)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.koin.core)
                 implementation(libs.koin.annotations)
