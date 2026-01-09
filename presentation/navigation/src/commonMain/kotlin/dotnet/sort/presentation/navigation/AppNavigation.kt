@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dotnet.sort.presentation.feature.home.HomeScreen
 import dotnet.sort.presentation.feature.sort.SortScreen
 
 /**
@@ -24,20 +25,18 @@ fun AppNavigation() {
         modifier = Modifier.fillMaxSize()
     ) {
         composable<Screen.Home> {
-            androidx.compose.foundation.layout.Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
-            ) {
-                Text("Home Screen (Coming Soon)")
-                androidx.compose.material3.Button(onClick = { navController.navigate(Screen.Sort) }) {
-                    Text("Go to Sort Screen")
-                }
-            }
+            HomeScreen(
+                onNavigateToSort = { navController.navigate(Screen.Sort) },
+                onNavigateToLearn = { navController.navigate(Screen.Learn) },
+                onNavigateToCompare = { navController.navigate(Screen.Compare) },
+                onNavigateToSettings = { navController.navigate(Screen.Settings) }
+            )
         }
 
         composable<Screen.Sort> {
-            SortScreen()
+            SortScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable<Screen.Settings> {
