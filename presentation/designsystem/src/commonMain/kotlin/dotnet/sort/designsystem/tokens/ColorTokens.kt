@@ -40,7 +40,11 @@ object ColorTokens {
     val OnSecondary = Color(0xFFFFFFFF)
     val OnBackground = Color(0xFF1C1B1F)
     val OnSurface = Color(0xFF1C1B1F)
+    val OnSurfaceVariant = Color(0xFF49454F) // Default M3 onSurfaceVariant
     val OnError = Color(0xFFFFFFFF)
+    
+    val PrimaryContainer = Color(0xFFEADDFF) // Lighter Purple
+    val OnPrimaryContainer = Color(0xFF21005D) // Dark Purple
 
     // === Semantic Colors (Dark Theme) ===
     val PrimaryDark = Color(0xFFB794F6)
@@ -55,6 +59,10 @@ object ColorTokens {
     val OnSecondaryDark = Color(0xFF1C1B1F)
     val OnBackgroundDark = Color(0xFFE6E1E5)
     val OnSurfaceDark = Color(0xFFE6E1E5)
+    val OnSurfaceVariantDark = Color(0xFFCAC4D0)
+    
+    val PrimaryContainerDark = Color(0xFF4F378B)
+    val OnPrimaryContainerDark = Color(0xFFEADDFF)
 
     // === Visualization Colors (ソート可視化用) ===
     /** デフォルトのバー色 - Kotlin Blue 系 */

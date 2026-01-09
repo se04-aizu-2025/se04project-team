@@ -45,6 +45,10 @@ fun SortTheme(
             onBackground = sortColorScheme.onBackground,
             onSurface = sortColorScheme.onSurface,
             onError = sortColorScheme.onError,
+            surfaceVariant = sortColorScheme.surfaceVariant,
+            onSurfaceVariant = sortColorScheme.onSurfaceVariant,
+            primaryContainer = sortColorScheme.primaryContainer,
+            onPrimaryContainer = sortColorScheme.onPrimaryContainer,
         )
     } else {
         lightColorScheme(
@@ -58,6 +62,10 @@ fun SortTheme(
             onBackground = sortColorScheme.onBackground,
             onSurface = sortColorScheme.onSurface,
             onError = sortColorScheme.onError,
+            surfaceVariant = sortColorScheme.surfaceVariant,
+            onSurfaceVariant = sortColorScheme.onSurfaceVariant,
+            primaryContainer = sortColorScheme.primaryContainer,
+            onPrimaryContainer = sortColorScheme.onPrimaryContainer,
         )
     }
 

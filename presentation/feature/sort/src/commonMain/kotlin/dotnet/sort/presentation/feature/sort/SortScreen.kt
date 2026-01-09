@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
+import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
+import dotnet.sort.presentation.feature.sort.components.MetricsDisplay
 import dotnet.sort.presentation.feature.sort.components.SortControlPanel
 import dotnet.sort.presentation.feature.sort.components.SortVisualizer
 import org.koin.compose.viewmodel.koinViewModel
@@ -61,6 +64,11 @@ fun SortScreen(
                 Row(modifier = Modifier.fillMaxSize()) {
                     // Left: Visualizer (Main Content)
                     Column(modifier = Modifier.weight(1f)) {
+                         DescriptionDisplay(
+                            description = state.stepDescription,
+                            modifier = Modifier.fillMaxWidth().padding(bottom = SpacingTokens.S)
+                        )
+                        
                         SortVisualizer(
                             array = state.currentNumbers,
                             highlightIndices = state.highlightingIndices,
@@ -78,7 +86,15 @@ fun SortScreen(
                             onAlgorithmSelected = { viewModel.send(SortIntent.SelectAlgorithm(it)) },
                             enabled = !state.isLoading && !state.isPlaying
                         )
+                        
                         Spacer(modifier = Modifier.height(SpacingTokens.M))
+                        
+                        MetricsDisplay(
+                            metrics = state.sortResult?.complexityMetrics
+                        )
+                        
+                        Spacer(modifier = Modifier.height(SpacingTokens.M))
+
                         SortControlPanel(
                             isPlaying = state.isPlaying,
                             onPlayPauseClick = {
