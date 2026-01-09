@@ -53,6 +53,7 @@ kotlin {
     }
 }
 
+
 compose.desktop {
     application {
         mainClass = "dotnet.sort.MainKt"
@@ -64,6 +65,22 @@ compose.desktop {
         }
     }
 }
+
+// CLI running task
+tasks.register<JavaExec>("runCli") {
+    group = "application"
+    description = "Runs the CLI application"
+    classpath = kotlin.targets["jvm"].compilations["main"].output.allOutputs + 
+                configurations["jvmRuntimeClasspath"]
+    mainClass.set("dotnet.sort.CliMainKt")
+    args = if (project.hasProperty("args")) {
+        project.property("args").toString().split(" ")
+    } else {
+        emptyList()
+    }
+    standardInput = System.`in`
+}
+
 
 dependencies {
     add("kspCommonMainMetadata", libs.koin.kspCompiler)
