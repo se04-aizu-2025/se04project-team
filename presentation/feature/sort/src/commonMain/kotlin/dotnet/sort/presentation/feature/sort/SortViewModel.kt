@@ -66,6 +66,9 @@ class SortViewModel(
             is SortIntent.SetSpeed -> {
                 updateState { copy(playbackSpeed = intent.speedMultiplier) }
             }
+            is SortIntent.SeekTo -> {
+                updateVisualizerState(intent.stepIndex)
+            }
         }
     }
 

@@ -97,6 +97,11 @@ fun SortScreen(
                             onStepBackwardClick = { viewModel.send(SortIntent.StepBackward) },
                             arraySize = state.arraySize,
                             onArraySizeChange = { viewModel.send(SortIntent.SetArraySize(it)) },
+                            playbackSpeed = state.playbackSpeed,
+                            onSpeedChange = { viewModel.send(SortIntent.SetSpeed(it)) },
+                            currentStep = state.currentStepIndex,
+                            totalSteps = state.sortResult?.steps?.size ?: 0,
+                            onSeek = { viewModel.send(SortIntent.SeekTo(it)) },
                             enabled = !state.isLoading
                         )
                     }
@@ -121,26 +126,31 @@ fun SortScreen(
 
                     Spacer(modifier = Modifier.height(SpacingTokens.L))
 
-                    SortControlPanel(
-                        isPlaying = state.isPlaying,
-                        onPlayPauseClick = {
-                            if (state.isPlaying) {
-                                viewModel.send(SortIntent.PauseSort)
-                            } else {
-                                if (state.sortResult == null) {
-                                    viewModel.send(SortIntent.StartSort)
+                        SortControlPanel(
+                            isPlaying = state.isPlaying,
+                            onPlayPauseClick = {
+                                if (state.isPlaying) {
+                                    viewModel.send(SortIntent.PauseSort)
                                 } else {
-                                    viewModel.send(SortIntent.ResumeSort)
+                                    if (state.sortResult == null) {
+                                        viewModel.send(SortIntent.StartSort)
+                                    } else {
+                                        viewModel.send(SortIntent.ResumeSort)
+                                    }
                                 }
-                            }
-                        },
-                        onResetClick = { viewModel.send(SortIntent.ResetSort) },
-                        onStepForwardClick = { viewModel.send(SortIntent.StepForward) },
-                        onStepBackwardClick = { viewModel.send(SortIntent.StepBackward) },
-                        arraySize = state.arraySize,
-                        onArraySizeChange = { viewModel.send(SortIntent.SetArraySize(it)) },
-                        enabled = !state.isLoading
-                    )
+                            },
+                            onResetClick = { viewModel.send(SortIntent.ResetSort) },
+                            onStepForwardClick = { viewModel.send(SortIntent.StepForward) },
+                            onStepBackwardClick = { viewModel.send(SortIntent.StepBackward) },
+                            arraySize = state.arraySize,
+                            onArraySizeChange = { viewModel.send(SortIntent.SetArraySize(it)) },
+                            playbackSpeed = state.playbackSpeed,
+                            onSpeedChange = { viewModel.send(SortIntent.SetSpeed(it)) },
+                            currentStep = state.currentStepIndex,
+                            totalSteps = state.sortResult?.steps?.size ?: 0,
+                            onSeek = { viewModel.send(SortIntent.SeekTo(it)) },
+                            enabled = !state.isLoading
+                        )
                 }
             }
         }

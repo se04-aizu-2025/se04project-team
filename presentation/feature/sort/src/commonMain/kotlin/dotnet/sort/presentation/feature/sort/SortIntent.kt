@@ -65,4 +65,10 @@ sealed class SortIntent : Intent {
      * @param speedMultiplier 速度倍率（0.25x ~ 4.0x）
      */
     data class SetSpeed(val speedMultiplier: Float) : SortIntent()
+
+    /**
+     * 指定したステップへ移動する。
+     * @param stepIndex ステップインデックス
+     */
+    data class SeekTo(val stepIndex: Int) : SortIntent()
 }
