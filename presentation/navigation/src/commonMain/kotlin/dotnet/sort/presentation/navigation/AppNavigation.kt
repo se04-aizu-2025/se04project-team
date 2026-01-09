@@ -23,19 +23,20 @@ fun AppNavigation() {
         modifier = Modifier.fillMaxSize()
     ) {
         composable<Screen.Home> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            androidx.compose.foundation.layout.Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+            ) {
                 Text("Home Screen (Coming Soon)")
+                androidx.compose.material3.Button(onClick = { navController.navigate(Screen.Sort) }) {
+                    Text("Go to Sort Screen")
+                }
             }
         }
 
         composable<Screen.Sort> {
-            // Placeholder: integrate SortScreen when PR-28/29 is ready,
-            // or if simple SortScreen exists (PR-24/25 implies minimal existence maybe?)
-            // I'll check if SortScreen exists in presentation/feature/sort or if I should put placeholder
-            // Checking the file list earlier, SortIntent.kt was there but SortScreen.kt was not confirmed
-            // in the "viewed_code_item" list for "presentation/feature/sort" it had "SortIntent.kt"
-            // Let's use a placeholder unless I confirmed SortScreen exists.
-            Text("Sort Screen Placeholder")
+            SortScreen()
         }
 
         composable<Screen.Settings> {

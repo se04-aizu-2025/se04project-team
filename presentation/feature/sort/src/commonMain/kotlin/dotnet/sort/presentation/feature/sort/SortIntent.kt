@@ -3,12 +3,14 @@ package dotnet.sort.presentation.feature.sort
 import dotnet.sort.model.SortType
 import dotnet.sort.generator.ArrayGeneratorType
 
+import dotnet.sort.presentation.common.viewmodel.Intent
+
 /**
  * ソート画面のIntent定義。
  *
  * MVIパターンにおけるユーザーアクションを表す密封クラス。
  */
-sealed class SortIntent {
+sealed class SortIntent : Intent {
 
     /**
      * アルゴリズムを選択する。
