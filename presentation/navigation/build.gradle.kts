@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -34,6 +35,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.composeViewModel)
             implementation(libs.koin.annotations)
+            implementation(libs.kotlinx.serialization.json)
             // Common module
             implementation(projects.presentation.common)
             // Design System
