@@ -34,7 +34,7 @@ abstract class BaseSortAlgorithm : SortAlgorithm {
     /**
      * アルゴリズムの種類。
      */
-    abstract val type: SortType
+    abstract override val type: SortType
 
     /**
      * ソートの実装（サブクラスでオーバーライド）。

@@ -5,6 +5,11 @@ package dotnet.sort.model
  */
 interface SortAlgorithm {
     /**
+     * アルゴリズムの種類。
+     */
+    val type: SortType
+
+    /**
      * 指定された整数リストをソートし、その結果と過程（スナップショット）を返します。
      *
      * @param input ソート対象の整数リスト（非破壊的であるべきですが、実装によりコピーを作成します）
