@@ -44,6 +44,7 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.turbine)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(projects.data)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
