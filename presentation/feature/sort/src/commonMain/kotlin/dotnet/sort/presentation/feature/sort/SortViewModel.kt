@@ -8,6 +8,7 @@ import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import dotnet.sort.presentation.common.viewmodel.UiState
 import dotnet.sort.usecase.ExecuteSortUseCase
 import dotnet.sort.usecase.GenerateArrayUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,8 +56,10 @@ class SortViewModel(
                 updateState { copy(isPlaying = false) }
             }
             SortIntent.ResumeSort -> {
-                updateState { copy(isPlaying = true) }
-                // TODO: Auto-play logic will be implemented in PR-37
+                if (!state.value.isPlaying) {
+                    updateState { copy(isPlaying = true) }
+                    startAutoPlay()
+                }
             }
             SortIntent.StepForward -> stepForward()
             SortIntent.StepBackward -> stepBackward()
@@ -101,6 +104,36 @@ class SortViewModel(
                 )
             }
             updateVisualizerState(0)
+            
+            // Auto-start playback
+            updateState { copy(isPlaying = true) }
+            startAutoPlay()
+        }
+    }
+
+    private fun startAutoPlay() {
+        execute {
+            while (state.value.isPlaying) {
+                // Determine base delay. 500ms base.
+                val baseDelay = 500L
+                val delayTime = (baseDelay / state.value.playbackSpeed).toLong()
+                
+                delay(delayTime)
+                
+                // Check if still playing after delay (could be paused during delay)
+                if (!state.value.isPlaying) break
+                
+                val currentState = state.value
+                val result = currentState.sortResult
+                
+                if (result != null && currentState.currentStepIndex < result.steps.size - 1) {
+                    stepForward()
+                } else {
+                    // Finished or no result
+                    updateState { copy(isPlaying = false) }
+                    break
+                }
+            }
         }
     }
 
