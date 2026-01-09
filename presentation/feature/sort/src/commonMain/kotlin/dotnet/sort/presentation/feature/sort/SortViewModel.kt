@@ -7,10 +7,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+import org.koin.core.annotation.Factory
+
 data class SortState(
     val isLoading: Boolean = false
 ) : UiState
 
+@Factory
 class SortViewModel : BaseViewModel(), UnidirectionalViewModel<SortState, SortIntent> {
 
     private val _state = MutableStateFlow(SortState())
