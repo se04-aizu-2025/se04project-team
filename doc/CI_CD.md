@@ -1,3 +1,10 @@
+---
+title: CI/CD設定
+version: 1.0.0
+last_updated: 2026-01-13
+maintainer: Team
+---
+
 # CI/CD and Code Quality Setup
 
 このプロジェクトには以下のCI/CDとコード品質チェックツールが設定されています。

@@ -1,3 +1,10 @@
+---
+title: アーキテクチャ
+version: 1.0.0
+last_updated: 2026-01-13
+maintainer: Team
+---
+
 # Architecture
 
 このドキュメントでは、本プロジェクトのアーキテクチャ設計について説明します。
