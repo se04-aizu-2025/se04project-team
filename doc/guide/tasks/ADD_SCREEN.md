@@ -137,16 +137,12 @@ fun LearnScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
+    SortScaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text("Learn") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, null)
-                    }
-                }
+            SortTopBar(
+                title = "Learn",
+                onBackClick = onBackClick
             )
         }
     ) { padding ->

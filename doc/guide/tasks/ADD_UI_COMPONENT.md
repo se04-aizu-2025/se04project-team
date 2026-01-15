@@ -22,7 +22,7 @@ feature/{name}/components/  # 画面固有コンポーネント
 
 | 種類 | 定義 | 例 |
 |------|------|-----|
-| **Atom** | 最小単位、汎用 | `SortBar`, `SortButton` |
+| **Atom** | 最小単位、汎用 | `SortText`, `SortButton`, `SortBar` |
 | **Molecule** | 複数 Atoms の組み合わせ | `ArrayBar`, `AlgorithmCard` |
 | **Organism** | 画面固有、機能単位 | `SortVisualizer` (feature内) |
 

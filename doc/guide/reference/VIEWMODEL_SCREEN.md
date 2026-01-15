@@ -142,9 +142,14 @@ fun SortScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
+    SortScaffold(
         modifier = modifier,
-        topBar = { TopAppBar(...) }
+        topBar = { 
+            SortTopBar(
+                title = "Visualizer",
+                onBackClick = onBackClick
+            ) 
+        }
     ) { padding ->
         SortContent(
             state = state,
@@ -271,6 +276,10 @@ fun SortScreen(viewModel: SortViewModel) {
 
 // ❌ 禁止 - State を直接変更
 viewModel.state.value.isLoading = true  // ❌ 不変
+
+// ❌ 禁止 - Raw Material3 Component の使用
+Text(text = "Hello") // ❌ SortText を使う
+Scaffold(...)       // ❌ SortScaffold を使う
 ```
 
 ---

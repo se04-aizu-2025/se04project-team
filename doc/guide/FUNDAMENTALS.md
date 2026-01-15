@@ -104,6 +104,7 @@ fun execute(type: SortType, input: List<Int>): SortResult
 | ViewModel メソッド直接呼び出し | MVI 違反 | `send(Intent)` を使う |
 | GlobalScope | ライフサイクル無視 | `viewModelScope` を使う |
 | 例外を握りつぶす | デバッグ困難 | 適切にハンドル |
+| Raw Material3 Component | 一貫性欠如 | Design System (`SortText` 等) を使う |
 
 ### 命名
 

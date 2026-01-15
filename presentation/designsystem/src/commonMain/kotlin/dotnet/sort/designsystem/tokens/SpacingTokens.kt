@@ -47,7 +47,7 @@ object SpacingTokens {
 
     // === Component Specific ===
     /** バー間のスペース */
-    val BarGap: Dp = 2.dp
+    val BarGap: Dp = 1.dp
 
     /** パネルのパディング */
     val PanelPadding: Dp = 16.dp
