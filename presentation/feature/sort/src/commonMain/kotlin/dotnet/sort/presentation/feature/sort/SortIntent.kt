@@ -51,6 +51,11 @@ sealed class SortIntent : Intent {
     data object ResetSort : SortIntent()
 
     /**
+     * 配列をシャッフル（再生成）する。
+     */
+    data object ShuffleArray : SortIntent()
+
+    /**
      * 1ステップ進める。
      */
     data object StepForward : SortIntent()

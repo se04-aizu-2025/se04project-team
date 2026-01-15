@@ -154,6 +154,7 @@ fun SortScreen(
                                 }
                             },
                             onResetClick = { viewModel.send(SortIntent.ResetSort) },
+                            onShuffleClick = { viewModel.send(SortIntent.ShuffleArray) },
                             onStepForwardClick = { viewModel.send(SortIntent.StepForward) },
                             onStepBackwardClick = { viewModel.send(SortIntent.StepBackward) },
                             arraySize = state.arraySize,
@@ -201,6 +202,7 @@ fun SortScreen(
                                 }
                             },
                             onResetClick = { viewModel.send(SortIntent.ResetSort) },
+                            onShuffleClick = { viewModel.send(SortIntent.ShuffleArray) },
                             onStepForwardClick = { viewModel.send(SortIntent.StepForward) },
                             onStepBackwardClick = { viewModel.send(SortIntent.StepBackward) },
                             arraySize = state.arraySize,

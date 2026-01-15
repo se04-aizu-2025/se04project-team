@@ -40,7 +40,9 @@ class SortViewModel(
         when (intent) {
             is SortIntent.SelectAlgorithm -> {
                 updateState { copy(algorithm = intent.type) }
-                resetSort()
+                // Generate array if empty, then execute sort with new algorithm (no autoplay)
+                if (state.value.initialNumbers.isEmpty()) generateArray()
+                executeSort()
             }
             is SortIntent.SetArraySize -> {
                 updateState { copy(arraySize = intent.size) }
@@ -52,6 +54,10 @@ class SortViewModel(
             }
             SortIntent.StartSort -> startSort()
             SortIntent.ResetSort -> resetSort()
+            SortIntent.ShuffleArray -> {
+                generateArray()
+                executeSort()
+            }
             SortIntent.PauseSort -> {
                 updateState { copy(isPlaying = false) }
             }
@@ -89,10 +95,13 @@ class SortViewModel(
         }
     }
 
-    private fun startSort() {
+    /**
+     * ソートを実行し、結果を取得する（自動再生なし）
+     */
+    private fun executeSort() {
         val currentState = state.value
         if (currentState.initialNumbers.isEmpty()) generateArray()
-        
+
         execute {
             updateState { copy(isLoading = true) }
             // Use initialNumbers to ensure clean sort
@@ -101,14 +110,22 @@ class SortViewModel(
                 copy(
                     isLoading = false,
                     sortResult = result,
-                    currentStepIndex = 0, // Start from beginning of visualization
-                    // Maybe keep initial state or show first step?
-                    // Usually step 0 is the initial state or close to it.
+                    currentStepIndex = 0,
                 )
             }
             updateVisualizerState(0)
-            
-            // Auto-start playback
+        }
+    }
+
+    /**
+     * ソートを開始し、自動再生を開始する
+     */
+    private fun startSort() {
+        executeSort()
+        execute {
+            // Wait for executeSort to complete, then start playback
+            // Small delay to ensure state is updated
+            delay(50)
             updateState { copy(isPlaying = true) }
             startAutoPlay()
         }
