@@ -1,3 +1,11 @@
+---
+title: 要求定義
+version: 1.0.0
+last_updated: 2026-01-13
+maintainer: Team
+audience: all
+---
+
 # Request Definition
 
 ## Engineering Topic

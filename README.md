@@ -45,7 +45,7 @@ Kotlin Multiplatform を使用し、**Desktop (JVM)** と **Web (Wasm/JS)** の�
 ### CUI を実行
 
 ```bash
-./gradlew runCli --args="--algorithm bubble --input 5,3,8,1,2"
+./gradlew runCli --args="--algorithm bubble --size 20"
 ```
 
 ---
@@ -106,7 +106,9 @@ dotnet/
 | [開発計画](./doc/DEVELOPMENT_PLAN.md) | 開発フェーズ・PR計画 |
 | [アーキテクチャ](./doc/ARCHITECTURE.md) | システム設計 |
 | [開発環境セットアップ](./doc/GETTING_STARTED.md) | ビルド・実行方法 |
-| [ブランチ戦略](./doc/BRANCH_STRATEGY.md) | Git運用ルール |
+| [ベストプラクティスガイド](./doc/guide/README.md) | **タスク別ガイド (14件)** |
+| [ユーザーガイド](./doc/USER_GUIDE.md) | アプリの使い方 |
+| [コーディングガイドライン](./doc/CODING_GUIDELINES.md) | Kotlin/Compose規約 |
 
 ---
 
@@ -122,7 +124,7 @@ dotnet/
 ### CUI
 
 ```bash
-$ ./gradlew runCli --args="--algorithm quick --random 10"
+$ ./gradlew runCli --args="--algorithm quick --size 10"
 
 === DNSort (CLI) ===
 Algorithm: Quick Sort
@@ -139,12 +141,14 @@ Time: 0.3ms
 
 ## 🤝 Contributing
 
+詳細は [CONTRIBUTING.md](./CONTRIBUTING.md) を参照してください。
+
 1. `develop` ブランチから `feature/{番号}` ブランチを作成
 2. 変更をコミット
 3. プルリクエストを作成
 4. CI がパスしたらレビュー依頼
 
-詳細は [PULL_REQUEST.md](./doc/PULL_REQUEST.md) を参照してください。
+PRの詳細は [PULL_REQUEST.md](./doc/PULL_REQUEST.md) を参照してください。
 
 ---
 

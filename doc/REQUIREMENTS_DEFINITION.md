@@ -1,3 +1,10 @@
+---
+title: 要件定義
+version: 1.0.0
+last_updated: 2026-01-13
+maintainer: Team
+---
+
 # Requirements Definition / 要件定義
 
 このドキュメントでは、要求定義に基づいてソートアルゴリズム教育ツールの要件定義を詳細に記述します。
@@ -109,12 +116,12 @@ graph TB
 | ID | アルゴリズム | 実装状況 | 時間計算量 | 空間計算量 |
 |----|--------------|----------|------------|------------|
 | ALG-001 | バブルソート (Bubble Sort) | ✅ 実装済 | O(n²) | O(1) |
-| ALG-002 | 選択ソート (Selection Sort) | ⬜ 未実装 | O(n²) | O(1) |
-| ALG-003 | 挿入ソート (Insertion Sort) | ⬜ 未実装 | O(n²) | O(1) |
-| ALG-004 | シェルソート (Shell Sort) | ⬜ 未実装 | O(n log²n) | O(1) |
-| ALG-005 | マージソート (Merge Sort) | ⬜ 未実装 | O(n log n) | O(n) |
-| ALG-006 | クイックソート (Quick Sort) | ⬜ 未実装 | O(n log n) | O(log n) |
-| ALG-007 | ヒープソート (Heap Sort) | ⬜ 未実装 | O(n log n) | O(1) |
+| ALG-002 | 選択ソート (Selection Sort) | ✅ 実装済 | O(n²) | O(1) |
+| ALG-003 | 挿入ソート (Insertion Sort) | ✅ 実装済 | O(n²) | O(1) |
+| ALG-004 | シェルソート (Shell Sort) | ✅ 実装済 | O(n log²n) | O(1) |
+| ALG-005 | マージソート (Merge Sort) | ✅ 実装済 | O(n log n) | O(n) |
+| ALG-006 | クイックソート (Quick Sort) | ✅ 実装済 | O(n log n) | O(log n) |
+| ALG-007 | ヒープソート (Heap Sort) | ✅ 実装済 | O(n log n) | O(1) |
 
 ### 3.2 テストエンジン・データジェネレーター
 
@@ -158,7 +165,7 @@ graph TB
 
 ```bash
 # 基本的な使用
-./gradlew runCli --args="--algorithm bubble --input 5,3,8,1,2"
+./gradlew runCli --args="--algorithm bubble --size 20"
 
 # 対話式モード
 ./gradlew runCli
@@ -169,8 +176,8 @@ graph TB
 | ID | 機能 | 説明 |
 |----|------|------|
 | CUI-001 | アルゴリズム選択 | コマンドライン引数 `--algorithm` または対話式メニュー |
-| CUI-002 | 配列入力 | 引数 `--input` でカンマ区切り指定 or 対話式入力 |
-| CUI-003 | ランダム配列生成 | `--random <size>` でランダム配列を生成 |
+| CUI-002 | 配列入力 | 引数 `--size` でランダム生成する配列サイズを指定 |
+| CUI-003 | ランダム配列生成 | 指定されたサイズでランダム配列を生成 |
 | CUI-004 | ソート実行・結果表示 | ソート結果を標準出力に表示 |
 | CUI-005 | 統計情報表示 | 比較回数、スワップ回数、実行時間を表示 |
 | CUI-006 | ステップ表示 | `--verbose` で各ステップの詳細を表示 |
@@ -179,7 +186,7 @@ graph TB
 #### 3.4.3 出力例
 
 ```
-$ ./gradlew runCli --args="--algorithm bubble --input 5,3,8,1,2"
+$ ./gradlew runCli --args="--algorithm bubble --size 5"
 
 === Sorting Visualizer (CLI) ===
 Algorithm: Bubble Sort
@@ -769,51 +776,49 @@ class ArrayGeneratorImpl : ArrayGenerator {
 
 | カテゴリ | 内容 |
 |----------|------|
-| **アーキテクチャ** | Presentation / Domain / Data の3層構造 |
+| **アーキテクチャ** | Presentation / Domain / Data の3層構造 + Design System |
 | **ドメインモデル** | `SortAlgorithm`, `SortResult`, `SortSnapshot`, `ComplexityMetrics` |
-| **アルゴリズム** | バブルソート実装完了（スナップショット付き） |
-| **ユースケース** | `ExecuteSortUseCase` |
-| **ドキュメント** | アーキテクチャ、CI/CD、開発ガイド等 |
+| **アルゴリズム** | 7種類すべて実装済み（Bubble, Selection, Insertion, Shell, Merge, Quick, Heap） |
+| **ユースケース** | `ExecuteSortUseCase`, `GenerateArrayUseCase` |
+| **データジェネレーター** | `ArrayGeneratorImpl` (Random, Ascending, Descending, PartiallySort, Duplicates) |
+| **Design System** | ColorTokens, SpacingTokens, AnimationTokens, Theme, Atomic Components |
+| **GUI** | HomeScreen, SortScreen, SettingsScreen, Learn/Compare (プレースホルダー) |
+| **可視化** | SortVisualizer, ArrayBar, 再生/一時停止/ステップ実行 |
+| **CUI** | CLI引数パーサー, 対話モード, 詳細出力 |
+| **テスト** | アルゴリズム単体テスト, ViewModel単体テスト |
+| **ドキュメント** | アーキテクチャ、CI/CD、開発ガイド、テストガイドライン等 |
 
 ### 7.2 進行中・未着手
 
 | カテゴリ | 内容 | 優先度 |
 |----------|------|--------|
-| **Design System** | designsystem モジュール作成 | 高 |
-| **アルゴリズム** | 追加アルゴリズム実装 | 高 |
-| **Factory/Base** | `SortAlgorithmFactory`, `BaseSortAlgorithm` | 高 |
-| **GUI** | ソートUIの実装 | 高 |
-| **データジェネレーター** | `ArrayGenerator` 実装 | 中 |
-| **可視化** | アニメーション・ビジュアライザー | 中 |
-| **テストエンジン** | 自動テスト機能 | 中 |
+| **Learn機能** | アルゴリズム学習コンテンツ | 中 |
+| **Compare機能** | アルゴリズム比較機能 | 中 |
+| **国際化** | 多言語対応 (日英) | 低 |
+| **追加アルゴリズム** | Counting, Radix, Bucket Sort等 | 低 |
+| **E2Eテスト** | 統合テスト・スクリーンショットテスト | 低 |
 
 ---
 
 ## 8. 今後の開発計画
 
-```mermaid
-gantt
-    title ソートアルゴリズム教育ツール 開発ロードマップ
-    dateFormat  YYYY-MM-DD
-    section Phase 1: 基盤整備
-    Design System モジュール作成     :ds1, 2026-01-09, 3d
-    BaseSortAlgorithm 実装           :a1, 2026-01-09, 2d
-    SortAlgorithmFactory 実装        :a2, after a1, 1d
-    追加アルゴリズム実装             :a3, after a2, 5d
-    section Phase 2: Data層
-    ArrayGenerator 実装              :d1, after a2, 3d
-    テストエンジン                   :d2, after d1, 3d
-    section Phase 3: UI実装
-    Design Tokens 定義               :u1, after ds1, 2d
-    Atomic Components 実装           :u2, after u1, 5d
-    SortScreen 実装                  :u3, after u2, 5d
-    section Phase 4: 可視化
-    SortVisualizer 実装              :v1, after u3, 5d
-    アニメーション制御               :v2, after v1, 3d
-    section Phase 5: 品質
-    ユニットテスト                   :t1, after a3, 5d
-    リファクタリング                 :t2, after v2, 3d
-```
+> [!NOTE]
+> 詳細な開発計画は `doc/DEVELOPMENT_PLAN.md` を参照してください。PR-01~50 (v1.0基盤) + PR-51~100 (v2.0拡張) の計画があります。
+
+### 完了済み Phase (PR-01~50)
+
+- **Phase 1-3**: 基盤整備、アルゴリズム実装、Data層実装 ✅
+- **Phase 4-7**: Design System、Presentation層、Sort機能、アプリ構造 ✅
+- **Phase 8-10**: 可視化機能、テスト・品質保証、CUI実装 ✅
+- **Phase 11**: ドキュメント整備・リファクタリング ✅
+
+### 今後の Phase (PR-51~100)
+
+- **Phase 12**: Learn機能 - アルゴリズム百科事典
+- **Phase 13**: Compare機能 - 並列比較
+- **Phase 14**: ゲーミフィケーション (クイズ)
+- **Phase 15**: 追加アルゴリズム (10種類)
+- **Phase 16-20**: 可視化強化、i18n、永続化、品質向上
 
 ---
 
@@ -823,3 +828,5 @@ gantt
 |------|------------|----------|
 | 2026-01-08 | 1.0.0 | 初版作成 |
 | 2026-01-08 | 2.0.0 | 実装詳細設計、Design System、デザインパターン追加 |
+| 2026-01-13 | 2.1.0 | 実装状況を反映（アルゴリズム7種完了、進行状況更新） |
+

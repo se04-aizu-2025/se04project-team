@@ -1,3 +1,10 @@
+---
+title: 開発計画
+version: 1.0.0
+last_updated: 2026-01-13
+maintainer: Team
+---
+
 # Development Plan / 開発計画
 
 このドキュメントでは、ソートアルゴリズム教育ツールの開発計画を記述します。各PRは小さな単位に分割し、レビューしやすいコード量を維持します。
@@ -10,11 +17,23 @@
 - [4. Phase 2: アルゴリズム実装](#4-phase-2-アルゴリズム実装)
 - [5. Phase 3: Data層実装](#5-phase-3-data層実装)
 - [6. Phase 4: Design System構築](#6-phase-4-design-system構築)
-- [7. Phase 5: UI実装](#7-phase-5-ui実装)
-- [8. Phase 6: 可視化機能](#8-phase-6-可視化機能)
-- [9. Phase 7: テスト・品質保証](#9-phase-7-テスト品質保証)
-- [10. Phase 8: CUI実装](#10-phase-8-cui実装)
-- [11. Phase 9: リリース準備](#11-phase-9-リリース準備)
+- [7. Phase 5: Presentation層アーキテクチャ](#7-phase-5-presentation層アーキテクチャ)
+- [8. Phase 6: Sort機能実装](#8-phase-6-sort機能実装)
+- [9. Phase 7: アプリケーション構造構築](#9-phase-7-アプリケーション構造構築)
+- [10. Phase 8: 可視化機能強化](#10-phase-8-可視化機能強化)
+- [11. Phase 9: テスト・品質保証](#11-phase-9-テスト品質保証)
+- [12. Phase 10: CUI実装](#12-phase-10-cui実装)
+- [13. Phase 11: リリース準備](#13-phase-11-リリース準備)
+- **PR-51~100: v2.0 拡張機能**
+- [14. Phase 12: Learn機能](#14-phase-12-learn機能---アルゴリズム百科事典)
+- [15. Phase 13: Compare機能](#15-phase-13-compare機能---アルゴリズム比較)
+- [16. Phase 14: ゲーミフィケーション](#16-phase-14-ゲーミフィケーション)
+- [17. Phase 15: 追加アルゴリズム](#17-phase-15-追加アルゴリズム)
+- [18. Phase 16: 可視化強化](#18-phase-16-可視化強化)
+- [19. Phase 17: 国際化 (i18n)](#19-phase-17-国際化-i18n)
+- [20. Phase 18: データ永続化](#20-phase-18-データ永続化)
+- [21. Phase 19: 品質・最適化](#21-phase-19-品質最適化)
+- [22. Phase 20: v2.0 リリース](#22-phase-20-v20-リリース)
 
 ---
 
@@ -40,8 +59,7 @@ feature/{PR番号}
 
 **例**:
 - `feature/01`
-- `feature/06`
-- `feature/31`
+- `feature/25`
 
 ### 1.3 依存関係の表記
 
@@ -54,7 +72,7 @@ feature/{PR番号}
 
 ## 2. PR一覧（時系列順）
 
-### Phase 1: 基盤整備 (5 PRs)
+### Phase 1: 基盤整備 (5 PRs) [完了✅]
 
 | PR # | タスク | ブランチ | サイズ | 依存 |
 |------|--------|----------|--------|------|
@@ -64,7 +82,7 @@ feature/{PR番号}
 | PR-04 | SortAlgorithmFactory 作成 | `feature/04` | 🟢 S | PR-03 |
 | PR-05 | ExecuteSortUseCase リファクタリング | `feature/05` | 🟢 XS | PR-04 |
 
-### Phase 2: アルゴリズム実装 (6 PRs)
+### Phase 2: アルゴリズム実装 (6 PRs) [完了✅]
 
 | PR # | タスク | ブランチ | サイズ | 依存 |
 |------|--------|----------|--------|------|
@@ -75,7 +93,7 @@ feature/{PR番号}
 | PR-10 | QuickSort 実装 | `feature/10` | 🟡 M | PR-05 |
 | PR-11 | HeapSort 実装 | `feature/11` | 🟡 M | PR-05 |
 
-### Phase 3: Data層実装 (4 PRs)
+### Phase 3: Data層実装 (4 PRs) [完了✅]
 
 | PR # | タスク | ブランチ | サイズ | 依存 |
 |------|--------|----------|--------|------|
@@ -84,7 +102,7 @@ feature/{PR番号}
 | PR-14 | ArrayGeneratorImpl 実装 | `feature/14` | 🟢 S | PR-13 |
 | PR-15 | GenerateArrayUseCase | `feature/15` | 🟢 S | PR-14 |
 
-### Phase 4: Design System構築 (8 PRs)
+### Phase 4: Design System構築 (8 PRs) [完了✅]
 
 | PR # | タスク | ブランチ | サイズ | 依存 |
 |------|--------|----------|--------|------|
@@ -97,57 +115,70 @@ feature/{PR番号}
 | PR-22 | SortButton/SortSlider Atoms | `feature/22` | 🟢 S | PR-20 |
 | PR-23 | ArrayBar Molecule | `feature/23` | 🟢 S | PR-21 |
 
-### Phase 5: UI実装 (8 PRs)
+### Phase 5: Presentation層アーキテクチャ (3 PRs)
 
 | PR # | タスク | ブランチ | サイズ | 依存 |
 |------|--------|----------|--------|------|
-| PR-24 | SortIntent 定義 | `feature/24` | 🟢 XS | - |
-| PR-25 | SortState 定義 | `feature/25` | 🟢 S | PR-24 |
-| PR-26 | SortViewModel 基本構造 | `feature/26` | 🟡 M | PR-25, PR-15 |
-| PR-27 | SortViewModel Intent処理 | `feature/27` | 🟡 M | PR-26 |
-| PR-28 | AlgorithmSelector コンポーネント | `feature/28` | 🟢 S | PR-22 |
-| PR-29 | ControlPanel コンポーネント | `feature/29` | 🟢 S | PR-22 |
-| PR-30 | ArrayInputPanel (手動配列入力) | `feature/30` | 🟢 S | PR-22 |
-| PR-31 | SortScreen 統合 | `feature/31` | 🟡 M | PR-27, PR-28, PR-29, PR-30, PR-23 |
+| PR-24 | SortIntent 定義 | `feature/24` | 🟢 XS | PR-23 |
+| Refactor | Presentation層モジュール分割 (Refactor) | `refactor` | 🟡 M | PR-24 |
+| **PR-25** | **Commonモジュール実装** | `feature/25` | 🟢 S | Refactor |
+| PR-26 | Navigationモジュール基盤 | `feature/26` | 🟢 S | PR-25 |
+| PR-27 | アプリエントリポイント統合 | `feature/27` | 🟢 S | PR-26 |
 
-### Phase 6: 可視化機能 (6 PRs)
+**(備考: モジュール分割リファクタリングは PR-25 開始前に完了済み)**
 
-| PR # | タスク | ブランチ | サイズ | 依存 |
-|------|--------|----------|--------|------|
-| PR-32 | 自動再生機能 | `feature/32` | 🟢 S | PR-31 |
-| PR-33 | 一時停止/再開機能 | `feature/33` | 🟢 XS | PR-32 |
-| PR-34 | 速度調整機能 | `feature/34` | 🟢 S | PR-32 |
-| PR-35 | ステップ実行機能 | `feature/35` | 🟢 S | PR-33 |
-| PR-36 | MetricsDisplay コンポーネント | `feature/36` | 🟢 S | PR-31 |
-| PR-37 | DescriptionDisplay (操作説明表示) | `feature/37` | 🟢 S | PR-31 |
-
-### Phase 7: テスト・品質保証 (6 PRs)
+### Phase 6: Sort機能実装 (6 PRs)
 
 | PR # | タスク | ブランチ | サイズ | 依存 |
 |------|--------|----------|--------|------|
-| PR-38 | O(n²) アルゴリズムテスト | `feature/38` | 🟢 S | PR-06, PR-07, PR-08 |
-| PR-39 | O(n log n) アルゴリズムテスト | `feature/39` | 🟢 S | PR-09, PR-10, PR-11 |
-| PR-40 | ArrayGenerator テスト | `feature/40` | 🟢 S | PR-14 |
-| PR-41 | ViewModel テスト | `feature/41` | 🟡 M | PR-27 |
-| PR-42 | UseCase テスト | `feature/42` | 🟢 S | PR-15 |
-| PR-43 | E2E 動作確認 (GUI) | `feature/43` | 🟢 S | PR-37 |
+| PR-28 | Sort機能：モジュールセットアップ | `feature/28` | 🟢 S | PR-27 |
+| PR-29 | Sort機能：ドメイン統合 | `feature/29` | 🟢 S | PR-28 |
+| PR-30 | Sort機能：ロジック (MVI) | `feature/30` | 🟡 M | PR-29 |
+| PR-31 | Sort機能：UIコンポーネント | `feature/31` | 🟡 M | PR-30 |
+| PR-32 | Sort機能：ビジュアライザ統合 | `feature/32` | 🟡 M | PR-31 |
+| PR-33 | Sort機能：画面統合 | `feature/33` | 🟢 S | PR-32 |
 
-### Phase 8: CUI実装 (4 PRs)
-
-| PR # | タスク | ブランチ | サイズ | 依存 |
-|------|--------|----------|--------|------|
-| PR-44 | CLI エントリポイント作成 | `feature/44` | 🟢 S | PR-05 |
-| PR-45 | CLI 引数パーサー | `feature/45` | 🟢 S | PR-44 |
-| PR-46 | CLI 対話式メニュー | `feature/46` | 🟡 M | PR-45, PR-15 |
-| PR-47 | CLI ステップ表示 (--verbose) | `feature/47` | 🟢 S | PR-46 |
-
-### Phase 9: リリース準備 (3 PRs)
+### Phase 7: アプリケーション構造構築 (3 PRs)
 
 | PR # | タスク | ブランチ | サイズ | 依存 |
 |------|--------|----------|--------|------|
-| PR-48 | README 更新 | `feature/48` | 🟢 S | PR-43, PR-47 |
-| PR-49 | USER_GUIDE 作成 | `feature/49` | 🟡 M | PR-43, PR-47 |
-| PR-50 | develop → main リリース | `release/v1.0.0` | 🟢 XS | PR-48, PR-49 |
+| PR-34 | Home機能実装 | `feature/34` | 🟢 S | PR-27 |
+| PR-35 | Settings機能実装 | `feature/35` | 🟢 S | PR-27 |
+| PR-36 | Learn/Compareプレースホルダー | `feature/36` | 🟢 S | PR-27 |
+
+### Phase 8: 可視化機能強化 (4 PRs)
+
+| PR # | タスク | ブランチ | サイズ | 依存 |
+|------|--------|----------|--------|------|
+| PR-37 | 自動再生・一時停止ロジック | `feature/37` | 🟡 M | PR-33 |
+| PR-38 | 再生コントロールUI | `feature/38` | 🟢 S | PR-37 |
+| PR-39 | メトリクス・説明表示 | `feature/39` | 🟢 S | PR-33 |
+| PR-40 | ステップ実行・速度調整 | `feature/40` | 🟢 S | PR-37 |
+
+### Phase 9: テスト・品質保証 (5 PRs)
+
+| PR # | タスク | ブランチ | サイズ | 依存 |
+|------|--------|----------|--------|------|
+| PR-41 | アルゴリズム単体テスト | `feature/41` | 🟢 S | Phase 2 |
+| PR-42 | Generator/UseCaseテスト | `feature/42` | 🟢 S | Phase 3 |
+| PR-43 | ViewModel単体テスト | `feature/43` | 🟡 M | Phase 6 |
+| PR-44 | UIコンポーネントテスト | `feature/44` | 🟢 S | Phase 6 |
+| PR-45 | E2E/GUI動作確認 | `feature/45` | 🟢 S | Phase 8 |
+
+### Phase 10: CUI実装 (4 PRs)
+
+| PR # | タスク | ブランチ | サイズ | 依存 |
+|------|--------|----------|--------|------|
+| PR-46 | CLIエントリポイント | `feature/46` | 🟢 S | Phase 3 |
+| PR-47 | CLI引数パーサー | `feature/47` | 🟢 S | PR-46 |
+| PR-48 | CLI対話モード | `feature/48` | 🟡 M | PR-47 |
+| PR-49 | CLI詳細出力機能 | `feature/49` | 🟢 S | PR-48 |
+
+### Phase 11: ドキュメント整備・リファクタリング (1 PR)
+
+| PR # | タスク | ブランチ | サイズ | 依存 |
+|------|--------|----------|--------|------|
+| PR-50 | ドキュメント整備・品質改善 | `feature/50` | 🟢 S | PR-49 |
 
 ---
 
@@ -160,10 +191,6 @@ feature/{PR番号}
 | **ブランチ** | `feature/01` |
 | **サイズ** | 🟢 XS (~20行) |
 | **依存** | なし |
-| **並行可能** | PR-16, PR-17, PR-18, PR-19, PR-24 |
-
-**変更ファイル**:
-- `domain/src/commonMain/kotlin/dotnet/sort/model/SortType.kt`
 
 **変更内容**:
 ```kotlin
@@ -177,10 +204,6 @@ enum class SortType(val displayName: String) {
     HEAP("Heap Sort"),
 }
 ```
-
-**完了条件**:
-- [ ] 全7種類の SortType が定義されている
-- [ ] ビルドが成功する
 
 ---
 
@@ -196,28 +219,9 @@ enum class SortType(val displayName: String) {
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/BaseSortAlgorithm.kt`
 
 **変更内容**:
-```kotlin
-abstract class BaseSortAlgorithm : SortAlgorithm {
-    protected val snapshots = mutableListOf<SortSnapshot>()
-    protected var comparisonCount = 0L
-    protected var swapCount = 0L
-
-    abstract val type: SortType
-    protected abstract fun doSort(array: MutableList<Int>)
-    protected abstract val timeComplexity: String
-    protected abstract val spaceComplexity: String
-
-    override fun sort(input: List<Int>): SortResult { ... }
-    protected fun compare(a: Int, b: Int): Int { ... }
-    protected fun swap(array: MutableList<Int>, i: Int, j: Int) { ... }
-    protected fun addSnapshot(...) { ... }
-}
-```
-
-**完了条件**:
-- [ ] `BaseSortAlgorithm` が定義されている
-- [ ] ヘルパーメソッド `compare`, `swap`, `addSnapshot` が実装されている
-- [ ] ビルドが成功する
+- `SortAlgorithm` インターフェース実装
+- `snapshots`, `comparisonCount`, `swapCount` の管理
+- `compare`, `swap` ヘルパーメソッド実装
 
 ---
 
@@ -233,32 +237,8 @@ abstract class BaseSortAlgorithm : SortAlgorithm {
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/BubbleSortAlgorithm.kt`
 
 **変更内容**:
-- `SortAlgorithm` 直接実装 → `BaseSortAlgorithm` 継承に変更
-- `sort()` メソッド → `doSort()` メソッドに変更
-- 重複コード削除
-
-**Before**:
-```kotlin
-class BubbleSortAlgorithm : SortAlgorithm {
-    override fun sort(input: List<Int>): SortResult { ... }
-}
-```
-
-**After**:
-```kotlin
-class BubbleSortAlgorithm : BaseSortAlgorithm() {
-    override val type = SortType.BUBBLE
-    override val timeComplexity = "O(n²)"
-    override val spaceComplexity = "O(1)"
-
-    override fun doSort(array: MutableList<Int>) { ... }
-}
-```
-
-**完了条件**:
-- [ ] `BaseSortAlgorithm` を継承している
-- [ ] 既存の動作が維持されている
-- [ ] テストがパスする
+- `BaseSortAlgorithm` を継承するように変更
+- 重複コードを削除
 
 ---
 
@@ -274,20 +254,7 @@ class BubbleSortAlgorithm : BaseSortAlgorithm() {
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/SortAlgorithmFactory.kt`
 
 **変更内容**:
-```kotlin
-object SortAlgorithmFactory {
-    fun create(type: SortType): SortAlgorithm {
-        return when (type) {
-            SortType.BUBBLE -> BubbleSortAlgorithm()
-            else -> throw NotImplementedError("Algorithm ${type.displayName} is not implemented yet")
-        }
-    }
-}
-```
-
-**完了条件**:
-- [ ] Factory パターンで `SortAlgorithm` を生成できる
-- [ ] 未実装アルゴリズムには適切なエラーを返す
+- `SortType` に応じて適切な `SortAlgorithm` インスタンスを返す Factory
 
 ---
 
@@ -303,18 +270,7 @@ object SortAlgorithmFactory {
 - `domain/src/commonMain/kotlin/dotnet/sort/usecase/ExecuteSortUseCase.kt`
 
 **変更内容**:
-```kotlin
-class ExecuteSortUseCase {
-    fun execute(type: SortType, input: List<Int>): SortResult {
-        val algorithm = SortAlgorithmFactory.create(type)
-        return algorithm.sort(input)
-    }
-}
-```
-
-**完了条件**:
-- [ ] `SortAlgorithmFactory` を使用している
-- [ ] 既存の動作が維持されている
+- `SortAlgorithmFactory` を使用するように変更
 
 ---
 
@@ -327,18 +283,9 @@ class ExecuteSortUseCase {
 | **ブランチ** | `feature/06` |
 | **サイズ** | 🟢 S (~80行) |
 | **依存** | PR-05 |
-| **並行可能** | PR-07, PR-09, PR-10, PR-11 |
 
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/SelectionSortAlgorithm.kt`
-
-**変更ファイル**:
-- `domain/src/commonMain/kotlin/dotnet/sort/algorithm/SortAlgorithmFactory.kt` (case追加)
-
-**スナップショット ポイント**:
-1. 最小値探索開始
-2. 現在の最小値候補（ハイライト）
-3. 最小値確定・交換
 
 ---
 
@@ -349,7 +296,6 @@ class ExecuteSortUseCase {
 | **ブランチ** | `feature/07` |
 | **サイズ** | 🟢 S (~80行) |
 | **依存** | PR-05 |
-| **並行可能** | PR-06, PR-09, PR-10, PR-11 |
 
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/InsertionSortAlgorithm.kt`
@@ -362,7 +308,7 @@ class ExecuteSortUseCase {
 |------|------|
 | **ブランチ** | `feature/08` |
 | **サイズ** | 🟡 M (~120行) |
-| **依存** | PR-07 (InsertionSort の理解が前提) |
+| **依存** | PR-07 |
 
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/ShellSortAlgorithm.kt`
@@ -376,14 +322,9 @@ class ExecuteSortUseCase {
 | **ブランチ** | `feature/09` |
 | **サイズ** | 🟡 M (~150行) |
 | **依存** | PR-05 |
-| **並行可能** | PR-06, PR-07, PR-10, PR-11 |
 
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/MergeSortAlgorithm.kt`
-
-**注意点**:
-- 再帰構造のスナップショット取得
-- 補助配列の使用
 
 ---
 
@@ -394,15 +335,9 @@ class ExecuteSortUseCase {
 | **ブランチ** | `feature/10` |
 | **サイズ** | 🟡 M (~150行) |
 | **依存** | PR-05 |
-| **並行可能** | PR-06, PR-07, PR-09, PR-11 |
 
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/QuickSortAlgorithm.kt`
-
-**スナップショット ポイント**:
-1. ピボット選択（Pivot色でハイライト）
-2. パーティション処理中
-3. 左右分割完了
 
 ---
 
@@ -413,7 +348,6 @@ class ExecuteSortUseCase {
 | **ブランチ** | `feature/11` |
 | **サイズ** | 🟡 M (~150行) |
 | **依存** | PR-05 |
-| **並行可能** | PR-06, PR-07, PR-09, PR-10 |
 
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/algorithm/HeapSortAlgorithm.kt`
@@ -433,16 +367,6 @@ class ExecuteSortUseCase {
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/generator/ArrayGeneratorType.kt`
 
-```kotlin
-enum class ArrayGeneratorType {
-    RANDOM,
-    ASCENDING,
-    DESCENDING,
-    PARTIALLY_SORTED,
-    DUPLICATES
-}
-```
-
 ---
 
 ### PR-13: ArrayGenerator interface
@@ -455,13 +379,6 @@ enum class ArrayGeneratorType {
 
 **新規ファイル**:
 - `domain/src/commonMain/kotlin/dotnet/sort/generator/ArrayGenerator.kt`
-
-```kotlin
-interface ArrayGenerator {
-    fun generate(size: Int, type: ArrayGeneratorType): List<Int>
-    fun generate(size: Int, type: ArrayGeneratorType, range: IntRange): List<Int>
-}
-```
 
 ---
 
@@ -500,12 +417,11 @@ interface ArrayGenerator {
 | **ブランチ** | `feature/16` |
 | **サイズ** | 🟢 XS (~30行) |
 | **依存** | なし |
-| **並行可能** | PR-01 |
 
 **新規/変更ファイル**:
-- `presentation/designsystem/build.gradle.kts` (新規)
-- `settings.gradle.kts` (モジュール追加)
-- `presentation/build.gradle.kts` (dependency追加)
+- `presentation/designsystem/build.gradle.kts`
+- `settings.gradle.kts`
+- `presentation/build.gradle.kts`
 
 ---
 
@@ -516,22 +432,9 @@ interface ArrayGenerator {
 | **ブランチ** | `feature/17` |
 | **サイズ** | 🟢 XS (~40行) |
 | **依存** | PR-16 |
-| **並行可能** | PR-18, PR-19 |
 
 **新規ファイル**:
 - `presentation/designsystem/src/commonMain/kotlin/dotnet/sort/designsystem/tokens/ColorTokens.kt`
-
-```kotlin
-object ColorTokens {
-    val Primary = Color(0xFF6200EE)
-    val BarDefault = Color(0xFF42A5F5)
-    val BarComparing = Color(0xFFFFCA28)
-    val BarSwapping = Color(0xFFEF5350)
-    val BarSorted = Color(0xFF66BB6A)
-    val BarPivot = Color(0xFFAB47BC)
-    // ...
-}
-```
 
 ---
 
@@ -542,7 +445,6 @@ object ColorTokens {
 | **ブランチ** | `feature/18` |
 | **サイズ** | 🟢 XS (~25行) |
 | **依存** | PR-16 |
-| **並行可能** | PR-17, PR-19 |
 
 **新規ファイル**:
 - `presentation/designsystem/src/commonMain/kotlin/dotnet/sort/designsystem/tokens/SpacingTokens.kt`
@@ -556,7 +458,6 @@ object ColorTokens {
 | **ブランチ** | `feature/19` |
 | **サイズ** | 🟢 XS (~20行) |
 | **依存** | PR-16 |
-| **並行可能** | PR-17, PR-18 |
 
 **新規ファイル**:
 - `presentation/designsystem/src/commonMain/kotlin/dotnet/sort/designsystem/tokens/AnimationTokens.kt`
@@ -588,7 +489,6 @@ object ColorTokens {
 
 **新規ファイル**:
 - `presentation/designsystem/src/commonMain/kotlin/dotnet/sort/designsystem/components/atoms/SortBar.kt`
-- `presentation/designsystem/src/commonMain/kotlin/dotnet/sort/designsystem/components/atoms/BarState.kt`
 
 ---
 
@@ -619,324 +519,1257 @@ object ColorTokens {
 
 ---
 
-## 7. Phase 5: UI実装
+## 7. Phase 5: Presentation層アーキテクチャ
 
-### PR-24: SortIntent 定義
+本フェーズでは、SortIntentの定義から始まり、Presentation層の機能単位マルチモジュール化(Refactor)を経て、Commonモジュール等の基盤実装を進めます。
+
+### PR-24: SortIntent 定義 [完了✅]
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/24` |
-| **サイズ** | 🟢 XS (~30行) |
+| **サイズ** | 🟢 XS |
 | **依存** | なし |
-| **並行可能** | PR-01, PR-16 |
 
-**新規ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/viewmodel/SortIntent.kt`
-
-```kotlin
-sealed class SortIntent {
-    data class SelectAlgorithm(val type: SortType) : SortIntent()
-    data class SetArraySize(val size: Int) : SortIntent()
-    data class GenerateArray(val generatorType: ArrayGeneratorType) : SortIntent()
-    object StartSort : SortIntent()
-    object PauseSort : SortIntent()
-    object ResumeSort : SortIntent()
-    object ResetSort : SortIntent()
-    object StepForward : SortIntent()
-    object StepBackward : SortIntent()
-    data class SetSpeed(val speedMultiplier: Float) : SortIntent()
-}
-```
+**内容**:
+- `SortIntent.kt` の定義
+- ユーザー操作（ソート開始、リセット、ステップ実行等）のモデリング
 
 ---
 
-### PR-25: SortState 定義
+### Refactor: Presentation層モジュール分割 [完了✅]
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `refactor` (または `main`/`develop` 直接) |
+| **サイズ** | 🟡 M |
+| **依存** | PR-24 |
+
+**変更内容**:
+- `presentation/common`, `presentation/navigation`, `presentation/feature/*` モジュール作成
+- `SortIntent` を `presentation/feature/sort` へ移動
+- 各モジュールの依存関係整理（Common <- Feature <- Navigation）
+
+---
+
+### PR-25: Commonモジュール実装
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/25` |
-| **サイズ** | 🟢 S (~50行) |
-| **依存** | PR-24 |
+| **サイズ** | 🟢 S |
+| **依存** | Refactor |
 
-**新規ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/viewmodel/SortState.kt`
+**実装内容**:
+- `BaseViewModel`: コルーチンスコープ管理、エラーハンドリング共通化
+- MVIインターフェース: `UnidirectionalViewModel`, `Intent`, `UiState`
+- UI共通拡張関数: `Modifier` 拡張など
 
 ---
 
-### PR-26: SortViewModel 基本構造
+### PR-26: Navigationモジュール基盤
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/26` |
-| **サイズ** | 🟡 M (~100行) |
-| **依存** | PR-25, PR-15 |
+| **サイズ** | 🟢 S |
+| **依存** | PR-25 |
 
-**新規ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/viewmodel/SortViewModel.kt`
-
-**内容**: 基本的な構造のみ（StateFlow, handleIntent のスケルトン）
+**実装内容**:
+- `Screen` シールドクラス/インターフェース: ルート定義（Type-safe Navigation）
+- `dotnet.presentation.navigation.AppNavigation`: NavHostの実装基盤
+- 各Featureモジュールへの画面コンポーザブル要求定義
 
 ---
 
-### PR-27: SortViewModel Intent処理
+### PR-27: アプリエントリポイント統合
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/27` |
-| **サイズ** | 🟡 M (~150行) |
+| **サイズ** | 🟢 S |
 | **依存** | PR-26 |
 
-**変更ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/viewmodel/SortViewModel.kt`
-
-**内容**: 各 Intent に対応する処理を実装
+**実装内容**:
+- `composeApp` から `presentation/navigation` への依存追加
+- `App.kt` で `AppNavigation` (NavHost) を呼び出し
+- アプリ起動時にとりあえず空白の画面または仮のホームが表示される状態にする
 
 ---
 
-### PR-28: AlgorithmSelector コンポーネント
+## 8. Phase 6: Sort機能実装
+
+Sort機能を独立したFeatureモジュールとして実装します。
+
+### PR-28: Sort機能：モジュールセットアップ
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/28` |
-| **サイズ** | 🟢 S (~70行) |
-| **依存** | PR-22 |
+| **サイズ** | 🟢 S |
+| **依存** | PR-27 |
 
-**新規ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/ui/components/AlgorithmSelector.kt`
+**実装内容**:
+- `presentation/feature/sort` の `build.gradle.kts` 依存確認
+- Domain層、DesignSystem層へのアクセス確認
+- 空の `SortScreen` を作成し、Navigationから表示できるようにする
 
 ---
 
-### PR-29: ControlPanel コンポーネント
+### PR-29: Sort機能：ドメイン統合
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/29` |
-| **サイズ** | 🟢 S (~80行) |
-| **依存** | PR-22 |
+| **サイズ** | 🟢 S |
+| **依存** | PR-28 |
 
-**新規ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/ui/components/ControlPanel.kt`
+**実装内容**:
+- `SortViewModel` 作成（空の実装）
+- `ExecuteSortUseCase`, `GenerateArrayUseCase` をDIまたは手動注入で利用可能にする
+- 基本的なDI構成
 
 ---
 
-### PR-30: SortScreen 統合
+### PR-30: Sort機能：ロジック (MVI)
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/30` |
-| **サイズ** | 🟡 M (~150行) |
-| **依存** | PR-27, PR-28, PR-29, PR-23 |
+| **サイズ** | 🟡 M |
+| **依存** | PR-29 |
 
-**新規ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/ui/screens/SortScreen.kt`
-
-**変更ファイル**:
-- `presentation/src/commonMain/kotlin/dotnet/sort/App.kt` (SortScreen を呼び出す)
-
----
-
-## 8. Phase 6: 可視化機能
-
-### PR-31 ~ PR-35
-
-（Phase 5 完了後に詳細化）
+**実装内容**:
+- `SortIntent` の利用（PR-24ですでに定義済み、必要に応じて拡張）
+- `SortState`: UI状態定義（配列データ、ハイライト位置、ソート中status）
+- `SortViewModel`: Intentを受け取り、UseCaseを実行し、Stateを更新するロジック
+- **注意**: まだUIは仮実装でOK。ログ等でロジック動作を確認。
 
 ---
 
-## 9. Phase 7: テスト・品質保証
+### PR-31: Sort機能：UIコンポーネント
 
-### PR-36 ~ PR-41
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/31` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-30 |
 
-（各機能実装完了後に詳細化）
+**実装内容**:
+- `AlgorithmSelector`: アルゴリズム選択ドロップダウン/ボタン
+- `ControlPanel`: 実行/リセットボタン、サイズ変更スライダー
+- `ArrayInputPanel`: 手動入力エリア
+- Design Systemのコンポーネントを使用する
 
 ---
 
-## 10. Phase 8: CUI実装
+### PR-32: Sort機能：ビジュアライザ統合
 
-### PR-42: CLI エントリポイント作成
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/32` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-31 |
+
+**実装内容**:
+- `SortVisualizer`: 配列を描画するコンポーネント（DesignSystemの `ArrayBar` 等を利用）
+- Stateの `highlightIndices` 等に基づいてアニメーションや色分けを反映
+
+---
+
+### PR-33: Sort機能：画面統合
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/33` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-32 |
+
+**実装内容**:
+- `SortScreen` に全てのコンポーネントを配置
+- ViewModelとUIの完全な接続
+- 画面レイアウトの調整（レスポンシブ対応の基礎）
+
+---
+
+## 9. Phase 7: アプリケーション構造構築
+
+### PR-34: Home機能実装
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/34` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-27 |
+
+**実装内容**:
+- `presentation/feature/home` 実装
+- アプリの顔となるホーム画面実装
+- 各Featureへのナビゲーションカード/ボタン配置
+- NavigationモジュールでのHomeルート定義
+
+---
+
+### PR-35: Settings機能実装
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/35` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-27 |
+
+**実装内容**:
+- `presentation/feature/settings` 実装
+- テーマ切り替え（Light/Dark）トグル
+- アプリ情報表示
+- 言語設定（将来用のプレースホルダー）
+
+---
+
+### PR-36: Learn/Compareプレースホルダー
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/36` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-27 |
+
+**実装内容**:
+- `presentation/feature/learn`, `presentation/feature/compare` 実装
+- 現在は機能未実装であることを伝えるプレースホルダー画面構成 ("Coming Soon" 等)
+- Navigationルートの確保とボタン連携
+
+---
+
+## 10. Phase 8: 可視化機能強化
+
+### PR-37: 自動再生・一時停止ロジック
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/37` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-33 |
+
+**実装内容**:
+- ViewModelでのコルーチンを使用したタイマー/Delay制御
+- `Pause`, `Resume` Intentの実装
+- 再生速度係数のState管理
+- `isPlaying` 状態の管理
+
+---
+
+### PR-38: 再生コントロールUI
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/38` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-37 |
+
+**実装内容**:
+- 再生/一時停止ボタン（状態によるアイコン切り替え）
+- シークバー（進行状況の表示とジャンプ）
+- 速度調整スライダーの実装
+
+---
+
+### PR-39: メトリクス・説明表示
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/39` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-33 |
+
+**実装内容**:
+- `MetricsDisplay`: 比較回数・スワップ回数・計算量情報の表示
+- `DescriptionDisplay`: 現在のステップで何が起きているか（例: "index[2]とindex[3]を交換しました"）のテキスト表示
+- 多言語対応の基礎
+
+---
+
+### PR-40: ステップ実行・速度調整
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/40` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-37 |
+
+**実装内容**:
+- 「次のステップへ」「前のステップへ」ボタンの実装
+- 一時停止中のみ有効化するUI制御
+- 速度変更時のリアルタイム反映
+
+---
+
+## 11. Phase 9: テスト・品質保証
+
+### PR-41: アルゴリズム単体テスト
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/41` |
+| **サイズ** | 🟢 S |
+| **依存** | Phase 2 |
+
+**実装内容**:
+- O(n²), O(n log n) 各アルゴリズムの単体テスト
+- エッジケース（空配列、1要素、逆順、ソート済み）の網羅
+- スナップショット記録の正確性確認
+
+---
+
+### PR-42: Generator/UseCaseテスト
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/42` |
-| **サイズ** | 🟢 S (~80行) |
-| **依存** | PR-05 |
+| **サイズ** | 🟢 S |
+| **依存** | Phase 3 |
 
-**新規ファイル**:
-- `composeApp/src/jvmMain/kotlin/CliMain.kt`
-
-**変更ファイル**:
-- `composeApp/build.gradle.kts` (runCli タスク追加)
-
-**変更内容**:
-```kotlin
-// CliMain.kt
-fun main(args: Array<String>) {
-    println("=== Sorting Visualizer (CLI) ===")
-    // 引数解析とソート実行
-}
-```
-
-**Gradle タスク追加**:
-```kotlin
-// build.gradle.kts
-tasks.register<JavaExec>("runCli") {
-    mainClass.set("CliMainKt")
-    classpath = sourceSets["jvmMain"].runtimeClasspath
-}
-```
+**実装内容**:
+- `ArrayGenerator` の各タイプ（Random, Ascending等）の生成結果テスト
+- `GenerateArrayUseCase` の結合テスト
 
 ---
 
-### PR-43: CLI 引数パーサー
+### PR-43: ViewModel単体テスト
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/43` |
-| **サイズ** | 🟢 S (~100行) |
-| **依存** | PR-42 |
+| **サイズ** | 🟡 M |
+| **依存** | Phase 6 |
 
-**新規ファイル**:
-- `composeApp/src/jvmMain/kotlin/cli/CliArgs.kt`
-- `composeApp/src/jvmMain/kotlin/cli/CliParser.kt`
-
-**サポートする引数**:
-- `--algorithm <name>`: アルゴリズム指定
-- `--input <array>`: カンマ区切りの配列
-- `--random <size>`: ランダム配列生成
-- `--verbose`: ステップ表示
-- `--help`: ヘルプ表示
+**実装内容**:
+- `SortViewModel` の各 Intent に対する State 遷移テスト
+- TestCoroutineDispatcher を用いた時間経過テスト
+- Mockを用いた UseCase 呼び出し確認
 
 ---
 
-### PR-44: CLI 対話式メニュー
+### PR-44: UIコンポーネントテスト
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/44` |
-| **サイズ** | 🟡 M (~150行) |
-| **依存** | PR-43, PR-15 |
+| **サイズ** | 🟢 S |
+| **依存** | Phase 6 |
 
-**新規ファイル**:
-- `composeApp/src/jvmMain/kotlin/cli/InteractiveMenu.kt`
-
-**機能**:
-- 引数なしで起動時に対話式メニューを表示
-- アルゴリズム選択メニュー
-- 配列入力プロンプト
-- 結果と統計情報の表示
+**実装内容**:
+- Compose UI Test を用いたコンポーネント単体テスト
+- SortBar, SortButton 等の表示・クリック動作確認
 
 ---
 
-### PR-45: CLI ステップ表示 (--verbose)
+### PR-45: E2E/GUI動作確認
 
 | 項目 | 内容 |
 |------|------|
 | **ブランチ** | `feature/45` |
-| **サイズ** | 🟢 S (~80行) |
-| **依存** | PR-44 |
+| **サイズ** | 🟢 S |
+| **依存** | Phase 8 |
 
-**変更ファイル**:
-- `composeApp/src/jvmMain/kotlin/cli/CliRunner.kt`
-
-**機能**:
-- `--verbose` オプション時に各スナップショットを表示
-- 配列状態、比較/交換中の要素、操作説明を出力
-
-**出力例**:
-```
-Step 1: Comparing indices 0 and 1
-  [5, 3, 8, 1, 2]  ^  ^
-Step 2: Swap 5 and 3
-  [3, 5, 8, 1, 2]
-...
-```
+**実装内容**:
+- アプリ全体の動作確認シナリオ作成
+- ナビゲーション、ソート実行、設定変更の一連のフロー確認
 
 ---
 
-## 11. Phase 9: リリース準備
+## 12. Phase 10: CUI実装
 
-### PR-46 ~ PR-48
+### PR-46: CLIエントリポイント
 
-（Phase 7, 8 完了後に詳細化）
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/46` |
+| **サイズ** | 🟢 S |
+| **依存** | Phase 3 |
 
-## 依存関係図
-
-```mermaid
-graph TD
-    subgraph "Phase 1: 基盤"
-        PR01[PR-01: SortType] --> PR02[PR-02: BaseSortAlgorithm]
-        PR02 --> PR03[PR-03: BubbleSort refactor]
-        PR03 --> PR04[PR-04: Factory]
-        PR04 --> PR05[PR-05: UseCase refactor]
-    end
-
-    subgraph "Phase 2: Algorithm"
-        PR05 --> PR06[PR-06: Selection]
-        PR05 --> PR07[PR-07: Insertion]
-        PR05 --> PR09[PR-09: Merge]
-        PR05 --> PR10[PR-10: Quick]
-        PR05 --> PR11[PR-11: Heap]
-        PR07 --> PR08[PR-08: Shell]
-    end
-
-    subgraph "Phase 3: Data"
-        PR05 --> PR12[PR-12: GeneratorType]
-        PR12 --> PR13[PR-13: Generator Interface]
-        PR13 --> PR14[PR-14: GeneratorImpl]
-        PR14 --> PR15[PR-15: GenerateUseCase]
-    end
-
-    subgraph "Phase 4: Design System"
-        PR16[PR-16: Module] --> PR17[PR-17: ColorTokens]
-        PR16 --> PR18[PR-18: SpacingTokens]
-        PR16 --> PR19[PR-19: AnimationTokens]
-        PR17 --> PR20[PR-20: Theme]
-        PR17 --> PR21[PR-21: SortBar]
-        PR20 --> PR21
-        PR20 --> PR22[PR-22: Control Atoms]
-        PR21 --> PR23[PR-23: ArrayBar]
-    end
-
-    subgraph "Phase 5: UI"
-        PR24[PR-24: Intent] --> PR25[PR-25: State]
-        PR25 --> PR26[PR-26: ViewModel base]
-        PR15 --> PR26
-        PR26 --> PR27[PR-27: ViewModel intents]
-        PR22 --> PR28[PR-28: AlgorithmSelector]
-        PR22 --> PR29[PR-29: ControlPanel]
-        PR22 --> PR30[PR-30: ArrayInputPanel]
-        PR27 --> PR31[PR-31: SortScreen]
-        PR28 --> PR31
-        PR29 --> PR31
-        PR30 --> PR31
-        PR23 --> PR31
-    end
-
-    subgraph "Phase 6: Visualization"
-        PR31 --> PR32[PR-32: AutoPlay]
-        PR32 --> PR33[PR-33: Pause/Resume]
-        PR32 --> PR34[PR-34: Speed Control]
-        PR33 --> PR35[PR-35: Step Execution]
-        PR31 --> PR36[PR-36: MetricsDisplay]
-        PR31 --> PR37[PR-37: DescriptionDisplay]
-    end
-
-    subgraph "Phase 8: CUI"
-        PR05 --> PR44[PR-44: CLI Entry]
-        PR44 --> PR45[PR-45: CLI Parser]
-        PR45 --> PR46[PR-46: CLI Interactive]
-        PR15 --> PR46
-        PR46 --> PR47[PR-47: CLI Verbose]
-    end
-```
+**実装内容**:
+- `composeApp` 内に CLI 用の `main` 関数を作成
+- Gradle タスク `runCli` の追加
 
 ---
 
-## 変更履歴
+### PR-47: CLI引数パーサー
 
-| 日付 | バージョン | 変更内容 |
-|------|------------|----------|
-| 2026-01-08 | 1.0.0 | 初版作成 |
-| 2026-01-09 | 2.0.0 | PR単位に細分化、サイズガイドライン追加 |
-| 2026-01-09 | 2.1.0 | CUI対応追加、ArrayInputPanel・DescriptionDisplay追加（計50 PRs） |
-| 2026-01-09 | 2.2.0 | ブランチ命名を `feature/{番号}` 形式に簡略化 |
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/47` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-46 |
+
+**実装内容**:
+- コマンドライン引数（`--algorithm`, `--size`, `--help` 等）の解析ロジック実装
+- エラーハンドリングとヘルプメッセージ表示
+
+---
+
+### PR-48: CLI対話モード
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/48` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-47 |
+
+**実装内容**:
+- 引数なし起動時の対話型メニュー実装
+- アルゴリズム選択、サイズ入力を対話的に行う機能
+
+---
+
+### PR-49: CLI詳細出力機能
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/49` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-48 |
+
+**実装内容**:
+- `--verbose` オプション時のステップごとの配列状態出力
+- アスキーアートを用いた簡易的な可視化出力
+
+---
+
+## 13. Phase 11: ドキュメント整備・リファクタリング
+
+### PR-50: ドキュメント整備・品質改善
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/50` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-49 |
+
+**実装内容**:
+- ドキュメントの包括的な監査・更新
+- `README.md` の更新
+- `USER_GUIDE.md` の作成
+- `CODING_GUIDELINES.md` の作成
+- `DESIGN_SYSTEM.md` の作成
+- 実装状況に合わせたドキュメント整合性の確保
+
+---
+
+# PR-51~100: v2.0 拡張機能
+
+以下は基盤整備後の拡張機能開発計画です。要求定義を超える教育ツールとしての価値を高めます。
+
+---
+
+## 14. Phase 12: Learn機能 - アルゴリズム百科事典
+
+### PR-51: Learn画面基盤
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/51` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-50 |
+
+**実装内容**:
+- LearnScreen のプレースホルダーを本実装に置換
+- アルゴリズム一覧を表示するリストUI
+- LearnViewModel、LearnIntent、LearnState の作成
+- Koin DIモジュールの設定
+
+---
+
+### PR-52: アルゴリズム詳細画面
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/52` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-51 |
+
+**実装内容**:
+- AlgorithmDetailScreen の作成
+- 一覧からのナビゲーション実装
+- タブまたはセクション構造でコンテンツ表示
+- 戻るボタンとナビゲーション
+
+---
+
+### PR-53: アルゴリズム歴史・背景コンテンツ
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/53` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-52 |
+
+**実装内容**:
+- 各アルゴリズムの歴史情報データクラス作成
+- バブルソート: 1956年 Edward Friend による命名
+- クイックソート: 1960年 Tony Hoare 発明
+- マージソート: 1945年 John von Neumann 発明
+- その他アルゴリズムの背景情報
+
+---
+
+### PR-54: 動作原理・概念説明
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/54` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-53 |
+
+**実装内容**:
+- 各アルゴリズムの動作原理をわかりやすく説明
+- アニメーション付き図解（オプション）
+- 「隣接要素を比較して交換」などの基本概念
+- 分割統治法、ヒープ構造などの解説
+
+---
+
+### PR-55: 計算量詳細解説
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/55` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-54 |
+
+**実装内容**:
+- 最良/平均/最悪ケースの計算量表示
+- O記法の意味解説
+- 空間計算量の説明
+- なぜその計算量になるかの直感的説明
+
+---
+
+### PR-56: ユースケース・使用場面
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/56` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-55 |
+
+**実装内容**:
+- 各アルゴリズムの最適な使用場面
+- 「小さい配列には挿入ソート」など
+- 「ほぼソート済みにはバブルソート」
+- 実世界での使用例（Tim Sortはpython/java標準など）
+
+---
+
+### PR-57: Kotlin実装コード表示
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/57` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-56 |
+
+**実装内容**:
+- シンタックスハイライト付きコード表示
+- 各アルゴリズムのKotlin実装例
+- コードコピー機能
+- 行番号表示
+
+---
+
+### PR-58: 具体的動作例表示
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/58` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-57 |
+
+**実装内容**:
+- 配列 [5, 3, 1, 4, 2] などでのステップ表示
+- 各ステップの配列状態と説明
+- 「可視化で見る」ボタンから SortScreen へ遷移
+- 具体例による理解促進
+
+---
+
+## 15. Phase 13: Compare機能 - アルゴリズム比較
+
+### PR-59: Compare画面基盤
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/59` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-50 |
+
+**実装内容**:
+- CompareScreen のプレースホルダーを本実装に置換
+- CompareViewModel、CompareIntent、CompareState の作成
+- 2つのアルゴリズム選択UI
+- Koin DIモジュールの設定
+
+---
+
+### PR-60: 並列実行エンジン
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/60` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-59 |
+
+**実装内容**:
+- 同一配列で2つのアルゴリズムを同時実行
+- 実行時間の同期制御
+- メトリクスの個別収集
+- CompareResult データクラス
+
+---
+
+### PR-61: 並列可視化UI
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/61` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-60 |
+
+**実装内容**:
+- 2つの SortVisualizer を横に並べて表示
+- 同期再生制御
+- 個別の再生速度調整
+- レスポンシブレイアウト
+
+---
+
+### PR-62: メトリクス比較表
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/62` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-61 |
+
+**実装内容**:
+- 比較回数、交換回数、実行時間の比較表
+- 勝敗表示（どちらが速いか）
+- パーセンテージ差分表示
+- グラフ可視化（バーチャート）
+
+---
+
+### PR-63: 入力パターン選択
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/63` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-62 |
+
+**実装内容**:
+- Random/Sorted/Reverse/Nearly Sorted/Few Unique の選択
+- パターンごとのアルゴリズム特性比較
+- パターン説明ツールチップ
+
+---
+
+## 16. Phase 14: ゲーミフィケーション
+
+### PR-64: Quiz画面基盤
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/64` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-50 |
+
+**実装内容**:
+- QuizScreen の新規作成
+- QuizViewModel、QuizIntent、QuizState
+- ホーム画面への「Quiz」メニュー追加
+- ナビゲーション設定
+
+---
+
+### PR-65: ソート早押しクイズ機能
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/65` |
+| **サイズ** | 🟠 L |
+| **依存** | PR-64 |
+
+**実装内容**:
+- 現在の配列状態と次のステップ候補を表示
+- ユーザーが「次にどの要素が交換されるか」を選択
+- タイマー表示（早押し要素）
+- 正解/不正解のフィードバック
+
+---
+
+### PR-66: 正誤判定ロジック
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/66` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-65 |
+
+**実装内容**:
+- ユーザー選択と正解の比較
+- 部分正解の判定（順序が逆でもOKなど）
+- 正解時のアニメーション・効果音
+- 不正解時の正解表示
+
+---
+
+### PR-67: スコアシステム
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/67` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-66 |
+
+**実装内容**:
+- 正解数カウント
+- 連続正解ボーナス
+- 速度ボーナス（早く答えるほど高得点）
+- スコア表示UI
+
+---
+
+### PR-68: アルゴリズム推測ゲーム
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/68` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-67 |
+
+**実装内容**:
+- ソート過程のアニメーションを見せる
+- 「これは何ソート？」を当てるゲーム
+- 7つのアルゴリズムから選択
+- ヒント機能（計算量など）
+
+---
+
+### PR-69: 難易度設定
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/69` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-68 |
+
+**実装内容**:
+- Easy: 小さい配列、制限時間長め
+- Medium: 中程度の配列
+- Hard: 大きい配列、制限時間短め
+- 難易度選択UI
+
+---
+
+### PR-70: クイズ結果サマリー
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/70` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-69 |
+
+**実装内容**:
+- クイズ終了後の成績表示画面
+- 正解率、総合スコア、最長連続正解
+- 苦手なアルゴリズムの分析
+- 「もう一度挑戦」ボタン
+
+---
+
+### PR-71: ローカルランキング
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/71` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-70 |
+
+**実装内容**:
+- ハイスコアのローカル保存
+- ランキング表示画面
+- 難易度別ランキング
+- スコアリセット機能
+
+---
+
+## 17. Phase 15: 追加アルゴリズム
+
+### PR-72: Counting Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/72` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-50 |
+
+**実装内容**:
+- CountingSortAlgorithm クラス実装
+- 非比較ソートアルゴリズム
+- 時間計算量: O(n+k)、空間計算量: O(k)
+- SortType への追加、Factory更新
+- 単体テスト作成
+
+---
+
+### PR-73: Radix Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/73` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-72 |
+
+**実装内容**:
+- RadixSortAlgorithm クラス実装
+- 桁ごとにソートする手法
+- 時間計算量: O(nk)、空間計算量: O(n+k)
+- LSD (Least Significant Digit) 方式
+- 単体テスト作成
+
+---
+
+### PR-74: Bucket Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/74` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-73 |
+
+**実装内容**:
+- BucketSortAlgorithm クラス実装
+- 分布を利用したソート
+- 時間計算量: O(n+k)（平均）
+- バケット数の最適化
+- 単体テスト作成
+
+---
+
+### PR-75: Tim Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/75` |
+| **サイズ** | 🟠 L |
+| **依存** | PR-74 |
+
+**実装内容**:
+- TimSortAlgorithm クラス実装
+- Python/Java 標準のハイブリッドソート
+- マージソート + 挿入ソートの組み合わせ
+- Run の検出と最適化
+- 時間計算量: O(n log n)
+- 単体テスト作成
+
+---
+
+### PR-76: Comb Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/76` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-75 |
+
+**実装内容**:
+- CombSortAlgorithm クラス実装
+- バブルソートの改良版
+- ギャップを徐々に縮小
+- 時間計算量: O(n²/2^p)
+- 単体テスト作成
+
+---
+
+### PR-77: Cocktail Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/77` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-76 |
+
+**実装内容**:
+- CocktailSortAlgorithm クラス実装
+- 双方向バブルソート（シェーカーソート）
+- 左右交互に走査
+- 時間計算量: O(n²)
+- 単体テスト作成
+
+---
+
+### PR-78: Gnome Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/78` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-77 |
+
+**実装内容**:
+- GnomeSortAlgorithm クラス実装
+- シンプルな挿入系アルゴリズム
+- 「庭師のソート」とも呼ばれる
+- 時間計算量: O(n²)
+- 単体テスト作成
+
+---
+
+### PR-79: Odd-Even Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/79` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-78 |
+
+**実装内容**:
+- OddEvenSortAlgorithm クラス実装
+- 並列化に適したソート
+- 奇数/偶数インデックスを交互に処理
+- 時間計算量: O(n²)
+- 単体テスト作成
+
+---
+
+### PR-80: Bogo Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/80` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-79 |
+
+**実装内容**:
+- BogoSortAlgorithm クラス実装
+- 「最悪のソートアルゴリズム」として教育目的
+- ランダムシャッフルして確認を繰り返す
+- 時間計算量: O((n+1)!) 平均
+- 実行制限（小さい配列のみ）
+- 単体テスト作成
+
+---
+
+### PR-81: Bitonic Sort
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/81` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-80 |
+
+**実装内容**:
+- BitonicSortAlgorithm クラス実装
+- 並列ソートの入門的アルゴリズム
+- Bitonic シーケンスの構築とマージ
+- 時間計算量: O(n log²n)
+- 単体テスト作成
+
+---
+
+## 18. Phase 16: 可視化強化
+
+### PR-82: カスタムカラーテーマ
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/82` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-50 |
+
+**実装内容**:
+- バーの色をユーザーが選択可能に
+- プリセットテーマ（Kotlin, Ocean, Forest など）
+- 設定画面への追加
+
+---
+
+### PR-83: アニメーション速度細調整
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/83` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-82 |
+
+**実装内容**:
+- 0.1x～10x の速度範囲
+- スライダーによる連続調整
+- プリセットボタン（1x, 2x, 4x）
+
+---
+
+### PR-84: サウンドエフェクト
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/84` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-83 |
+
+**実装内容**:
+- 比較時・交換時の音
+- 音の高さで値を表現
+- サウンドのON/OFF設定
+- 音量調整
+
+---
+
+### PR-85: ソート完了アニメーション
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/85` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-84 |
+
+**実装内容**:
+- ソート完了時の演出
+- バーが順番に光る「ウェーブ」効果
+- 完了メッセージ表示
+
+---
+
+## 19. Phase 17: 国際化 (i18n)
+
+### PR-86: i18nインフラ整備
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/86` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-50 |
+
+**実装内容**:
+- compose-resources によるリソース管理
+- 言語切替のロジック
+- 言語設定の永続化
+
+---
+
+### PR-87: 日本語リソース
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/87` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-86 |
+
+**実装内容**:
+- UI文字列の日本語化
+- アルゴリズム名の日本語表記
+- ボタン、メニュー、説明文
+
+---
+
+### PR-88: 英語リソース
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/88` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-87 |
+
+**実装内容**:
+- UI文字列の英語化
+- デフォルト言語としての英語
+- 国際ユーザー対応
+
+---
+
+### PR-89: 言語切替UI
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/89` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-88 |
+
+**実装内容**:
+- 設定画面への言語選択追加
+- ドロップダウンで言語選択
+- 即時反映
+
+---
+
+### PR-90: Learn/Quiz多言語化
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/90` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-89 |
+
+**実装内容**:
+- アルゴリズム説明文の多言語化
+- クイズ問題文の多言語化
+- 歴史・背景の多言語対応
+
+---
+
+## 20. Phase 18: データ永続化
+
+### PR-91: ローカルストレージ基盤
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/91` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-50 |
+
+**実装内容**:
+- KVS (Key-Value Store) の実装
+- プラットフォーム別の保存処理
+- DataStoreまたは同等機能の利用
+
+---
+
+### PR-92: クイズ履歴保存
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/92` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-91 |
+
+**実装内容**:
+- クイズ成績の保存
+- 日付別履歴
+- スコア推移グラフ用データ
+
+---
+
+### PR-93: 学習進捗ダッシュボード
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/93` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-92 |
+
+**実装内容**:
+- アルゴリズム別習熟度表示
+- 総学習時間
+- 推奨学習内容の提案
+
+---
+
+## 21. Phase 19: 品質・最適化
+
+### PR-94: E2Eテスト
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/94` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-93 |
+
+**実装内容**:
+- 主要ユーザーフローのテスト
+- ソート実行からリセットまで
+- 画面遷移テスト
+
+---
+
+### PR-95: パフォーマンス最適化
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/95` |
+| **サイズ** | 🟡 M |
+| **依存** | PR-94 |
+
+**実装内容**:
+- 大配列（1000要素以上）での描画最適化
+- メモリ使用量の削減
+- 再レンダリングの最小化
+
+---
+
+### PR-96: アクセシビリティ強化
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/96` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-95 |
+
+**実装内容**:
+- キーボード操作の拡充
+- スクリーンリーダー対応
+- コントラスト調整
+
+---
+
+### PR-97: UI Polish
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/97` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-96 |
+
+**実装内容**:
+- 細部のデザイン調整
+- アニメーションの滑らかさ改善
+- 不具合修正
+
+---
+
+## 22. Phase 20: v2.0 リリース
+
+### PR-98: v2.0 ドキュメント更新
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/98` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-97 |
+
+**実装内容**:
+- 新機能のドキュメント追加
+- README の更新
+- USER_GUIDE の拡充
+
+---
+
+### PR-99: v2.0 リリースビルド
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/99` |
+| **サイズ** | 🟢 S |
+| **依存** | PR-98 |
+
+**実装内容**:
+- 配布パッケージの作成
+- 各プラットフォーム向けビルド
+- 最終動作確認
+
+---
+
+### PR-100: 最終リファクタリング・コード品質向上
+
+| 項目 | 内容 |
+|------|------|
+| **ブランチ** | `feature/100` |
+| **サイズ** | � M |
+| **依存** | PR-99 |
+
+**実装内容**:
+- コード全体のリファクタリング
+- 未使用コードの削除
+- パフォーマンス最終チューニング
+- 技術的負債の解消
+- 全ドキュメントの最終確認・更新

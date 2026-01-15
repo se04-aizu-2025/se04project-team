@@ -1,3 +1,10 @@
+---
+title: ブランチ戦略
+version: 1.0.0
+last_updated: 2026-01-13
+maintainer: Team
+---
+
 # Branch Strategy & Protection Rules
 
 本プロジェクトのブランチ戦略と、GitHubで設定すべきブランチ保護ルールについて説明します。

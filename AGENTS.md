@@ -17,6 +17,7 @@ Kotlin Multiplatform を使用した Web/Desktop クロスプラットフォー�
 | 言語 | Kotlin |
 | UI | Compose Multiplatform |
 | ターゲット | Desktop (JVM), Web (Wasm/JS) |
+| DI | Koin |
 | ビルド | Gradle (Kotlin DSL) |
 | コード品質 | ktlint, detekt |
 | CI/CD | GitHub Actions |
@@ -29,9 +30,24 @@ Kotlin Multiplatform を使用した Web/Desktop クロスプラットフォー�
 dotnet/
 ├── composeApp/         → Compose Multiplatform アプリ (GUI/CUI エントリポイント)
 ├── presentation/       → Presentation Layer (MVI パターン)
-│   └── designsystem/   → Design System (Atomic Design)
+│   ├── navigation/     → Navigation設定
+│   ├── designsystem/   → Design System (Atomic Design)
+│   ├── common/         → 共通ユーティリティ
+│   └── feature/        → 機能別モジュール
+│       ├── home/
+│       ├── sort/
+│       ├── learn/
+│       ├── compare/
+│       └── settings/
 ├── domain/             → Domain Layer (DDD)
-└── data/               → Data Layer
+│   ├── algorithm/      → ソートアルゴリズム
+│   ├── model/          → モデル
+│   ├── usecase/        → UseCase
+│   └── repository/     → Repository インターフェース
+├── data/               → Data Layer
+│   ├── generator/      → 配列生成
+│   └── repository/     → Repository 実装
+└── cli/                → CLI アプリ
 ```
 
 ### レイヤー間の依存関係
@@ -55,44 +71,64 @@ Presentation → Domain ← Data
 
 ## 必読ドキュメント
 
-以下のドキュメントに従ってください：
+### 最初に読むべき
 
 | ドキュメント | パス | 内容 |
-|-------------|------|------|
-| 要件定義 | `doc/REQUIREMENTS_DEFINITION.md` | 機能・非機能要件 |
+|--------------|------|------|
+| オンボーディング | `doc/guide/ONBOARDING.md` | アーキテクチャ概要 |
+| 基礎ルール | `doc/guide/FUNDAMENTALS.md` | 命名・データモデル・禁止事項 |
 | 開発計画 | `doc/DEVELOPMENT_PLAN.md` | PR計画、作業順序 |
-| アーキテクチャ | `doc/ARCHITECTURE.md` | レイヤー構成、MVI、DDDパターン |
-| ブランチ戦略 | `doc/BRANCH_STRATEGY.md` | Git ブランチ運用、命名規則 |
-| CI/CD | `doc/CI_CD.md` | CI/CD パイプライン |
-| プルリクエスト | `doc/PULL_REQUEST.md` | PR の書き方 |
 | 実行方法 | `doc/GETTING_STARTED.md` | ビルド・実行コマンド |
 
-## コーディング規約
+### タスク実行時に参照
 
-### 一般原則
+| タスク | ガイド |
+|--------|--------|
+| 画面追加 | `doc/guide/tasks/ADD_SCREEN.md` |
+| アルゴリズム追加 | `doc/guide/tasks/ADD_ALGORITHM.md` |
+| UIコンポーネント追加 | `doc/guide/tasks/ADD_UI_COMPONENT.md` |
+| テスト追加 | `doc/guide/tasks/ADD_TEST.md` |
+| UseCase追加 | `doc/guide/tasks/ADD_USECASE.md` |
+| Repository追加 | `doc/guide/tasks/ADD_REPOSITORY.md` |
+| Feature Module追加 | `doc/guide/tasks/ADD_FEATURE_MODULE.md` |
+| デバッグ | `doc/guide/tasks/DEBUG_GUIDE.md` |
 
-- **SOLID原則**に従う（特にSRP、DIP、ISP）
-- **不変性**を優先: `var` より `val` を使用
-- **Nullable**は最小限に: `Result` 型でエラーハンドリング
-- コードスタイルは **ktlint** と **detekt** で強制
+### その他
 
-### Presentation Layer (MVI)
+| ドキュメント | パス | 内容 |
+|--------------|------|------|
+| 要件定義 | `doc/REQUIREMENTS_DEFINITION.md` | 機能・非機能要件 |
+| アーキテクチャ詳細 | `doc/ARCHITECTURE.md` | レイヤー構成詳細 |
+| ブランチ戦略 | `doc/BRANCH_STRATEGY.md` | Git ブランチ運用 |
+| プルリクエスト | `doc/PULL_REQUEST.md` | PR の書き方 |
 
-- `Intent` → `ViewModel` → `State` → `View` のフロー
-- ViewModelは `handleIntent()` でIntentを処理
-- Stateは不変データクラス
+## コーディング規約 (要点)
 
-### Domain Layer (DDD)
+詳細は `doc/guide/FUNDAMENTALS.md` を参照してください。
 
-- **Use Case**: 単一責任、`operator fun invoke()` を使用
-- **Entity**: ビジネスロジックをカプセル化
-- **Value Object**: `@JvmInline value class` で実装
-- **Repository**: インターフェースのみ（実装はData層）
+### 命名規則
 
-### Data Layer
+| 種類 | 規則 | 例 |
+|------|------|-----|
+| Composable | PascalCase | `SortScreen()` |
+| 通常関数 | camelCase | `executeSortAlgorithm()` |
+| ViewModel | `{Feature}ViewModel` | `SortViewModel` |
+| UseCase | `{Verb}{Noun}UseCase` | `ExecuteSortUseCase` |
+| Intent (データなし) | data object | `data object StartSort` |
+| Intent (データあり) | data class | `data class SelectAlgorithm(val type)` |
 
-- Repository実装は Domain インターフェースを実装
-- DTO と Entity の変換は Mapper クラスで行う
+### MVI パターン
+
+```
+User Input → Intent → ViewModel → State → UI
+```
+
+### 禁止事項
+
+- ❌ State で `var` を使う
+- ❌ Screen に NavController を渡す
+- ❌ ViewModel メソッドを直接呼び出す (`send(Intent)` を使う)
+- ❌ ハードコード色/サイズ (Design Token を使う)
 
 ## ブランチ命名規則
 
@@ -103,15 +139,6 @@ hotfix/説明           # 緊急修正
 refactor/説明         # リファクタリング
 release/vX.X.X        # リリース
 ```
-
-> **Note**: 開発計画（`doc/DEVELOPMENT_PLAN.md`）に記載された PR 番号に対応するブランチを作成してください。
-
-## コミット・PR
-
-- **PRテンプレート**: `.github/pull_request_template.md` を使用すること
-- **PRガイド**: `doc/PULL_REQUEST.md` を参照
-- CI（ktlint, detekt, build, test）がパスするまでマージ不可
-- `develop` ブランチにマージ後、`main` へのリリースPRを作成
 
 ## 実行コマンド
 
@@ -126,7 +153,7 @@ release/vX.X.X        # リリース
 ./gradlew :composeApp:jsBrowserDevelopmentRun
 
 # CUI
-./gradlew runCli --args="--algorithm bubble --input 5,3,8,1,2"
+./gradlew runCli --args="--algorithm bubble --size 20"
 
 # Git Hooks セットアップ
 ./gradlew setupGitHooks
@@ -138,16 +165,21 @@ release/vX.X.X        # リリース
 ## 現在の開発状況
 
 開発は `doc/DEVELOPMENT_PLAN.md` に従って進行中です。
-現在 **50個のPR** に分割された段階的な開発計画があります。
+**PR-01~100** が定義されています。
 
 ### Phase 一覧
 
-1. 基盤整備 (PR-01~05)
-2. アルゴリズム実装 (PR-06~11)
-3. Data層実装 (PR-12~15)
-4. Design System構築 (PR-16~23)
-5. UI実装 (PR-24~31)
-6. 可視化機能 (PR-32~37)
-7. テスト・品質保証 (PR-38~43)
-8. CUI実装 (PR-44~47)
-9. リリース準備 (PR-48~50)
+| Phase | 内容 | PR範囲 | 状態 |
+|-------|------|--------|------|
+| 1 | 基盤整備 | PR-01~05 | ✅ 完了 |
+| 2 | アルゴリズム実装 | PR-06~11 | ✅ 完了 |
+| 3 | Data層実装 | PR-12~15 | ✅ 完了 |
+| 4 | Design System構築 | PR-16~23 | ✅ 完了 |
+| 5 | Presentation層アーキテクチャ | PR-24~27 | ✅ 完了 |
+| 6 | Sort機能実装 | PR-28~33 | ✅ 完了 |
+| 7 | アプリケーション構造構築 | PR-34~36 | ✅ 完了 |
+| 8 | 可視化機能強化 | PR-37~40 | 🔄 進行中 |
+| 9 | テスト・品質保証 | PR-41~45 | 🔄 一部完了 |
+| 10 | CUI実装 | PR-46~49 | ✅ 完了 |
+| 11 | リリース準備 | PR-50 | 🔄 進行中 |
+| 12-20 | v2.0 拡張機能 | PR-51~100 | 📝 計画済 |

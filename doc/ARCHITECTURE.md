@@ -1,3 +1,10 @@
+---
+title: アーキテクチャ
+version: 1.0.0
+last_updated: 2026-01-13
+maintainer: Team
+---
+
 # Architecture
 
 このドキュメントでは、本プロジェクトのアーキテクチャ設計について説明します。
@@ -81,22 +88,39 @@ graph TB
 
 **パターン**: Model-View-Intent (MVI)
 
+**モジュール構造**:
 ```
 presentation/
-└── src/
-    ├── commonMain/kotlin/dotnet/sort/
-    │   ├── ui/
-    │   │   ├── screens/          # 各画面のComposables
-    │   │   ├── components/        # 再利用可能なUIコンポーネント
-    │   │   └── theme/             # テーマとスタイル
-    │   ├── viewmodel/
-    │   │   ├── XxxViewModel.kt    # ViewModelクラス
-    │   │   ├── XxxIntent.kt       # Intentの定義
-    │   │   └── XxxState.kt        # UI Stateの定義
-    │   └── navigation/            # ナビゲーション定義
-    ├── jvmMain/kotlin/dotnet/sort/
-    ├── jsMain/kotlin/dotnet/sort/
-    └── wasmJsMain/kotlin/dotnet/sort/
+├── common/                    # 共通ユーティリティ、Platform
+├── designsystem/              # Design System (Tokens, Theme, Components)
+├── navigation/                # ナビゲーション (composeApp からのエントリポイント)
+└── feature/                   # 機能別モジュール (画面単位)
+    ├── home/                  # ホーム画面
+    ├── sort/                  # ソート可視化画面
+    ├── learn/                 # 学習画面
+    ├── compare/               # 比較画面
+    └── settings/              # 設定画面
+```
+
+**各モジュールの責務**:
+
+| モジュール | 責務 | 依存先 |
+|-----------|------|--------|
+| `common` | Platform expect/actual, 共通ユーティリティ | - |
+| `designsystem` | ColorTokens, Theme, Atomic Components | - |
+| `navigation` | NavHost, 画面遷移ロジック、**全Feature集約** | common, designsystem, 全feature |
+| `feature/*` | 各画面のUI, ViewModel, MVI (Intent/State) | common, designsystem, domain |
+
+**依存関係フロー**:
+```
+composeApp
+    └── navigation (Presentation層への唯一のエントリポイント)
+            ├── feature/home
+            ├── feature/sort
+            ├── feature/learn
+            ├── feature/compare
+            └── feature/settings
+                    └── common, designsystem
 ```
 
 **MVI フロー**:

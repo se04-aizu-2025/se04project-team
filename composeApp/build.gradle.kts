@@ -24,9 +24,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.presentation)
+            // Presentation layer entry point (navigation aggregates all features)
+            implementation(projects.presentation.navigation)
+            // Domain and Data layers
             implementation(projects.domain)
             implementation(projects.data)
+            // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -37,6 +40,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.composeViewModel)
+            implementation(projects.presentation.common)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -47,6 +52,7 @@ kotlin {
         }
     }
 }
+
 
 compose.desktop {
     application {
@@ -59,6 +65,22 @@ compose.desktop {
         }
     }
 }
+
+// CLI running task
+tasks.register<JavaExec>("runCli") {
+    group = "application"
+    description = "Runs the CLI application"
+    classpath = kotlin.targets["jvm"].compilations["main"].output.allOutputs + 
+                configurations["jvmRuntimeClasspath"]
+    mainClass.set("dotnet.sort.CliMainKt")
+    args = if (project.hasProperty("args")) {
+        project.property("args").toString().split(" ")
+    } else {
+        emptyList()
+    }
+    standardInput = System.`in`
+}
+
 
 dependencies {
     add("kspCommonMainMetadata", libs.koin.kspCompiler)
