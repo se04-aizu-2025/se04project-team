@@ -123,24 +123,32 @@ override fun send(intent: SortIntent) {
 
 ### 構造
 
+Screen は**ステートレス**で、`modifier`, `state`, `onIntent` の3つを受け取ります。
+DI と State 収集は Destination で行います。
+
 ```kotlin
-@OptIn(KoinExperimentalAPI::class)
+/**
+ * ソート画面。
+ *
+ * @param state 画面の状態
+ * @param onIntent ユーザーアクションのコールバック
+ * @param onBackClick 戻るボタン押下時のコールバック
+ * @param modifier Modifier
+ */
 @Composable
 fun SortScreen(
-    viewModel: SortViewModel = koinViewModel(),  // DI
-    onBackClick: () -> Unit = {},                // コールバック
-    modifier: Modifier = Modifier                // 最後
+    state: SortState,
+    onIntent: (SortIntent) -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    // State 収集
-    val state by viewModel.state.collectAsState()
-    
-    // UI
     Scaffold(
+        modifier = modifier,
         topBar = { TopAppBar(...) }
     ) { padding ->
         SortContent(
             state = state,
-            onIntent = { viewModel.send(it) },
+            onIntent = onIntent,
             modifier = Modifier.padding(padding)
         )
     }
@@ -153,6 +161,7 @@ fun SortScreen(
 |------|------|
 | **関数名** | `{Feature}Screen` |
 | **ファイル名** | `{Feature}Screen.kt` |
+
 
 ---
 
@@ -186,51 +195,42 @@ fun SortContent(
 ) {
     Button(onClick = { onIntent(SortIntent.StartSort) })
 }
-
-// 使用側
-SortContent(
-    state = state,
-    onIntent = { viewModel.send(it) }
-)
 ```
+
 
 ---
 
-## 画面分割
+## Destination パターン
 
-### パターン
+DI と State 収集は **{Feature}Destination.kt** で行います。
 
 ```kotlin
-// Screen: DI + State 収集
-@Composable
-fun SortScreen(viewModel: SortViewModel = koinViewModel()) {
-    val state by viewModel.state.collectAsState()
-    
-    SortContent(
-        state = state,
-        onIntent = { viewModel.send(it) }
-    )
-}
-
-// Content: 純粋な UI (ステートレス)
-@Composable
-fun SortContent(
-    state: SortState,
-    onIntent: (SortIntent) -> Unit,
-    modifier: Modifier = Modifier
+// {Feature}Destination.kt
+@OptIn(KoinExperimentalAPI::class)
+fun NavGraphBuilder.sortDestination(
+    onBackClick: () -> Unit
 ) {
-    Column(modifier) {
-        // UI 実装
+    composable<Screen.Sort> {
+        val viewModel: SortViewModel = koinViewModel()  // DI はここで
+        val state by viewModel.state.collectAsState()
+
+        SortScreen(
+            state = state,
+            onIntent = viewModel::send,  // メソッド参照形式
+            onBackClick = onBackClick
+        )
     }
 }
 ```
+
 
 ### 利点
 
 | 分離 | 利点 |
 |------|------|
-| **Screen** | DI、State収集、ナビゲーション |
-| **Content** | 純粋UI、Preview可能、テスト容易 |
+| **Screen** | 純粋UI、Preview可能、テスト容易 |
+| **Destination** | DI、State収集、ナビゲーション |
+
 
 ---
 

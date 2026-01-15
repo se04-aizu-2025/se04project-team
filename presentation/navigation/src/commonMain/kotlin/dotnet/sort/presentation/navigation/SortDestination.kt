@@ -1,0 +1,40 @@
+package dotnet.sort.presentation.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import dotnet.sort.presentation.feature.sort.SortScreen
+import dotnet.sort.presentation.feature.sort.SortViewModel
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
+
+/**
+ * Sort 機能のナビゲーションを NavGraph に登録する。
+ *
+ * @param onBackClick 戻るボタン押下時のコールバック
+ */
+@OptIn(KoinExperimentalAPI::class)
+fun NavGraphBuilder.sortDestination(
+    onBackClick: () -> Unit
+) {
+    composable<Screen.Sort> {
+        val viewModel: SortViewModel = koinViewModel()
+        val state by viewModel.state.collectAsState()
+
+        SortScreen(
+            state = state,
+            onIntent = viewModel::send,
+            onBackClick = onBackClick
+        )
+    }
+}
+
+/**
+ * Sort 画面へ遷移する。
+ */
+fun NavController.navigateToSort() {
+    navigate(Screen.Sort)
+}

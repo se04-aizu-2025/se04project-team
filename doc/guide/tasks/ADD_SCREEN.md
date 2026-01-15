@@ -117,19 +117,28 @@ class LearnViewModel(
 
 ## Step 4: Screen を実装
 
+Screen は**ステートレス**で、`state`, `onIntent`, `onBackClick`, `modifier` を受け取ります。
+
 ```kotlin
 // {Name}Screen.kt
 
-@OptIn(KoinExperimentalAPI::class)
+/**
+ * {Name} 画面。
+ *
+ * @param state 画面の状態
+ * @param onIntent ユーザーアクションのコールバック
+ * @param onBackClick 戻るボタン押下時のコールバック
+ * @param modifier Modifier
+ */
 @Composable
 fun LearnScreen(
-    viewModel: LearnViewModel = koinViewModel(),
-    onBackClick: () -> Unit = {},
+    state: LearnState,
+    onIntent: (LearnIntent) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val state by viewModel.state.collectAsState()
-    
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text("Learn") },
@@ -143,7 +152,7 @@ fun LearnScreen(
     ) { padding ->
         LearnContent(
             state = state,
-            onIntent = { viewModel.send(it) },
+            onIntent = onIntent,
             modifier = Modifier.padding(padding)
         )
     }
@@ -157,37 +166,49 @@ fun LearnContent(
     modifier: Modifier = Modifier
 ) {
     when {
-        state.isLoading -> LoadingIndicator()
+        state.isLoading -> LoadingIndicator(modifier)
         state.hasError -> ErrorMessage(
             message = state.errorMessage,
-            onRetry = { onIntent(LearnIntent.Refresh) }
+            onRetry = { onIntent(LearnIntent.Refresh) },
+            modifier = modifier
         )
         else -> AlgorithmList(
             algorithms = state.algorithms,
-            onSelect = { onIntent(LearnIntent.SelectAlgorithm(it)) }
+            onSelect = { onIntent(LearnIntent.SelectAlgorithm(it)) },
+            modifier = modifier
         )
     }
 }
 ```
 
 ### ルール
-- `koinViewModel()` で ViewModel 取得
-- `collectAsState()` で State 収集
-- `viewModel.send(Intent)` で操作
+- Screen はステートレス
+- DI は Destination で行う
 - Content を分離 (ステートレス)
+
 
 ---
 
 ## Step 5: Navigation を追加
 
-```kotlin
-// {Name}Navigation.kt
+**DI と State 収集は Destination で行います。**
 
+```kotlin
+// {Name}Destination.kt (navigation モジュール内)
+
+@OptIn(KoinExperimentalAPI::class)
 fun NavGraphBuilder.learnDestination(
     onBackClick: () -> Unit
 ) {
     composable<Screen.Learn> {
-        LearnScreen(onBackClick = onBackClick)
+        val viewModel: LearnViewModel = koinViewModel()  // DI はここで
+        val state by viewModel.state.collectAsState()
+
+        LearnScreen(
+            state = state,
+            onIntent = viewModel::send,  // メソッド参照形式
+            onBackClick = onBackClick
+        )
     }
 }
 
@@ -195,6 +216,7 @@ fun NavController.navigateToLearn() {
     navigate(Screen.Learn)
 }
 ```
+
 
 ### Screen.kt に追加
 

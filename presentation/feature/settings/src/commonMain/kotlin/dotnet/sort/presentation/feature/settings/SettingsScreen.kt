@@ -9,32 +9,32 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 
-@OptIn(KoinExperimentalAPI::class, ExperimentalMaterial3Api::class)
+/**
+ * 設定画面。
+ *
+ * @param state 画面の状態
+ * @param onIntent ユーザーアクションのコールバック
+ * @param onBackClick 戻るボタン押下時のコールバック
+ * @param modifier Modifier
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
+    state: SettingsState,
+    onIntent: (SettingsIntent) -> Unit,
     onBackClick: () -> Unit,
-    viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>(),
     modifier: Modifier = Modifier
 ) {
-    val state by viewModel.state.collectAsState()
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = SortTheme.colorScheme.background,
@@ -49,51 +49,69 @@ fun SettingsScreen(
             )
         }
     ) { padding ->
-        Column(
+        SettingsContent(
+            state = state,
+            onIntent = onIntent,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(SpacingTokens.M)
+        )
+    }
+}
+
+/**
+ * 設定画面のコンテンツ。ステートレスでPreview可能。
+ *
+ * @param state 画面の状態
+ * @param onIntent ユーザーアクションのコールバック
+ * @param modifier Modifier
+ */
+@Composable
+fun SettingsContent(
+    state: SettingsState,
+    onIntent: (SettingsIntent) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        // Theme Setting
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = SpacingTokens.S),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Theme Setting
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = SpacingTokens.S),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Dark Mode",
-                        style = SortTheme.typography.titleMedium,
-                        color = SortTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = "Switch between light and dark themes",
-                        style = SortTheme.typography.bodySmall,
-                        color = SortTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                    )
-                }
-                Switch(
-                    checked = state.isDarkTheme,
-                    onCheckedChange = { viewModel.send(SettingsIntent.ToggleTheme(it)) }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Dark Mode",
+                    style = SortTheme.typography.titleMedium,
+                    color = SortTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = "Switch between light and dark themes",
+                    style = SortTheme.typography.bodySmall,
+                    color = SortTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 )
             }
-
-            Spacer(modifier = Modifier.height(SpacingTokens.L))
-
-            // App Info
-            Text(
-                text = "App Info",
-                style = SortTheme.typography.titleSmall,
-                color = SortTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(SpacingTokens.S))
-            Text(
-                text = "Version: ${state.appVersion}",
-                style = SortTheme.typography.bodyMedium,
-                color = SortTheme.colorScheme.onSurface
+            Switch(
+                checked = state.isDarkTheme,
+                onCheckedChange = { onIntent(SettingsIntent.ToggleTheme(it)) }
             )
         }
+
+        Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+        // App Info
+        Text(
+            text = "App Info",
+            style = SortTheme.typography.titleSmall,
+            color = SortTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        Text(
+            text = "Version: ${state.appVersion}",
+            style = SortTheme.typography.bodyMedium,
+            color = SortTheme.colorScheme.onSurface
+        )
     }
 }
