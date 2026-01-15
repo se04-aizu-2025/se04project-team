@@ -1,0 +1,55 @@
+name: Stale Issue Management
+
+on:
+  schedule:
+    # 毎日 00:00 UTC (09:00 JST)
+    - cron: '0 0 * * *'
+  # 手動実行用
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Mark Stale Issues and PRs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mark stale issues and PRs
+        uses: actions/stale@v9
+        with:
+          # Issue の設定
+          stale-issue-label: 'stale'
+          stale-issue-message: |
+            このIssueは30日間活動がないため、`stale`としてマークされました。
+            7日以内にアクティビティがない場合、自動的にクローズされます。
+            引き続き対応が必要な場合は、コメントを追加してください。
+          close-issue-message: |
+            このIssueは活動がなかったため、自動的にクローズされました。
+            再オープンが必要な場合は、新しいIssueを作成するか、このIssueをリオープンしてください。
+          days-before-issue-stale: 30
+          days-before-issue-close: 7
+
+          # PR の設定
+          stale-pr-label: 'stale'
+          stale-pr-message: |
+            このPull Requestは30日間活動がないため、`stale`としてマークされました。
+            7日以内にアクティビティがない場合、自動的にクローズされます。
+            引き続き作業中の場合は、更新するか、コメントを追加してください。
+          close-pr-message: |
+            このPull Requestは活動がなかったため、自動的にクローズされました。
+            再度作業する場合は、新しいPRを作成してください。
+          days-before-pr-stale: 30
+          days-before-pr-close: 7
+
+          # 除外設定
+          exempt-issue-labels: 'pinned,security,bug,enhancement'
+          exempt-pr-labels: 'pinned,security,do-not-close'
+          exempt-draft-pr: true
+
+          # 動作設定
+          operations-per-run: 100
+          ascending: true
+          remove-stale-when-updated: true

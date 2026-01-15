@@ -1,0 +1,65 @@
+version: 2
+updates:
+  # Gradle dependencies (including libs.versions.toml)
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+      - "gradle"
+    groups:
+      kotlin:
+        patterns:
+          - "*kotlin*"
+          - "*jetbrains*"
+        update-types:
+          - "minor"
+          - "patch"
+      compose:
+        patterns:
+          - "*compose*"
+        update-types:
+          - "minor"
+          - "patch"
+      testing:
+        patterns:
+          - "*junit*"
+          - "*test*"
+        update-types:
+          - "minor"
+          - "patch"
+      androidx:
+        patterns:
+          - "*androidx*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"

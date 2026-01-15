@@ -1,10 +1,7 @@
 package dotnet.sort.algorithm
 
-import dotnet.sort.model.ComplexityMetrics
-import dotnet.sort.model.SortAlgorithm
-import dotnet.sort.model.SortResult
-import dotnet.sort.model.SortSnapshot
-import kotlin.time.measureTime
+import dotnet.sort.model.SortType
+import org.koin.core.annotation.Single
 
 /**
  * バブルソート（単方向バブルソート）の実装クラス。
@@ -13,61 +10,35 @@ import kotlin.time.measureTime
  * - 時間計算量: O(n^2)
  * - 空間計算量: O(1)
  */
-class BubbleSortAlgorithm : SortAlgorithm {
 
-    override fun sort(input: List<Int>): SortResult {
-        val array = input.toMutableList()
-        val steps = mutableListOf<SortSnapshot>()
-        var comparisonCount = 0L
-        var swapCount = 0L
+@Single
+class BubbleSortAlgorithm : BaseSortAlgorithm() {
 
-        // Initial State
-        steps.add(SortSnapshot(array.toList(), emptyList(), "Start"))
+    override val type = SortType.BUBBLE
+    override val timeComplexity = "O(n²)"
+    override val spaceComplexity = "O(1)"
 
-        val duration = measureTime {
-            val n = array.size
-            for (i in 0 until n - 1) {
-                for (j in 0 until n - i - 1) {
-                    comparisonCount++
-                    
-                    // Snapshot for comparison (Optional: can be verbose for large N)
-                    steps.add(
-                        SortSnapshot(
-                            array.toList(),
-                            listOf(j, j + 1),
-                            "Comparing indices $j and ${j + 1}"
-                        )
+    override fun doSort(array: MutableList<Int>) {
+        val n = array.size
+        for (i in 0 until n - 1) {
+            for (j in 0 until n - i - 1) {
+                // Snapshot for comparison
+                addSnapshot(
+                    array,
+                    listOf(j, j + 1),
+                    "Comparing indices $j and ${j + 1}"
+                )
+
+                if (compare(array[j], array[j + 1]) > 0) {
+                    swap(array, j, j + 1)
+
+                    addSnapshot(
+                        array,
+                        listOf(j, j + 1),
+                        "Swap ${array[j + 1]} and ${array[j]}"
                     )
-
-                    if (array[j] > array[j + 1]) {
-                        val temp = array[j]
-                        array[j] = array[j + 1]
-                        array[j + 1] = temp
-                        swapCount++
-
-                        steps.add(
-                            SortSnapshot(
-                                array.toList(),
-                                listOf(j, j + 1),
-                                "Swap ${array[j + 1]} and ${array[j]}"
-                            )
-                        )
-                    }
                 }
             }
         }
-
-        // Final State
-        steps.add(SortSnapshot(array.toList(), emptyList(), "Sorted"))
-
-        val metrics = ComplexityMetrics(
-            comparisonCount = comparisonCount,
-            swapCount = swapCount,
-            executionTimeNs = duration.inWholeNanoseconds,
-            timeComplexity = "O(n^2)",
-            spaceComplexity = "O(1)"
-        )
-
-        return SortResult(array, steps, metrics)
     }
 }

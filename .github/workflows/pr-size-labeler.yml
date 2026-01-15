@@ -1,0 +1,36 @@
+name: PR Size Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  size-label:
+    name: Label PR Size
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Label PR based on size
+        uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # ラベル名とサイズ閾値（変更行数）
+          xs_label: 'lines: ≤10'
+          xs_max_size: 10
+          s_label: 'lines: ≤100'
+          s_max_size: 100
+          m_label: 'lines: ≤500'
+          m_max_size: 500
+          l_label: 'lines: ≤1000'
+          l_max_size: 1000
+          xl_label: 'lines: >1000'
+          # 除外パターン（自動生成ファイルなど）
+          files_to_ignore: |
+            *.lock
+            **/yarn.lock
+            **/package-lock.json
+            **/gradle.lockfile

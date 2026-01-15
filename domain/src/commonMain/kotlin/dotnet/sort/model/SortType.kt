@@ -13,7 +13,10 @@ package dotnet.sort.model
 
 enum class SortType(val displayName: String) {
     BUBBLE("Bubble Sort"),
-
-    // 必要に応じて BOGO("Bogo Sort") などを追加して拡張性を確保
-    // GUI表示用などに toString をオーバーライドしたり、displayNameを使う
+    SELECTION("Selection Sort"),
+    INSERTION("Insertion Sort"),
+    SHELL("Shell Sort"),
+    MERGE("Merge Sort"),
+    QUICK("Quick Sort"),
+    HEAP("Heap Sort"),
 }

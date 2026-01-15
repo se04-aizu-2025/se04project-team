@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -23,7 +24,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.presentation)
+            // Presentation layer entry point (navigation aggregates all features)
+            implementation(projects.presentation.navigation)
+            // Domain and Data layers
+            implementation(projects.domain)
+            implementation(projects.data)
+            // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -32,6 +38,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.composeViewModel)
+            implementation(projects.presentation.common)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -43,6 +53,7 @@ kotlin {
     }
 }
 
+
 compose.desktop {
     application {
         mainClass = "dotnet.sort.MainKt"
@@ -52,5 +63,34 @@ compose.desktop {
             packageName = "dotnet.sort"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+// CLI running task
+tasks.register<JavaExec>("runCli") {
+    group = "application"
+    description = "Runs the CLI application"
+    classpath = kotlin.targets["jvm"].compilations["main"].output.allOutputs + 
+                configurations["jvmRuntimeClasspath"]
+    mainClass.set("dotnet.sort.CliMainKt")
+    args = if (project.hasProperty("args")) {
+        project.property("args").toString().split(" ")
+    } else {
+        emptyList()
+    }
+    standardInput = System.`in`
+}
+
+
+dependencies {
+    add("kspCommonMainMetadata", libs.koin.kspCompiler)
+    add("kspJvm", libs.koin.kspCompiler)
+    add("kspJs", libs.koin.kspCompiler)
+    add("kspWasmJs", libs.koin.kspCompiler)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }
