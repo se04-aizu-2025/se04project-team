@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -27,7 +25,8 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
-import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.designsystem.components.atoms.SortTopBar
+import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
@@ -43,7 +42,6 @@ import dotnet.sort.presentation.feature.sort.components.SortVisualizer
  * @param onBackClick 戻るボタン押下時のコールバック
  * @param modifier Modifier
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SortScreen(
     state: SortState,
@@ -59,7 +57,7 @@ fun SortScreen(
         focusRequester.requestFocus()
     }
 
-    Scaffold(
+    SortScaffold(
         modifier = modifier
             .onKeyEvent { event ->
                 if (event.type == KeyEventType.KeyDown) {
@@ -88,15 +86,10 @@ fun SortScreen(
             }
             .focusRequester(focusRequester)
             .focusable(),
-        containerColor = SortTheme.colorScheme.background,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Visualizer") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Text("<")
-                    }
-                }
+            SortTopBar(
+                title = "Visualizer",
+                onBackClick = onBackClick
             )
         }
     ) { padding ->
@@ -146,8 +139,12 @@ fun SortContent(
 
                 Spacer(modifier = Modifier.width(SpacingTokens.L))
 
-                // Right: Controls
-                Column(modifier = Modifier.width(320.dp)) {
+                // Right: Controls (scrollable)
+                Column(
+                    modifier = Modifier
+                        .width(320.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
                     AlgorithmSelector(
                         selectedAlgorithm = state.algorithm,
                         onAlgorithmSelected = { onIntent(SortIntent.SelectAlgorithm(it)) },
@@ -191,8 +188,12 @@ fun SortContent(
                 }
             }
         } else {
-            // Portrait Layout
-            Column(modifier = Modifier.fillMaxSize()) {
+            // Portrait Layout (scrollable)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
                 AlgorithmSelector(
                     selectedAlgorithm = state.algorithm,
                     onAlgorithmSelected = { onIntent(SortIntent.SelectAlgorithm(it)) },
@@ -205,7 +206,7 @@ fun SortContent(
                     array = state.currentNumbers,
                     highlightIndices = state.highlightingIndices,
                     description = state.stepDescription,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.heightIn(min = 200.dp, max = 400.dp)
                 )
 
                 Spacer(modifier = Modifier.height(SpacingTokens.L))

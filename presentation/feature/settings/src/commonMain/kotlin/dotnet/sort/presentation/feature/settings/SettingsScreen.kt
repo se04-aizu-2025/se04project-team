@@ -1,21 +1,16 @@
 package dotnet.sort.presentation.feature.settings
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.components.atoms.SortText
+import dotnet.sort.designsystem.components.atoms.SortTopBar
+import dotnet.sort.designsystem.components.molecules.SortSettingsRow
+import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -27,7 +22,6 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
  * @param onBackClick 戻るボタン押下時のコールバック
  * @param modifier Modifier
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     state: SettingsState,
@@ -35,17 +29,12 @@ fun SettingsScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
+    SortScaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = SortTheme.colorScheme.background,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Settings") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Text("<")
-                    }
-                }
+            SortTopBar(
+                title = "Settings",
+                onBackClick = onBackClick
             )
         }
     ) { padding ->
@@ -75,43 +64,25 @@ fun SettingsContent(
 ) {
     Column(modifier = modifier) {
         // Theme Setting
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = SpacingTokens.S),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = "Dark Mode",
-                    style = SortTheme.typography.titleMedium,
-                    color = SortTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = "Switch between light and dark themes",
-                    style = SortTheme.typography.bodySmall,
-                    color = SortTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                )
-            }
-            Switch(
-                checked = state.isDarkTheme,
-                onCheckedChange = { onIntent(SettingsIntent.ToggleTheme(it)) }
-            )
-        }
+        SortSettingsRow(
+            title = "Dark Mode",
+            description = "Switch between light and dark themes",
+            checked = state.isDarkTheme,
+            onCheckedChange = { onIntent(SettingsIntent.ToggleTheme(it)) }
+        )
 
         Spacer(modifier = Modifier.height(SpacingTokens.L))
 
         // App Info
-        Text(
+        SortText(
             text = "App Info",
             style = SortTheme.typography.titleSmall,
             color = SortTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(SpacingTokens.S))
-        Text(
+        SortText(
             text = "Version: ${state.appVersion}",
-            style = SortTheme.typography.bodyMedium,
-            color = SortTheme.colorScheme.onSurface
+            style = SortTheme.typography.bodyMedium
         )
     }
 }

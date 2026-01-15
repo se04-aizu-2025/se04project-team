@@ -6,35 +6,32 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.components.atoms.SortText
+import dotnet.sort.designsystem.components.atoms.SortTopBar
+import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Compare 画面。
+ *
+ * @param onBackClick 戻るボタン押下時のコールバック
+ * @param modifier Modifier
+ */
 @Composable
 fun CompareScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
+    SortScaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = SortTheme.colorScheme.background,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Compare") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                         Text("<") // Text icon for stability
-                    }
-                }
+            SortTopBar(
+                title = "Compare",
+                onBackClick = onBackClick
             )
         }
     ) { padding ->
@@ -45,16 +42,15 @@ fun CompareScreen(
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
+                SortText(
                     text = "Coming Soon",
                     style = SortTheme.typography.headlineMedium,
                     color = SortTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(SpacingTokens.M))
-                Text(
+                SortText(
                     text = "Compare sorting algorithms performance here.",
-                    style = SortTheme.typography.bodyMedium,
-                    color = SortTheme.colorScheme.onSurface
+                    style = SortTheme.typography.bodyMedium
                 )
             }
         }
