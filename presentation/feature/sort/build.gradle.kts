@@ -4,10 +4,13 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("com.android.library")
     alias(libs.plugins.ksp)
 }
 
 kotlin {
+    androidTarget()
+    jvmToolchain(21)
     jvm()
 
     js {
@@ -63,5 +66,13 @@ dependencies {
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+android {
+    namespace = "dotnet.sort.presentation.feature.sort"
+    compileSdk = 35
+    defaultConfig {
+        minSdk = 24
     }
 }

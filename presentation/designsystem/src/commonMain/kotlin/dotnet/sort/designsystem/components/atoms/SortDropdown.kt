@@ -11,6 +11,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -89,5 +90,19 @@ fun <T> SortDropdown(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun SortDropdownPreview() {
+    SortTheme {
+        SortDropdown(
+            label = "Algorithm",
+            selectedItem = "Bubble Sort",
+            items = listOf("Bubble Sort", "Quick Sort", "Merge Sort"),
+            onItemSelected = {},
+            itemLabel = { it }
+        )
     }
 }

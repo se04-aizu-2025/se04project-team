@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import dotnet.sort.designsystem.theme.SortTheme
+import androidx.compose.ui.tooling.preview.Preview
 
 /**
  * ソートアプリ用のテキストコンポーネント (Atom)。
@@ -97,3 +98,20 @@ fun SortLabel(
         modifier = modifier
     )
 }
+
+@Preview
+@Composable
+private fun SortTextPreview() {
+    SortTheme {
+        SortText(text = "Default Text")
+    }
+}
+
+@Preview
+@Composable
+private fun SortHeadlinePreview() {
+    SortTheme {
+        SortHeadline(text = "Headline Text")
+    }
+}
+

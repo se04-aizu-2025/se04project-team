@@ -6,6 +6,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.theme.SortTheme
 
@@ -49,4 +50,15 @@ fun SortTopBar(
         ),
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun SortTopBarPreview() {
+    SortTheme {
+        SortTopBar(
+            title = "Top Bar",
+            onBackClick = {}
+        )
+    }
 }

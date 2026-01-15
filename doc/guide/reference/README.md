@@ -45,6 +45,7 @@
 | [VIEWMODEL_SCREEN.md](./VIEWMODEL_SCREEN.md) | ViewModel + Screen の構造 |
 | [STATE_MANAGEMENT.md](./STATE_MANAGEMENT.md) | MVIパターンの詳細 |
 | [COMPOSE_COMPONENTS.md](./COMPOSE_COMPONENTS.md) | Atomic Design、Modifier規約 |
+| [PREVIEWS.md](./PREVIEWS.md) | Preview 実装規約、トラブルシューティング |
 | [NAVIGATION.md](./NAVIGATION.md) | NavGraphBuilder、Routes の設計 |
 
 ### ⚡ 処理

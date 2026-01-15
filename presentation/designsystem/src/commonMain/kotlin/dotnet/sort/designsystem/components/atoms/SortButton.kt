@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import dotnet.sort.designsystem.theme.SortTheme
@@ -102,5 +103,28 @@ fun SortButton(
                 content = { content() }
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun SortButtonPreview() {
+    SortTheme {
+        SortButton(
+            text = "Primary Button",
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SortOutlinedButtonPreview() {
+    SortTheme {
+        SortButton(
+            text = "Outlined Button",
+            onClick = {},
+            style = SortButtonStyle.Outlined
+        )
     }
 }

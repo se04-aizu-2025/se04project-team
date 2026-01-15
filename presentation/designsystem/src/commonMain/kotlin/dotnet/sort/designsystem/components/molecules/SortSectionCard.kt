@@ -11,6 +11,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import dotnet.sort.designsystem.theme.SortTheme
@@ -54,6 +55,16 @@ fun SortSectionCard(
             Spacer(modifier = Modifier.height(SpacingTokens.S))
 
             content()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun SortSectionCardPreview() {
+    SortTheme {
+        SortSectionCard(title = "Section Title") {
+            Text("Content inside card")
         }
     }
 }
