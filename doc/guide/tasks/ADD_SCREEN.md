@@ -315,6 +315,26 @@ class LearnViewModelTest {
 
 ---
 
+## ✅ 検証コマンド
+
+追加が完了したら、以下のコマンドで動作確認を行ってください：
+
+```bash
+# ビルド確認
+./gradlew :presentation:feature:{name}:build
+
+# ViewModel テスト
+./gradlew :presentation:feature:{name}:test --tests "*{Name}ViewModelTest*"
+
+# デスクトップアプリで画面遷移確認
+./gradlew :composeApp:run
+```
+
+> [!TIP]
+> ナビゲーションエラーが発生する場合は、`Screen` に `@Serializable` が付いているか確認してください。
+
+---
+
 ## 参考
 
 詳細が必要な場合は、[reference/](../reference/) 内のガイドを参照してください。

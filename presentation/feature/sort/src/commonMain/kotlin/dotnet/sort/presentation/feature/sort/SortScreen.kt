@@ -25,7 +25,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
-import dotnet.sort.designsystem.components.atoms.SortTopBar
+import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector

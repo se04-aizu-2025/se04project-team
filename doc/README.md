@@ -1,15 +1,13 @@
 ---
 title: ドキュメント一覧
 version: 1.1.0
-last_updated: 2026-01-13
+last_updated: 2026-01-16
 maintainer: Team
 ---
 
 # 📚 ドキュメント一覧
 
 このディレクトリには、プロジェクトに関する各種ドキュメントが格納されています。
-
----
 
 ## このドキュメントの目的
 
@@ -18,8 +16,6 @@ DNSortプロジェクトの**すべてのドキュメントへのエントリー
 - 必要なドキュメントを素早く見つける
 - 対象読者に応じた適切な情報にアクセスする
 - プロジェクトの全体像を把握する
-
----
 
 ## 対象読者別ガイド
 
@@ -50,14 +46,28 @@ DNSortプロジェクトの**すべてのドキュメントへのエントリー
 | [要件定義](./REQUIREMENTS_DEFINITION.md) | システムの機能・非機能要件 |
 | [開発計画](./DEVELOPMENT_PLAN.md) | フェーズ・ブランチ・作業順序（100 PRs） |
 
----
-
 ## 🏗️ 設計・アーキテクチャ
 
 | ドキュメント | 説明 |
 |--------------|------|
 | [アーキテクチャ](./ARCHITECTURE.md) | システムアーキテクチャと設計方針 |
 | [Design System](./DESIGN_SYSTEM.md) | デザイントークン・テーマ・コンポーネント |
+
+---
+
+## 📦 モジュール別ドキュメント
+
+各モジュールには独自の README.md があり、詳細な構造と責務を定義しています。
+
+| モジュール | 責務 | README |
+|------------|------|--------|
+| **composeApp/** | アプリエントリーポイント | [README.md](../composeApp/README.md) |
+| **domain/** | ビジネスロジック・ドメインモデル | [README.md](../domain/README.md) |
+| **data/** | データアクセス・プラットフォーム実装 | [README.md](../data/README.md) |
+| **presentation/designsystem/** | ドメイン非依存UIコンポーネント | [README.md](../presentation/designsystem/README.md) |
+| **presentation/common/** | ドメイン依存・共通コンポーネント | [README.md](../presentation/common/README.md) |
+| **presentation/navigation/** | 画面遷移・ルート定義 | [README.md](../presentation/navigation/README.md) |
+| **presentation/feature/** | 機能別UI (MVI) | [README.md](../presentation/feature/README.md) |
 
 ---
 
@@ -117,7 +127,7 @@ guide/tasks/
 
 ---
 
-## ⚡ クイックリンク
+## 🖥️ 実行コマンド
 
 ```bash
 # Desktop 実行

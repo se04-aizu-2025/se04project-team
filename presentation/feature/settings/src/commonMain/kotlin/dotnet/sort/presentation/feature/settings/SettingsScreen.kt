@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortText
-import dotnet.sort.designsystem.components.atoms.SortTopBar
+import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.molecules.SortSettingsRow
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
