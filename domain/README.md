@@ -30,6 +30,21 @@ domain/src/commonMain/kotlin/dotnet/sort/
 └── di/           # DI モジュール定義
 ```
 
+将来的に規模が大きくなった場合は、以下のように **Feature単位の境界づけられたコンテキスト** で分割します。
+
+```
+domain/src/commonMain/kotlin/dotnet/sort/domain/
+├── history/
+│   ├── model/
+│   ├── repository/
+│   └── usecase/
+├── quiz/
+│   ├── model/
+│   ├── repository/
+│   └── usecase/
+└── algorithm/
+```
+
 ---
 
 ## 🧠 主要コンポーネント

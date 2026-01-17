@@ -22,25 +22,37 @@ parent: "[📚 ドキュメント一覧](../doc/README.md)"
 
 ```
 data/
-├── src/commonMain/kotlin/dotnet/sort/
-│   ├── database/     # Adapter構成要素 (SQLDelight Provider)
-│   └── repository/   # Adapter (Repository 実装)
+├── src/commonMain/kotlin/dotnet/sort/data/
+│   ├── history/          # Feature: algorithm history
+│   │   ├── adapter/
+│   │   ├── datasource/
+│   │   ├── mapper/
+│   │   └── policy/
+│   ├── quiz/             # Feature: quiz score
+│   │   ├── adapter/
+│   │   ├── datasource/
+│   │   ├── mapper/
+│   │   └── policy/
+│   └── infrastructure/   # DB/Driver/Provider
 ├── src/commonMain/sqldelight/ # SQLDelight schema
-├── src/jvmMain/      # JVM 固有実装
-├── src/jsMain/       # JS 固有実装
-└── src/wasmJsMain/   # WASM 固有実装
+├── src/jvmMain/              # JVM 固有実装
+├── src/jsMain/               # JS 固有実装
+└── src/wasmJsMain/           # WASM 固有実装
 ```
 
 ---
 
 ## 🔧 Data層のアーキテクチャ
 
-Data層は **Hexagonal Architecture の Adapter** として設計します。
+Data層は **Hexagonal Architecture の Adapter** として設計し、Feature単位で責務を分割します。
 
 | 役割 | 説明 | 例 |
 |------|------|----|
 | **Port** | Domain 側の Repository インターフェース | `AlgorithmHistoryRepository` |
 | **Adapter** | Repository 実装 | `AlgorithmHistoryRepositoryImpl` |
+| **DataSource** | Local/Remote の実データアクセス | `HistoryLocalDataSource` |
+| **Mapper** | Domain ⇄ DB/API 変換 | `HistoryMapper` |
+| **Policy** | キャッシュ/同期/取得戦略 | `HistorySyncPolicy` |
 | **Infrastructure** | DB/Driver/Schema | `DnsortDatabaseProvider`, `sqldelight/` |
 
 ---

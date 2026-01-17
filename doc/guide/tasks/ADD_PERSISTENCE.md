@@ -24,11 +24,12 @@ maintainer: Team
 
 ---
 
-## 概念: DDD + Clean + Hex
+## 概念: DDD + Clean + Hex + Feature分割
 
 - **DDD**: ドメインモデル・Repositoryインターフェース・UseCaseを中心に設計。
 - **Clean**: 依存は内側（Domain）へ向け、外部詳細はDataで吸収。
 - **Hex**: DomainはPort（Repository）、DataはAdapter（実装）として分離。
+- **Feature分割**: Data層はFeature単位で `adapter/dataSource/mapper/policy` を持つ。
 
 ---
 
@@ -82,6 +83,52 @@ ORDER BY created_at_millis DESC
 LIMIT ?;
 ```
 
+```sql
+-- 📁 data/src/commonMain/sqldelight/dotnet/sort/data/quiz_score.sq (検証済み: 2026-01-17)
+CREATE TABLE quiz_score(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    correct_count INTEGER NOT NULL,
+    incorrect_count INTEGER NOT NULL,
+    longest_streak INTEGER NOT NULL,
+    score INTEGER NOT NULL,
+    duration_millis INTEGER NOT NULL,
+    difficulty TEXT NOT NULL,
+    algorithm_type TEXT NOT NULL,
+    quiz_version TEXT NOT NULL,
+    created_at_millis INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS quiz_score_created_at ON quiz_score(created_at_millis);
+
+insertQuizScore:
+INSERT INTO quiz_score(
+    correct_count,
+    incorrect_count,
+    longest_streak,
+    score,
+    duration_millis,
+    difficulty,
+    algorithm_type,
+    quiz_version,
+    created_at_millis
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectQuizScores:
+SELECT id,
+       correct_count,
+       incorrect_count,
+       longest_streak,
+       score,
+       duration_millis,
+       difficulty,
+       algorithm_type,
+       quiz_version,
+       created_at_millis
+FROM quiz_score
+ORDER BY created_at_millis DESC
+LIMIT ?;
+```
+
 ---
 
 ## Step 3: Adapter を実装 (Data 層)
@@ -110,6 +157,25 @@ class AlgorithmHistoryRepositoryImpl(
 }
 ```
 
+```kotlin
+// 📁 data/src/commonMain/kotlin/dotnet/sort/repository/QuizScoreRepositoryImpl.kt (検証済み: 2026-01-17)
+@Single
+class QuizScoreRepositoryImpl(
+    private val databaseProvider: DnsortDatabaseProvider,
+) : QuizScoreRepository {
+    override suspend fun recordScore(
+        score: QuizScore,
+    ) {
+        databaseProvider.insertQuizScore(
+            score = score,
+        )
+    }
+
+    override fun observeRecentScores(limit: Int): Flow<List<QuizScore>> =
+        databaseProvider.observeRecentScores(limit)
+}
+```
+
 ---
 
 ## Step 4: Database Provider を実装 (Data 層)
@@ -122,7 +188,8 @@ class DnsortDatabaseProvider(
 ) {
     private val driver = driverFactory.createDriver()
     private val database = DnsortDatabase(driver)
-    private val queries = database.algorithm_historyQueries
+    private val historyQueries = database.algorithm_historyQueries
+    private val quizQueries = database.quiz_scoreQueries
     private val databaseReady = CompletableDeferred<Unit>()
 
     init {
@@ -143,7 +210,7 @@ class DnsortDatabaseProvider(
         createdAtMillis: Long,
     ) {
         ensureDatabaseReady()
-        queries.insertEvent(
+        historyQueries.insertEvent(
             algorithm_type = algorithmType?.toDbValue(),
             event_type = eventType.toDbValue(),
             metadata = metadata,
@@ -151,11 +218,26 @@ class DnsortDatabaseProvider(
         )
     }
 
+    suspend fun insertQuizScore(score: QuizScore) {
+        ensureDatabaseReady()
+        quizQueries.insertQuizScore(
+            correct_count = score.correctCount,
+            incorrect_count = score.incorrectCount,
+            longest_streak = score.longestStreak,
+            score = score.score,
+            duration_millis = score.durationMillis,
+            difficulty = score.difficulty,
+            algorithm_type = score.algorithmType.toDbValue(),
+            quiz_version = score.quizVersion,
+            created_at_millis = score.createdAtMillis,
+        )
+    }
+
     fun observeRecent(limit: Int): Flow<List<AlgorithmHistoryEntry>> =
         flow {
             ensureDatabaseReady()
             emitAll(
-                queries
+                historyQueries
                     .selectRecent(limit.toLong())
                     .asFlow()
                     .mapToList(Dispatchers.Default)
@@ -167,6 +249,33 @@ class DnsortDatabaseProvider(
                                 eventType = historyEventTypeFromDb(row.event_type),
                                 createdAtMillis = row.created_at_millis,
                                 metadata = row.metadata,
+                            )
+                        }
+                    },
+            )
+        }
+
+    fun observeRecentScores(limit: Int): Flow<List<QuizScore>> =
+        flow {
+            ensureDatabaseReady()
+            emitAll(
+                quizQueries
+                    .selectQuizScores(limit.toLong())
+                    .asFlow()
+                    .mapToList(Dispatchers.Default)
+                    .map { rows ->
+                        rows.map { row ->
+                            QuizScore(
+                                id = row.id,
+                                correctCount = row.correct_count,
+                                incorrectCount = row.incorrect_count,
+                                longestStreak = row.longest_streak,
+                                score = row.score,
+                                durationMillis = row.duration_millis,
+                                difficulty = row.difficulty,
+                                algorithmType = sortTypeFromDb(row.algorithm_type),
+                                quizVersion = row.quiz_version,
+                                createdAtMillis = row.created_at_millis,
                             )
                         }
                     },
@@ -195,14 +304,35 @@ class RecordHistoryEventUseCase(
 }
 ```
 
+```kotlin
+// 📁 domain/src/commonMain/kotlin/dotnet/sort/usecase/RecordQuizScoreUseCase.kt (検証済み: 2026-01-17)
+@Single
+class RecordQuizScoreUseCase(
+    private val quizScoreRepository: QuizScoreRepository,
+) {
+    suspend operator fun invoke(score: QuizScore) {
+        quizScoreRepository.recordScore(score)
+    }
+}
+```
+
+---
+
+## マイグレーション運用
+
+- SQLDelight の `Schema` バージョン更新を必須とする
+- 各テーブルの変更には Migration SQL を追加する
+
 ---
 
 ## チェックリスト
 
 - [ ] Port (Repository) は Domain 側にある
 - [ ] Data 側は Adapter (実装) と Provider に分離されている
+- [ ] Feature単位で Adapter/DataSource/Mapper/Policy が整理されている
 - [ ] SQLDelight のスキーマが `sqldelight/` に集約されている
 - [ ] UseCase から Repository を経由して利用している
+- [ ] マイグレーションを追加した
 
 ---
 
