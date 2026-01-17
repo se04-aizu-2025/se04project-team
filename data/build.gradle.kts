@@ -59,7 +59,8 @@ kotlin {
 
         wasmJsMain {
             dependencies {
-                implementation(libs.sqldelight.driver.js)
+                implementation(libs.sqldelight.driver.wasm.js)
+                implementation(libs.kotlinx.browser)
                 implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.2.1"))
                 implementation(npm("sql.js", "1.8.0"))
                 implementation(devNpm("copy-webpack-plugin", "9.1.0"))
