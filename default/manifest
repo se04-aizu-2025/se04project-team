@@ -1,0 +1,12 @@
+abi_version=2.2.0
+builtins_platform=WASM
+compiler_version=2.2.21
+depends=kotlin app.cash.sqldelight\:runtime org.jetbrains.kotlinx\:kotlinx-coroutines-core org.jetbrains.kotlinx\:kotlinx-browser org.jetbrains.kotlinx\:atomicfu
+ir_signature_versions=1,2
+jsOutputName=sqldelight-drivers-web-worker-driver
+language_features=+AllowAnyAsAnActualTypeForExpectInterface +JsAllowImplementingFunctionInterface +JsAllowValueClassesInExternals +MultiPlatformProjects
+metadata_version=1.4.1
+serializedIrFileFingerprints=z1sxbzbbi0xo.3fwpshh55yw22 3j2hwk9w5jmin.1tr03iqmr55o4 6oqyknawyop4.1wfx3x38ufh87 28r1tl0rr7afk.i3vg5cot28un 3bh84ygkylkoa.3ngbzpdthgh6 2txjeevmusman.3azblugl4md5l kv4r9qn5pmw4.3qvwao8tj85wm m0wsbn8e4ydv.31052to1x96hw 3hcs6e32wbbjg.3sbkcj88vsxs9 2m85ey20s31j2.2ode8lyln0jfg 2zyg2fxn3250m.39vg3t5c4z6ke vij9x1j01k30.18zs6f9y69lwc 2lbl96qjo1rjr.ajyq4rfi51bu 1uob94aekzdhu.1rr9sgg27ybku 2jeqifrhefnek.fmza6okdzcdp 2ka4dki6c5gym.3r7y6am78gptw k73r4jj840vv.2479021d37n8q pnv2l8iconik.31d7hbn7y3txi ajgw5cdp4ir3.1dpgmzhtuscgn 2bqt58xmxsh77.3euooa9b67zvt 27vysggfwtyuc.oxjn513k4tmu 3mv15asniequ6.wknbii4wzob6 a4a58pffau54.wmoehz0bkcup 17it3h99gtsn3.2xli43k2h9uh2
+serializedKlibFingerprint=32n8oqyvhz0of.1f1ac07d7k17y
+unique_name=app.cash.sqldelight\:web-worker-driver
+wasm_targets=wasm-js

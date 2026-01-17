@@ -2,12 +2,14 @@ package dotnet.sort.presentation.feature.sort
 
 import dotnet.sort.algorithm.SortAlgorithmFactory
 import dotnet.sort.generator.ArrayGeneratorType
+import dotnet.sort.model.HistoryEventType
 import dotnet.sort.model.SortResult
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import dotnet.sort.presentation.common.viewmodel.UiState
 import dotnet.sort.usecase.ExecuteSortUseCase
 import dotnet.sort.usecase.GenerateArrayUseCase
+import dotnet.sort.usecase.RecordHistoryEventUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,20 +29,22 @@ data class SortState(
     val isPlaying: Boolean = false,
     val playbackSpeed: Float = 1.0f,
     val highlightingIndices: List<Int> = emptyList(),
-    val stepDescription: String = ""
+    val stepDescription: String = "",
 ) : UiState
 
 @Factory
 class SortViewModel(
     private val executeSortUseCase: ExecuteSortUseCase,
     private val generateArrayUseCase: GenerateArrayUseCase,
+    private val recordHistoryEventUseCase: RecordHistoryEventUseCase,
 ) : BaseViewModel<SortState, SortIntent>(SortState()) {
-
     override fun send(intent: SortIntent) {
         when (intent) {
             is SortIntent.SelectAlgorithm -> {
                 updateState { copy(algorithm = intent.type) }
-                resetSort()
+                // Generate array if empty, then execute sort with new algorithm (no autoplay)
+                if (state.value.initialNumbers.isEmpty()) generateArray()
+                executeSort()
             }
             is SortIntent.SetArraySize -> {
                 updateState { copy(arraySize = intent.size) }
@@ -52,6 +56,10 @@ class SortViewModel(
             }
             SortIntent.StartSort -> startSort()
             SortIntent.ResetSort -> resetSort()
+            SortIntent.ShuffleArray -> {
+                generateArray()
+                executeSort()
+            }
             SortIntent.PauseSort -> {
                 updateState { copy(isPlaying = false) }
             }
@@ -83,32 +91,47 @@ class SortViewModel(
                     sortResult = null,
                     currentStepIndex = 0,
                     stepDescription = "Ready to sort",
-                    highlightingIndices = emptyList()
+                    highlightingIndices = emptyList(),
                 )
             }
         }
     }
 
-    private fun startSort() {
+    /**
+     * ソートを実行し、結果を取得する（自動再生なし）
+     */
+    private fun executeSort() {
         val currentState = state.value
         if (currentState.initialNumbers.isEmpty()) generateArray()
-        
+
         execute {
             updateState { copy(isLoading = true) }
             // Use initialNumbers to ensure clean sort
             val result = executeSortUseCase.execute(state.value.algorithm, state.value.initialNumbers)
+            recordHistoryEventUseCase(
+                algorithmType = state.value.algorithm,
+                eventType = HistoryEventType.SortExecuted,
+            )
             updateState {
                 copy(
                     isLoading = false,
                     sortResult = result,
-                    currentStepIndex = 0, // Start from beginning of visualization
-                    // Maybe keep initial state or show first step?
-                    // Usually step 0 is the initial state or close to it.
+                    currentStepIndex = 0,
                 )
             }
             updateVisualizerState(0)
-            
-            // Auto-start playback
+        }
+    }
+
+    /**
+     * ソートを開始し、自動再生を開始する
+     */
+    private fun startSort() {
+        executeSort()
+        execute {
+            // Wait for executeSort to complete, then start playback
+            // Small delay to ensure state is updated
+            delay(50)
             updateState { copy(isPlaying = true) }
             startAutoPlay()
         }
@@ -120,15 +143,15 @@ class SortViewModel(
                 // Determine base delay. 500ms base.
                 val baseDelay = 500L
                 val delayTime = (baseDelay / state.value.playbackSpeed).toLong()
-                
+
                 delay(delayTime)
-                
+
                 // Check if still playing after delay (could be paused during delay)
                 if (!state.value.isPlaying) break
-                
+
                 val currentState = state.value
                 val result = currentState.sortResult
-                
+
                 if (result != null && currentState.currentStepIndex < result.steps.size - 1) {
                     stepForward()
                 } else {
@@ -147,7 +170,7 @@ class SortViewModel(
                 currentStepIndex = 0,
                 isPlaying = false,
                 highlightingIndices = emptyList(),
-                stepDescription = "Reset"
+                stepDescription = "Reset",
             )
         }
     }
@@ -177,7 +200,7 @@ class SortViewModel(
                     currentNumbers = snapshot.arrayState,
                     highlightingIndices = snapshot.highlightingIndices,
                     stepDescription = snapshot.description,
-                    currentStepIndex = index
+                    currentStepIndex = index,
                 )
             }
         }

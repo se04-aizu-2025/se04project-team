@@ -5,17 +5,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.ArrayBar
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
+/**
+ * ソートのビジュアライザーコンポーネント。
+ *
+ * @param array 表示する配列
+ * @param highlightIndices ハイライトするインデックス
+ * @param description 説明テキスト
+ * @param modifier Modifier
+ */
 @Composable
 fun SortVisualizer(
     array: List<Int>,
@@ -31,7 +38,7 @@ fun SortVisualizer(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp) // Fixed height for visualization
+                .height(300.dp)
                 .padding(vertical = SpacingTokens.M),
             contentAlignment = Alignment.BottomCenter
         ) {
@@ -39,12 +46,10 @@ fun SortVisualizer(
                 ArrayBar(
                     array = array,
                     highlightIndices = highlightIndices,
-                    modifier = Modifier.fillMaxWidth().height(280.dp),
-                    // TODO: Pass other indices (sorted, pivot, etc.) when available in State/Snapshot
-                    // Currently we only have highlightingIndices from SortSnapshot
+                    modifier = Modifier.fillMaxWidth().height(280.dp)
                 )
             } else {
-                Text(
+                SortText(
                     text = "Press 'Sort' to start",
                     style = SortTheme.typography.bodyLarge,
                     color = SortTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -53,10 +58,9 @@ fun SortVisualizer(
         }
 
         // Description Text
-        Text(
-            text = description.ifEmpty { " " }, // Reserve space
+        SortText(
+            text = description.ifEmpty { " " },
             style = SortTheme.typography.bodyMedium,
-            color = SortTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()

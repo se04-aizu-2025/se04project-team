@@ -8,12 +8,16 @@
 
 ```
 presentation/
-├── navigation/                    # ナビゲーションモジュール
-│   └── AppNavigation.kt          # NavHost 定義
-│   └── Screen.kt                 # Route 定義
-└── feature/{name}/
-    └── {Name}Navigation.kt       # 各機能のナビゲーション拡張
+└── navigation/                    # ナビゲーションモジュール
+    ├── AppNavigation.kt          # NavHost 定義
+    ├── Screen.kt                 # Route 定義
+    ├── HomeDestination.kt        # Home 画面の Destination
+    ├── SortDestination.kt        # Sort 画面の Destination
+    ├── LearnDestination.kt       # Learn 画面の Destination
+    ├── CompareDestination.kt     # Compare 画面の Destination
+    └── SettingsDestination.kt    # Settings 画面の Destination
 ```
+
 
 ---
 
@@ -61,31 +65,49 @@ sealed class Screen {
 
 ## NavGraphBuilder 拡張関数
 
-### 必須パターン
+### 必須パターン (ViewModel あり)
+
+ViewModel を使用する画面では、Destination で DI と State 収集を行います。
 
 ```kotlin
-// {Feature}Navigation.kt
+// {Feature}Destination.kt
 
-/**
- * {Feature} 機能のナビゲーションを NavGraph に登録する。
- *
- * @param onBackClick 戻るボタン押下時のコールバック
- */
-fun NavGraphBuilder.{feature}Destination(
+@OptIn(KoinExperimentalAPI::class)
+fun NavGraphBuilder.sortDestination(
     onBackClick: () -> Unit
 ) {
-    composable<Screen.{Feature}> {
-        {Feature}Screen(
+    composable<Screen.Sort> {
+        val viewModel: SortViewModel = koinViewModel()  // DI はここで
+        val state by viewModel.state.collectAsState()
+
+        SortScreen(
+            state = state,
+            onIntent = viewModel::send,  // メソッド参照形式
             onBackClick = onBackClick
         )
     }
 }
 
-/**
- * {Feature} 画面へ遷移する。
- */
-fun NavController.navigateTo{Feature}() {
-    navigate(Screen.{Feature})
+fun NavController.navigateToSort() {
+    navigate(Screen.Sort)
+}
+```
+
+### 必須パターン (ViewModel なし)
+
+```kotlin
+// {Feature}Destination.kt
+
+fun NavGraphBuilder.learnDestination(
+    onBackClick: () -> Unit
+) {
+    composable<Screen.Learn> {
+        LearnScreen(onBackClick = onBackClick)
+    }
+}
+
+fun NavController.navigateToLearn() {
+    navigate(Screen.Learn)
 }
 ```
 
@@ -95,9 +117,10 @@ fun NavController.navigateTo{Feature}() {
 |------|------|-----|
 | **NavGraphBuilder拡張** | `{feature}Destination()` | `sortDestination()`, `homeDestination()` |
 | **NavController拡張** | `navigateTo{Feature}()` | `navigateToSort()` |
-| **ファイル名** | `{Feature}Navigation.kt` | `SortNavigation.kt` |
+| **ファイル名** | `{Feature}Destination.kt` | `SortDestination.kt` |
 
 **参考**: [Encapsulate Your Navigation Code](https://developer.android.com/guide/navigation/design/encapsulate)
+
 
 ---
 

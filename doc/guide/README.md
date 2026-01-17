@@ -1,23 +1,20 @@
 ---
 title: ベストプラクティスガイド
-version: 1.1.0
-last_updated: 2026-01-13
+version: 1.1.1
+last_updated: 2026-01-17
 maintainer: Team
+parent: "[📚 ドキュメント一覧](../README.md)"
 ---
 
 # 📚 ベストプラクティスガイド
 
 開発者向けのベストプラクティスガイドです。
 
----
-
 ## このディレクトリの目的
 
 - **プロジェクト特有の規約・パターン**を集約
 - **タスクベースのガイド**で日常開発を効率化
 - **詳細リファレンス**で深い理解をサポート
-
----
 
 ## ディレクトリ構成
 
@@ -27,6 +24,7 @@ maintainer: Team
 | `FUNDAMENTALS.md` | 基礎ルール（サマリー） |
 | [tasks/](./tasks/README.md) | タスク別ステップガイド |
 | [reference/](./reference/README.md) | 詳細リファレンス |
+| [OPENCODE_SKILLS.md](./OPENCODE_SKILLS.md) | OpenCode skills 運用ガイド |
 
 ---
 

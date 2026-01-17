@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -84,12 +85,12 @@ private fun determineBarState(
     swappingIndices: List<Int>,
     highlightIndices: List<Int>,
 ): BarState {
-    return when {
-        index in sortedIndices -> BarState.Sorted
-        index == pivotIndex -> BarState.Pivot
-        index == selectedIndex -> BarState.Selected
-        index in swappingIndices -> BarState.Swapping
-        index in highlightIndices -> BarState.Comparing
+    return when (index) {
+        in sortedIndices -> BarState.Sorted
+        pivotIndex -> BarState.Pivot
+        selectedIndex -> BarState.Selected
+        in swappingIndices -> BarState.Swapping
+        in highlightIndices -> BarState.Comparing
         else -> BarState.Default
     }
 }

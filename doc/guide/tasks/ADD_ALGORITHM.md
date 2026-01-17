@@ -244,6 +244,29 @@ addSnapshot(
 
 ---
 
+## ✅ 検証コマンド
+
+追加が完了したら、以下のコマンドで動作確認を行ってください：
+
+```bash
+# 単体テスト実行
+./gradlew :domain:test --tests "*CountingSortAlgorithmTest*"
+
+# 全ソートアルゴリズムテスト
+./gradlew :domain:test --tests "*SortAlgorithm*"
+
+# ビルド確認
+./gradlew :domain:build
+
+# デスクトップアプリで動作確認
+./gradlew :composeApp:run
+```
+
+> [!TIP]
+> テストが通らない場合は、`BaseSortAlgorithmTest` の継承が正しいか確認してください。
+
+---
+
 ## 参考
 
 詳細が必要な場合は、[reference/DESIGN_PATTERNS.md](../reference/DESIGN_PATTERNS.md) を参照してください。

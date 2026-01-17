@@ -6,15 +6,9 @@
 
 ## 概要
 
-コンポーネントは **Atomic Design** に基づいて分類します:
+コンポーネントは **Atomic Design** に基づいて分類します。
 
-```
-designsystem/components/
-├── atoms/          # 最小単位
-└── molecules/      # 複合コンポーネント
-
-feature/{name}/components/  # 画面固有コンポーネント
-```
+> 粒度の詳細定義は [presentation/designsystem/README.md](../../../presentation/designsystem/README.md) を参照してください。
 
 ---
 
@@ -22,7 +16,7 @@ feature/{name}/components/  # 画面固有コンポーネント
 
 | 種類 | 定義 | 例 |
 |------|------|-----|
-| **Atom** | 最小単位、汎用 | `SortBar`, `SortButton` |
+| **Atom** | 最小単位、汎用 | `SortText`, `SortButton`, `SortBar` |
 | **Molecule** | 複数 Atoms の組み合わせ | `ArrayBar`, `AlgorithmCard` |
 | **Organism** | 画面固有、機能単位 | `SortVisualizer` (feature内) |
 
@@ -228,6 +222,26 @@ fun ExpandableCard(content: @Composable () -> Unit) {
 - [ ] Preview を複数追加
 - [ ] contentDescription を設定
 - [ ] KDoc を追加
+
+---
+
+## ✅ 検証コマンド
+
+追加が完了したら、以下のコマンドで動作確認を行ってください：
+
+```bash
+# ビルド確認
+./gradlew :presentation:designsystem:build
+
+# Preview 確認 (Android Studio)
+# Android Studio で Preview タブを開く
+
+# デスクトップアプリで表示確認
+./gradlew :composeApp:run
+```
+
+> [!TIP]
+> Preview が表示されない場合は、`@Preview` アノテーションと `SortTheme` ラップを確認してください。
 
 ---
 

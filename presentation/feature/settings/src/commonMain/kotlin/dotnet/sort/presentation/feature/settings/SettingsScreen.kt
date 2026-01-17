@@ -1,99 +1,158 @@
 package dotnet.sort.presentation.feature.settings
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import dotnet.sort.designsystem.components.atoms.SortIcons
+import dotnet.sort.designsystem.components.atoms.SortText
+import dotnet.sort.designsystem.components.molecules.SortBottomBar
+import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
+import dotnet.sort.designsystem.components.molecules.SortSettingsRow
+import dotnet.sort.designsystem.components.molecules.SortTopBar
+import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 
-@OptIn(KoinExperimentalAPI::class, ExperimentalMaterial3Api::class)
+/**
+ * 設定画面。
+ *
+ * @param isHomeSelected Home選択状態
+ * @param isSortSelected Sort選択状態
+ * @param isLearnSelected Learn選択状態
+ * @param isCompareSelected Compare選択状態
+ * @param isSettingsSelected Settings選択状態
+ * @param onNavigateToHome Home画面への遷移コールバック
+ * @param onNavigateToSort Sort画面への遷移コールバック
+ * @param onNavigateToLearn Learn画面への遷移コールバック
+ * @param onNavigateToCompare Compare画面への遷移コールバック
+ * @param onNavigateToSettings Settings画面への遷移コールバック
+ * @param state 画面の状態
+ * @param onIntent ユーザーアクションのコールバック
+ * @param onBackClick 戻るボタン押下時のコールバック
+ * @param modifier Modifier
+ */
 @Composable
 fun SettingsScreen(
+    isHomeSelected: Boolean,
+    isSortSelected: Boolean,
+    isLearnSelected: Boolean,
+    isCompareSelected: Boolean,
+    isSettingsSelected: Boolean,
+    onNavigateToHome: () -> Unit,
+    onNavigateToSort: () -> Unit,
+    onNavigateToLearn: () -> Unit,
+    onNavigateToCompare: () -> Unit,
+    onNavigateToSettings: () -> Unit,
+    state: SettingsState,
+    onIntent: (SettingsIntent) -> Unit,
     onBackClick: () -> Unit,
-    viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val state by viewModel.state.collectAsState()
-
-    Scaffold(
+    SortScaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = SortTheme.colorScheme.background,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Settings") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Text("<")
-                    }
-                }
+            SortTopBar(
+                title = "Settings",
+                onBackClick = onBackClick,
             )
-        }
+        },
+        bottomBar = {
+            SortBottomBar(
+                items =
+                    listOf(
+                        SortBottomBarItem(
+                            icon = SortIcons.Home,
+                            contentDescription = "Home",
+                            selected = isHomeSelected,
+                            onClick = onNavigateToHome,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Sort,
+                            contentDescription = "Sort",
+                            selected = isSortSelected,
+                            onClick = onNavigateToSort,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Learn,
+                            contentDescription = "Learn",
+                            selected = isLearnSelected,
+                            onClick = onNavigateToLearn,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Compare,
+                            contentDescription = "Compare",
+                            selected = isCompareSelected,
+                            onClick = onNavigateToCompare,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Settings,
+                            contentDescription = "Settings",
+                            selected = isSettingsSelected,
+                            onClick = onNavigateToSettings,
+                        ),
+                    ),
+            )
+        },
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(SpacingTokens.M)
-        ) {
-            // Theme Setting
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = SpacingTokens.S),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Dark Mode",
-                        style = SortTheme.typography.titleMedium,
-                        color = SortTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = "Switch between light and dark themes",
-                        style = SortTheme.typography.bodySmall,
-                        color = SortTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                    )
-                }
-                Switch(
-                    checked = state.isDarkTheme,
-                    onCheckedChange = { viewModel.send(SettingsIntent.ToggleTheme(it)) }
-                )
-            }
+        SettingsContent(
+            state = state,
+            onIntent = onIntent,
+            modifier =
+                Modifier
+                    .fillMaxSize(),
+        )
+    }
+}
 
-            Spacer(modifier = Modifier.height(SpacingTokens.L))
+/**
+ * 設定画面のコンテンツ。ステートレスでPreview可能。
+ *
+ * @param state 画面の状態
+ * @param onIntent ユーザーアクションのコールバック
+ * @param modifier Modifier
+ */
+@Composable
+fun SettingsContent(
+    state: SettingsState,
+    onIntent: (SettingsIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier =
+            modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = SpacingTokens.M)
+                .padding(
+                    top = SpacingTokens.FloatingTopBarInset,
+                    bottom = SpacingTokens.FloatingBottomBarInset,
+                ),
+    ) {
+        // Theme Setting
+        SortSettingsRow(
+            title = "Dark Mode",
+            description = "Switch between light and dark themes",
+            checked = state.isDarkTheme,
+            onCheckedChange = { onIntent(SettingsIntent.ToggleTheme(it)) },
+        )
 
-            // App Info
-            Text(
-                text = "App Info",
-                style = SortTheme.typography.titleSmall,
-                color = SortTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(SpacingTokens.S))
-            Text(
-                text = "Version: ${state.appVersion}",
-                style = SortTheme.typography.bodyMedium,
-                color = SortTheme.colorScheme.onSurface
-            )
-        }
+        Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+        // App Info
+        SortText(
+            text = "App Info",
+            style = SortTheme.typography.titleSmall,
+            color = SortTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        SortText(
+            text = "Version: ${state.appVersion}",
+            style = SortTheme.typography.bodyMedium,
+        )
     }
 }

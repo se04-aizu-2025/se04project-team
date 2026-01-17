@@ -1,18 +1,20 @@
 package dotnet.sort.presentation.common.ui
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 /**
- * 条件に基づいて Modifier を適用します。
+ * フローティングトップバー分の余白を追加します。
  *
- * @param condition チェックする条件（trueの場合に適用）。
- * @param modifier [condition] が true の場合に適用する Modifier。
- * @return 変更された Modifier。
+ * @param padding 追加する上部余白
  */
-fun Modifier.conditional(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
-    return if (condition) {
-        then(modifier(Modifier))
-    } else {
-        this
-    }
-}
+fun Modifier.floatingTopBarPadding(padding: Dp = 80.dp): Modifier = this.padding(top = padding)
+
+/**
+ * フローティングボトムバー分の余白を追加します。
+ *
+ * @param padding 追加する下部余白
+ */
+fun Modifier.floatingBottomBarPadding(padding: Dp = 96.dp): Modifier = this.padding(bottom = padding)

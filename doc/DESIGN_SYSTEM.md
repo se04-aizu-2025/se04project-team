@@ -1,7 +1,7 @@
 ---
 title: デザインシステム
-version: 1.0.0
-last_updated: 2026-01-13
+version: 1.1.0
+last_updated: 2026-01-17
 maintainer: Team
 ---
 
@@ -22,6 +22,9 @@ designsystem/
 └── components/   # UI コンポーネント
     ├── atoms/    # 最小単位のコンポーネント
     └── molecules/# 複合コンポーネント
+
+※ コンポーネントの粒度定義については [こちら](../presentation/designsystem/README.md) を参照してください。
+※ ドメイン依存の共通コンポーネントについては [こちら](../presentation/common/README.md) を参照してください。
 ```
 
 ---
@@ -72,6 +75,8 @@ Box(
 | `L` | 24.dp | 大スペース |
 | `XL` | 32.dp | 特大スペース |
 | `XXL` | 48.dp | 最大スペース |
+| `FloatingTopBarInset` | 80.dp | フローティングトップバー余白 |
+| `FloatingBottomBarInset` | 96.dp | フローティングボトムバー余白 |
 
 **使用方法**:
 
@@ -101,28 +106,36 @@ Spacer(modifier = Modifier.height(SpacingTokens.M))
 Material 3 ベースのカスタムテーマ：
 
 ```kotlin
+// 📁 designsystem/theme/Theme.kt (検証済み: 2026-01-16)
 @Composable
 fun SortTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
-        typography = SortTypography,
-        content = content
-    )
+    val sortColorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    
+    CompositionLocalProvider(
+        LocalSortColorScheme provides sortColorScheme,
+        LocalSortTypography provides DefaultTypography,
+    ) {
+        MaterialTheme(
+            colorScheme = materialColorScheme,
+            content = content
+        )
+    }
 }
 ```
 
 **テーマ値へのアクセス**:
 
 ```kotlin
+// 📁 Composable 関数内 (検証済み: 2026-01-16)
 @Composable
 fun MyComponent() {
     Text(
         text = "Hello",
-        style = SortTheme.typography.titleMedium,
-        color = SortTheme.colorScheme.primary
+        style = SortTheme.typography.body,  // SortTypography
+        color = SortTheme.colorScheme.primary  // SortColorScheme
     )
 }
 ```

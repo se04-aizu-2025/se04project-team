@@ -1,7 +1,7 @@
 ---
 title: アーキテクチャ
-version: 1.0.0
-last_updated: 2026-01-13
+version: 1.1.0
+last_updated: 2026-01-17
 maintainer: Team
 ---
 
@@ -26,10 +26,12 @@ maintainer: Team
 
 ## 概要
 
-本プロジェクトは**Layered Architecture (Clean Architecture-like)** を採用し、以下の特徴を持ちます：
+本プロジェクトは **DDD + Clean Architecture + Hexagonal Architecture** を組み合わせて採用し、以下の特徴を持ちます：
 
 - **Presentation層**: MVI (Model-View-Intent) パターン
 - **Domain層**: DDD (Domain-Driven Design) のプラクティス
+- **依存方向**: Clean Architecture に従い、内側（Domain）へ依存
+- **Data層**: Hexagonal Architecture の Adapter として外部依存を隔離
 - **モジュール分割**: 水平分割（レイヤーごと）のみ、垂直分割（機能別）は行わない
 
 ## アーキテクチャ図
@@ -81,6 +83,14 @@ graph TB
 ```
 
 ## レイヤー構成
+
+### 採用しているアーキテクチャ要素
+
+| アーキテクチャ | 採用している要素 | 適用箇所 |
+|---------------|------------------|---------|
+| **DDD** | エンティティ/値オブジェクト/ドメインサービス/Repositoryインターフェース | `domain/` 全体 |
+| **Clean Architecture** | 依存方向のルール（内側へ依存）/UseCase中心 | `presentation/` → `domain/`、`data/` → `domain/` |
+| **Hexagonal Architecture** | Port = Repository、Adapter = Data実装 | `domain/repository` と `data` 実装群 |
 
 ### 1. Presentation Layer (MVI Pattern)
 
@@ -239,44 +249,30 @@ class UserRegistrationService(
 
 ### 3. Data Layer
 
-**責務**: データソースへのアクセスとリポジトリの実装
+**責務**: データアクセスと外部I/Oの実装
 
 ```
 data/
 └── src/
-    └── commonMain/kotlin/dotnet/sort/
-        ├── repository/
-        │   └── XxxRepositoryImpl.kt   # Repository実装
-        ├── datasource/
-        │   ├── local/
-        │   │   └── XxxLocalDataSource.kt
-        │   └── remote/
-        │       └── XxxRemoteDataSource.kt
-        ├── mapper/
-        │   └── XxxMapper.kt           # DTOとEntityの変換
-        └── dto/
-            └── XxxDto.kt              # Data Transfer Object
+    ├── commonMain/
+    │   └── kotlin/
+    │       └── dotnet/sort/
+    │           ├── database/   # SQLDelight Provider
+    │           ├── generator/
+    │           └── repository/
+    ├── commonMain/sqldelight/  # SQLDelight schema
+    ├── jvmMain/
+    ├── jsMain/
+    └── wasmJsMain/
 ```
 
-**主要コンポーネント**:
-- **Repository Implementation**: Domain層のインターフェースを実装
-- **Data Sources**: APIやデータベースなどの具体的なデータアクセス
-- **Mappers**: DTOとDomain Entityの相互変換
-- **DTOs**: データ転送オブジェクト
-
-```kotlin
-class UserRepositoryImpl(
-    private val remoteDataSource: UserRemoteDataSource,
-    private val mapper: UserMapper
-) : UserRepository {
-    override suspend fun findById(id: UserId): Result<User> {
-        return remoteDataSource.getUser(id.value)
-            .map { dto -> mapper.toDomain(dto) }
-    }
-}
-```
+**Data層の責務**:
+- **Database**: SQLDelight による履歴イベントの永続化
+- **Generator**: 配列生成アルゴリズム
+- **Repository実装**: Domain層のRepositoryインターフェース実装
 
 ---
+
 
 ## 依存関係ルール
 

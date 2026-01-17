@@ -1,7 +1,7 @@
 ---
 title: オンボーディング
 version: 1.0.0
-last_updated: 2026-01-13
+last_updated: 2026-01-16
 maintainer: Team
 audience: new-developers
 ---
@@ -30,37 +30,31 @@ audience: new-developers
 
 ### レイヤー構成
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    composeApp                           │
-│                  (エントリーポイント)                    │
-└────────────────────────┬────────────────────────────────┘
-                         │
-┌────────────────────────▼────────────────────────────────┐
-│                   Presentation 層                        │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐ │
-│  │ feature/ │ │navigation│ │designsys │ │  common    │ │
-│  │ sort,    │ │          │ │          │ │            │ │
-│  │ home,... │ │          │ │          │ │            │ │
-│  └──────────┘ └──────────┘ └──────────┘ └────────────┘ │
-└────────────────────────┬────────────────────────────────┘
-                         │
-┌────────────────────────▼────────────────────────────────┐
-│                     Domain 層                            │
-│  ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐ │
-│  │  algorithm/  │ │    model/    │ │     usecase/     │ │
-│  │ SortAlgorithm│ │ SortType,    │ │ ExecuteSortUseCase│
-│  │ Factory      │ │ SortResult   │ │                  │ │
-│  └──────────────┘ └──────────────┘ └──────────────────┘ │
-└────────────────────────┬────────────────────────────────┘
-                         │
-┌────────────────────────▼────────────────────────────────┐
-│                      Data 層                             │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │  generator/                                       │   │
-│  │  ArrayGenerator, ArrayGeneratorImpl               │   │
-│  └──────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph composeApp["📱 composeApp (エントリーポイント)"]
+    end
+
+    subgraph Presentation["🎨 Presentation 層"]
+        feature["feature/\nsort, home, ..."]
+        navigation["navigation/"]
+        designsystem["designsystem/"]
+        common["common/"]
+    end
+
+    subgraph Domain["🧠 Domain 層"]
+        algorithm["algorithm/\nSortAlgorithm"]
+        model["model/\nSortType, SortResult"]
+        usecase["usecase/\nExecuteSortUseCase"]
+    end
+
+    subgraph Data["💾 Data 層"]
+        generator["generator/\nArrayGenerator"]
+    end
+
+    composeApp --> Presentation
+    Presentation --> Domain
+    Data --> Domain
 ```
 
 ### 依存関係ルール
@@ -77,22 +71,10 @@ Presentation → Domain ← Data
 
 ## MVI パターン
 
-Presentation 層では **MVI (Model-View-Intent)** を採用。
+Presentation 層では **MVI (Model-View-Intent)** を採用しています。
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                          View                            │
-│  ┌─────────────┐                      ┌───────────────┐ │
-│  │ UI を描画   │ ◄──── observe ────── │ State (Flow)  │ │
-│  └─────────────┘                      └───────────────┘ │
-│         │                                      ↑        │
-│         │ User Input                           │        │
-│         ↓                                      │        │
-│  ┌─────────────┐                      ┌───────────────┐ │
-│  │ Intent 発火 │ ─────── send ──────► │ ViewModel     │ │
-│  └─────────────┘                      │ (状態を更新)  │ │
-│                                       └───────────────┘ │
-└─────────────────────────────────────────────────────────┘
+User Input → Intent → ViewModel → State → UI
 ```
 
 | コンポーネント | 役割 |
@@ -101,6 +83,8 @@ Presentation 層では **MVI (Model-View-Intent)** を採用。
 | **Intent** | ユーザーの意図 (アクション) |
 | **ViewModel** | Intent を受け取り State を更新 |
 | **Screen** | State を表示し Intent を発火 |
+
+> 詳細は [STATE_MANAGEMENT.md](./reference/STATE_MANAGEMENT.md) を参照してください。
 
 ---
 
