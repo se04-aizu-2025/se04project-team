@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.koin.annotations)
             implementation(projects.presentation.common)
             implementation(projects.presentation.designsystem)
+            implementation(projects.domain)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

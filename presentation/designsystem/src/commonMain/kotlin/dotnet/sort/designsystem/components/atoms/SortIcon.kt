@@ -1,5 +1,12 @@
 package dotnet.sort.designsystem.components.atoms
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
@@ -7,9 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
 import dotnet.sort.designsystem.theme.SortTheme
 
 /**
@@ -43,7 +47,7 @@ private fun SortIconPreview() {
     SortTheme {
         SortIcon(
             imageVector = Icons.Default.PlayArrow,
-            contentDescription = "Play"
+            contentDescription = "Play",
         )
     }
 }
@@ -54,7 +58,15 @@ private fun SortIconSettingsPreview() {
     SortTheme {
         SortIcon(
             imageVector = Icons.Default.Settings,
-            contentDescription = "Settings"
+            contentDescription = "Settings",
         )
     }
+}
+
+object SortIcons {
+    val Home: ImageVector = Icons.Default.Home
+    val Sort: ImageVector = Icons.Default.Sort
+    val Learn: ImageVector = Icons.Default.MenuBook
+    val Compare: ImageVector = Icons.Default.Tune
+    val Settings: ImageVector = Icons.Default.Settings
 }

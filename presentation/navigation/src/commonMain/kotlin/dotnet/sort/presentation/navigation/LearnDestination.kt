@@ -11,10 +11,28 @@ import dotnet.sort.presentation.feature.learn.LearnScreen
  * @param onBackClick 戻るボタン押下時のコールバック
  */
 fun NavGraphBuilder.learnDestination(
-    onBackClick: () -> Unit
+    currentScreen: Screen,
+    onNavigateToHome: () -> Unit,
+    onNavigateToSort: () -> Unit,
+    onNavigateToLearn: () -> Unit,
+    onNavigateToCompare: () -> Unit,
+    onNavigateToSettings: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     composable<Screen.Learn> {
-        LearnScreen(onBackClick = onBackClick)
+        LearnScreen(
+            isHomeSelected = currentScreen is Screen.Home,
+            isSortSelected = currentScreen is Screen.Sort,
+            isLearnSelected = currentScreen is Screen.Learn,
+            isCompareSelected = currentScreen is Screen.Compare,
+            isSettingsSelected = currentScreen is Screen.Settings,
+            onNavigateToHome = onNavigateToHome,
+            onNavigateToSort = onNavigateToSort,
+            onNavigateToLearn = onNavigateToLearn,
+            onNavigateToCompare = onNavigateToCompare,
+            onNavigateToSettings = onNavigateToSettings,
+            onBackClick = onBackClick,
+        )
     }
 }
 

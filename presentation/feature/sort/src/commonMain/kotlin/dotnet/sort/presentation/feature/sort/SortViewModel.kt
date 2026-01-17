@@ -2,12 +2,14 @@ package dotnet.sort.presentation.feature.sort
 
 import dotnet.sort.algorithm.SortAlgorithmFactory
 import dotnet.sort.generator.ArrayGeneratorType
+import dotnet.sort.model.HistoryEventType
 import dotnet.sort.model.SortResult
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import dotnet.sort.presentation.common.viewmodel.UiState
 import dotnet.sort.usecase.ExecuteSortUseCase
 import dotnet.sort.usecase.GenerateArrayUseCase
+import dotnet.sort.usecase.RecordHistoryEventUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,15 +29,15 @@ data class SortState(
     val isPlaying: Boolean = false,
     val playbackSpeed: Float = 1.0f,
     val highlightingIndices: List<Int> = emptyList(),
-    val stepDescription: String = ""
+    val stepDescription: String = "",
 ) : UiState
 
 @Factory
 class SortViewModel(
     private val executeSortUseCase: ExecuteSortUseCase,
     private val generateArrayUseCase: GenerateArrayUseCase,
+    private val recordHistoryEventUseCase: RecordHistoryEventUseCase,
 ) : BaseViewModel<SortState, SortIntent>(SortState()) {
-
     override fun send(intent: SortIntent) {
         when (intent) {
             is SortIntent.SelectAlgorithm -> {
@@ -89,7 +91,7 @@ class SortViewModel(
                     sortResult = null,
                     currentStepIndex = 0,
                     stepDescription = "Ready to sort",
-                    highlightingIndices = emptyList()
+                    highlightingIndices = emptyList(),
                 )
             }
         }
@@ -106,6 +108,10 @@ class SortViewModel(
             updateState { copy(isLoading = true) }
             // Use initialNumbers to ensure clean sort
             val result = executeSortUseCase.execute(state.value.algorithm, state.value.initialNumbers)
+            recordHistoryEventUseCase(
+                algorithmType = state.value.algorithm,
+                eventType = HistoryEventType.SortExecuted,
+            )
             updateState {
                 copy(
                     isLoading = false,
@@ -137,15 +143,15 @@ class SortViewModel(
                 // Determine base delay. 500ms base.
                 val baseDelay = 500L
                 val delayTime = (baseDelay / state.value.playbackSpeed).toLong()
-                
+
                 delay(delayTime)
-                
+
                 // Check if still playing after delay (could be paused during delay)
                 if (!state.value.isPlaying) break
-                
+
                 val currentState = state.value
                 val result = currentState.sortResult
-                
+
                 if (result != null && currentState.currentStepIndex < result.steps.size - 1) {
                     stepForward()
                 } else {
@@ -164,7 +170,7 @@ class SortViewModel(
                 currentStepIndex = 0,
                 isPlaying = false,
                 highlightingIndices = emptyList(),
-                stepDescription = "Reset"
+                stepDescription = "Reset",
             )
         }
     }
@@ -194,7 +200,7 @@ class SortViewModel(
                     currentNumbers = snapshot.arrayState,
                     highlightingIndices = snapshot.highlightingIndices,
                     stepDescription = snapshot.description,
-                    currentStepIndex = index
+                    currentStepIndex = index,
                 )
             }
         }

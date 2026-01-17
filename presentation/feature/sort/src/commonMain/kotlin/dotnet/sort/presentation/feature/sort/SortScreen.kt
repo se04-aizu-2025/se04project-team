@@ -25,8 +25,12 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
+import dotnet.sort.designsystem.components.atoms.SortIcons
+import dotnet.sort.designsystem.components.molecules.SortBottomBar
+import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
+import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
@@ -37,6 +41,16 @@ import dotnet.sort.presentation.feature.sort.components.SortVisualizer
 /**
  * ソート可視化画面。
  *
+ * @param isHomeSelected Home選択状態
+ * @param isSortSelected Sort選択状態
+ * @param isLearnSelected Learn選択状態
+ * @param isCompareSelected Compare選択状態
+ * @param isSettingsSelected Settings選択状態
+ * @param onNavigateToHome Home画面への遷移コールバック
+ * @param onNavigateToSort Sort画面への遷移コールバック
+ * @param onNavigateToLearn Learn画面への遷移コールバック
+ * @param onNavigateToCompare Compare画面への遷移コールバック
+ * @param onNavigateToSettings Settings画面への遷移コールバック
  * @param state 画面の状態
  * @param onIntent ユーザーアクションのコールバック
  * @param onBackClick 戻るボタン押下時のコールバック
@@ -44,10 +58,20 @@ import dotnet.sort.presentation.feature.sort.components.SortVisualizer
  */
 @Composable
 fun SortScreen(
+    isHomeSelected: Boolean,
+    isSortSelected: Boolean,
+    isLearnSelected: Boolean,
+    isCompareSelected: Boolean,
+    isSettingsSelected: Boolean,
+    onNavigateToHome: () -> Unit,
+    onNavigateToSort: () -> Unit,
+    onNavigateToLearn: () -> Unit,
+    onNavigateToCompare: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     state: SortState,
     onIntent: (SortIntent) -> Unit,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     // Keyboard Focus Requester
     val focusRequester = remember { FocusRequester() }
@@ -58,48 +82,92 @@ fun SortScreen(
     }
 
     SortScaffold(
-        modifier = modifier
-            .onKeyEvent { event ->
-                if (event.type == KeyEventType.KeyDown) {
-                    when (event.key) {
-                        Key.Spacebar -> {
-                            if (state.isPlaying) onIntent(SortIntent.PauseSort)
-                            else if (state.sortResult != null) onIntent(SortIntent.ResumeSort)
-                            else onIntent(SortIntent.StartSort)
-                            true
-                        }
-                        Key.DirectionRight -> {
-                            if (!state.isPlaying && state.sortResult != null) {
-                                onIntent(SortIntent.StepForward)
+        modifier =
+            modifier
+                .onKeyEvent { event ->
+                    if (event.type == KeyEventType.KeyDown) {
+                        when (event.key) {
+                            Key.Spacebar -> {
+                                if (state.isPlaying) {
+                                    onIntent(SortIntent.PauseSort)
+                                } else if (state.sortResult != null) {
+                                    onIntent(SortIntent.ResumeSort)
+                                } else {
+                                    onIntent(SortIntent.StartSort)
+                                }
                                 true
-                            } else false
+                            }
+                            Key.DirectionRight -> {
+                                if (!state.isPlaying && state.sortResult != null) {
+                                    onIntent(SortIntent.StepForward)
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            Key.DirectionLeft -> {
+                                if (!state.isPlaying && state.sortResult != null) {
+                                    onIntent(SortIntent.StepBackward)
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            else -> false
                         }
-                        Key.DirectionLeft -> {
-                            if (!state.isPlaying && state.sortResult != null) {
-                                onIntent(SortIntent.StepBackward)
-                                true
-                            } else false
-                        }
-                        else -> false
+                    } else {
+                        false
                     }
-                } else false
-            }
-            .focusRequester(focusRequester)
-            .focusable(),
+                }.focusRequester(focusRequester)
+                .focusable(),
         topBar = {
             SortTopBar(
                 title = "Visualizer",
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
             )
-        }
+        },
+        bottomBar = {
+            SortBottomBar(
+                items =
+                    listOf(
+                        SortBottomBarItem(
+                            icon = SortIcons.Home,
+                            contentDescription = "Home",
+                            selected = isHomeSelected,
+                            onClick = onNavigateToHome,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Sort,
+                            contentDescription = "Sort",
+                            selected = isSortSelected,
+                            onClick = onNavigateToSort,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Learn,
+                            contentDescription = "Learn",
+                            selected = isLearnSelected,
+                            onClick = onNavigateToLearn,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Compare,
+                            contentDescription = "Compare",
+                            selected = isCompareSelected,
+                            onClick = onNavigateToCompare,
+                        ),
+                        SortBottomBarItem(
+                            icon = SortIcons.Settings,
+                            contentDescription = "Settings",
+                            selected = isSettingsSelected,
+                            onClick = onNavigateToSettings,
+                        ),
+                    ),
+            )
+        },
     ) { padding ->
         SortContent(
             state = state,
             onIntent = onIntent,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(SpacingTokens.M)
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
@@ -115,46 +183,61 @@ fun SortScreen(
 fun SortContent(
     state: SortState,
     onIntent: (SortIntent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(modifier = modifier) {
         val isLandscape = maxWidth > 600.dp
 
         if (isLandscape) {
-            Row(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(
+                            start = SpacingTokens.M,
+                            end = SpacingTokens.M,
+                            top = SpacingTokens.FloatingTopBarInset,
+                            bottom = SpacingTokens.FloatingBottomBarInset,
+                        ),
+            ) {
                 // Left: Visualizer (Main Content)
-                Column(modifier = Modifier.weight(1f)) {
+                Column(
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .padding(end = SpacingTokens.M),
+                ) {
                     DescriptionDisplay(
                         description = state.stepDescription,
-                        modifier = Modifier.fillMaxWidth().padding(bottom = SpacingTokens.S)
+                        modifier = Modifier.fillMaxWidth().padding(bottom = SpacingTokens.M),
                     )
 
                     SortVisualizer(
                         array = state.currentNumbers,
                         highlightIndices = state.highlightingIndices,
                         description = state.stepDescription,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
 
-                Spacer(modifier = Modifier.width(SpacingTokens.L))
-
                 // Right: Controls (scrollable)
                 Column(
-                    modifier = Modifier
-                        .width(320.dp)
-                        .verticalScroll(rememberScrollState())
+                    modifier =
+                        Modifier
+                            .width(320.dp)
+                            .verticalScroll(rememberScrollState())
+                            .padding(start = SpacingTokens.M),
                 ) {
                     AlgorithmSelector(
                         selectedAlgorithm = state.algorithm,
                         onAlgorithmSelected = { onIntent(SortIntent.SelectAlgorithm(it)) },
-                        enabled = !state.isLoading && !state.isPlaying
+                        enabled = !state.isLoading && !state.isPlaying,
                     )
 
                     Spacer(modifier = Modifier.height(SpacingTokens.M))
 
                     MetricsDisplay(
-                        metrics = state.sortResult?.complexityMetrics
+                        metrics = state.sortResult?.complexityMetrics,
                     )
 
                     Spacer(modifier = Modifier.height(SpacingTokens.M))
@@ -183,21 +266,28 @@ fun SortContent(
                         currentStep = state.currentStepIndex,
                         totalSteps = state.sortResult?.steps?.size ?: 0,
                         onSeek = { onIntent(SortIntent.SeekTo(it)) },
-                        enabled = !state.isLoading
+                        enabled = !state.isLoading,
                     )
                 }
             }
         } else {
             // Portrait Layout (scrollable)
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(
+                            start = SpacingTokens.M,
+                            end = SpacingTokens.M,
+                            top = SpacingTokens.FloatingTopBarInset,
+                            bottom = SpacingTokens.FloatingBottomBarInset,
+                        ),
             ) {
                 AlgorithmSelector(
                     selectedAlgorithm = state.algorithm,
                     onAlgorithmSelected = { onIntent(SortIntent.SelectAlgorithm(it)) },
-                    enabled = !state.isLoading && !state.isPlaying
+                    enabled = !state.isLoading && !state.isPlaying,
                 )
 
                 Spacer(modifier = Modifier.height(SpacingTokens.L))
@@ -206,7 +296,13 @@ fun SortContent(
                     array = state.currentNumbers,
                     highlightIndices = state.highlightingIndices,
                     description = state.stepDescription,
-                    modifier = Modifier.heightIn(min = 200.dp, max = 400.dp)
+                    modifier = Modifier.heightIn(min = 240.dp, max = 440.dp),
+                )
+
+                Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+                MetricsDisplay(
+                    metrics = state.sortResult?.complexityMetrics,
                 )
 
                 Spacer(modifier = Modifier.height(SpacingTokens.L))
@@ -235,7 +331,7 @@ fun SortContent(
                     currentStep = state.currentStepIndex,
                     totalSteps = state.sortResult?.steps?.size ?: 0,
                     onSeek = { onIntent(SortIntent.SeekTo(it)) },
-                    enabled = !state.isLoading
+                    enabled = !state.isLoading,
                 )
             }
         }

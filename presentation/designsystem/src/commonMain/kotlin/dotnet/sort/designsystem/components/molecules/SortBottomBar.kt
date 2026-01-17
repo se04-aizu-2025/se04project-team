@@ -4,15 +4,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import dotnet.sort.designsystem.components.atoms.SortIconButton
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.designsystem.tokens.SpacingTokens
 
 /**
  * ソートアプリ用のボトムアプリバー (Molecule)。
@@ -22,18 +25,42 @@ import dotnet.sort.designsystem.theme.SortTheme
  * @param modifier Modifier
  * @param content RowScope内で配置するコンテンツ
  */
+data class SortBottomBarItem(
+    val icon: ImageVector,
+    val contentDescription: String,
+    val selected: Boolean,
+    val onClick: () -> Unit,
+)
+
 @Composable
 fun SortBottomBar(
+    items: List<SortBottomBarItem>,
     modifier: Modifier = Modifier,
-    content: @Composable RowScope.() -> Unit
 ) {
-    SortBarBase(modifier = modifier) {
+    SortBarBase(
+        modifier =
+            modifier
+                .padding(horizontal = SpacingTokens.M),
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
-            content = content
-        )
+        ) {
+            items.forEach { item ->
+                SortIconButton(
+                    icon = item.icon,
+                    contentDescription = item.contentDescription,
+                    tint =
+                        if (item.selected) {
+                            SortTheme.colorScheme.primary
+                        } else {
+                            SortTheme.colorScheme.onSurfaceVariant
+                        },
+                    onClick = item.onClick,
+                )
+            }
+        }
     }
 }
 
@@ -41,17 +68,22 @@ fun SortBottomBar(
 @Composable
 private fun SortBottomBarPreview() {
     SortTheme {
-        SortBottomBar {
-            SortIconButton(
-                icon = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "戻る",
-                onClick = {}
-            )
-            SortIconButton(
-                icon = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = "次へ",
-                onClick = {}
-            )
-        }
+        SortBottomBar(
+            items =
+                listOf(
+                    SortBottomBarItem(
+                        icon = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "戻る",
+                        selected = true,
+                        onClick = {},
+                    ),
+                    SortBottomBarItem(
+                        icon = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = "次へ",
+                        selected = false,
+                        onClick = {},
+                    ),
+                ),
+        )
     }
 }

@@ -1,7 +1,7 @@
 ---
 title: デザインシステム
-version: 1.0.0
-last_updated: 2026-01-16
+version: 1.1.0
+last_updated: 2026-01-17
 maintainer: Team
 ---
 
@@ -75,6 +75,8 @@ Box(
 | `L` | 24.dp | 大スペース |
 | `XL` | 32.dp | 特大スペース |
 | `XXL` | 48.dp | 最大スペース |
+| `FloatingTopBarInset` | 80.dp | フローティングトップバー余白 |
+| `FloatingBottomBarInset` | 96.dp | フローティングボトムバー余白 |
 
 **使用方法**:
 

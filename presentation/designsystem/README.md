@@ -1,7 +1,7 @@
 ---
 title: Design System コンポーネント粒度
-version: 1.0.0
-last_updated: 2026-01-16
+version: 1.0.1
+last_updated: 2026-01-17
 maintainer: Team
 parent: "[📚 ドキュメント一覧](../../doc/README.md)"
 ---
@@ -32,7 +32,7 @@ parent: "[📚 ドキュメント一覧](../../doc/README.md)"
 | レベル | 定義 | 特徴 | 例 |
 |-------|------------|-----------------|----------|
 | **Atoms** | **最小の構成要素**<br>これ以上分解すると機能的な意味を失う要素。 | 🧩 **ステートレス** (原則)<br>🎨 **トークンを直接使用** (Color, Typography)<br>⛔ **ビジネスロジックなし** | `SortButton`, `SortText`, `SortIcon`, `SortSlider` |
-| **Molecules** | **Atoms の組み合わせ**<br>単純な機能単位を形成するグループ。 | 🔗 **Atoms の結合**<br>🛠 **UIロジックのみ**<br>♻️ **高い再利用性** | `SearchField` (Input + Icon), `SortSectionCard`, `SortListItem` |
+| **Molecules** | **Atoms の組み合わせ**<br>単純な機能単位を形成するグループ。 | 🔗 **Atoms の結合**<br>🛠 **UIロジックのみ**<br>♻️ **高い再利用性** | `SearchField` (Input + Icon), `SortSectionCard`, `SortListItem`, `SortTopBar`, `SortBottomBar` |
 | **Organisms** | **画面の主要セクション**<br>複数の Molecules や Atoms から構成される大きな区画。 | 🏗 **レイアウト構造**<br>🧠 **コンテキストを持つ**<br>📱 **画面の特定セクション** | `SortScaffold`, `GlobalHeader` |
 
 ```mermaid

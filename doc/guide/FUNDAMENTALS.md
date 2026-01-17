@@ -1,7 +1,7 @@
 ---
 title: 基礎ルール
-version: 1.1.0
-last_updated: 2026-01-13
+version: 1.1.1
+last_updated: 2026-01-17
 maintainer: Team
 ---
 
@@ -105,6 +105,9 @@ fun execute(type: SortType, input: List<Int>): SortResult
 | GlobalScope | ライフサイクル無視 | `viewModelScope` を使う |
 | 例外を握りつぶす | デバッグ困難 | 適切にハンドル |
 | Raw Material3 Component | 一貫性欠如 | Design System (`SortText` 等) を使う |
+| 完全修飾名の使用 (コード本体) | 可読性低下 | import または typealias |
+| 深い if/when ネスト (3段以上) | 可読性低下 | ガード節・分割関数 |
+| 1関数に大量の処理 | 保守性低下 | 小さな関数に分割 |
 
 ### 命名
 

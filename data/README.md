@@ -1,7 +1,7 @@
 ---
 title: Data モジュール
-version: 1.0.0
-last_updated: 2026-01-16
+version: 1.1.0
+last_updated: 2026-01-17
 maintainer: Team
 parent: "[📚 ドキュメント一覧](../doc/README.md)"
 ---
@@ -21,19 +21,40 @@ parent: "[📚 ドキュメント一覧](../doc/README.md)"
 ## 📦 パッケージ構造
 
 ```
-data/src/
-├── commonMain/   # 共通実装
-├── jvmMain/      # JVM 固有実装
-├── jsMain/       # JS 固有実装
-└── wasmJsMain/   # WASM 固有実装
+data/
+├── src/commonMain/kotlin/dotnet/sort/
+│   ├── database/     # Adapter構成要素 (SQLDelight Provider)
+│   └── repository/   # Adapter (Repository 実装)
+├── src/commonMain/sqldelight/ # SQLDelight schema
+├── src/jvmMain/      # JVM 固有実装
+├── src/jsMain/       # JS 固有実装
+└── src/wasmJsMain/   # WASM 固有実装
 ```
+
+---
+
+## 🔧 Data層のアーキテクチャ
+
+Data層は **Hexagonal Architecture の Adapter** として設計します。
+
+| 役割 | 説明 | 例 |
+|------|------|----|
+| **Port** | Domain 側の Repository インターフェース | `AlgorithmHistoryRepository` |
+| **Adapter** | Repository 実装 | `AlgorithmHistoryRepositoryImpl` |
+| **Infrastructure** | DB/Driver/Schema | `DnsortDatabaseProvider`, `sqldelight/` |
 
 ---
 
 ## 🔧 主要コンポーネント
 
-### Platform (`Platform.kt`)
-各プラットフォーム固有の機能を抽象化するクラスです。
+### SQLDelight (`sqldelight/`)
+アルゴリズム履歴を保存するための SQLDelight スキーマとクエリを管理します。
+
+### DatabaseProvider (`database/`)
+SQLDelight のドライバ生成と履歴イベントの読み書きを提供します。
+
+### Repository 実装 (`repository/`)
+`AlgorithmHistoryRepository` を通じて履歴イベントの保存・取得を担当します。
 
 ---
 
@@ -44,3 +65,4 @@ data/src/
 | [アーキテクチャ](../doc/ARCHITECTURE.md) | 全体アーキテクチャ |
 | [Repository追加ガイド](../doc/guide/tasks/ADD_REPOSITORY.md) | Repository実装追加手順 |
 | [データ永続化ガイド](../doc/guide/tasks/ADD_PERSISTENCE.md) | 永続化追加手順 |
+| [Design System](../doc/DESIGN_SYSTEM.md) | トークン・UI設計との整合 |

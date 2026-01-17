@@ -1,7 +1,7 @@
 ---
 title: Domain モジュール
-version: 1.0.0
-last_updated: 2026-01-16
+version: 1.1.0
+last_updated: 2026-01-17
 maintainer: Team
 parent: "[📚 ドキュメント一覧](../doc/README.md)"
 ---
@@ -54,12 +54,21 @@ domain/src/commonMain/kotlin/dotnet/sort/
 | `SortResult` | ソート結果 |
 | `SortSnapshot` | ステップごとのスナップショット |
 | `ComplexityMetrics` | 計算量メトリクス |
+| `AlgorithmHistoryEntry` | アルゴリズム履歴エントリ |
+| `HistoryEventType` | 履歴イベント種別 |
+
+### Repository (`repository/`)
+| クラス | 説明 |
+|--------|------|
+| `AlgorithmHistoryRepository` | 履歴イベントの読み書き |
 
 ### ユースケース (`usecase/`)
 | クラス | 説明 |
 |--------|------|
 | `ExecuteSortUseCase` | ソート実行 |
 | `GenerateArrayUseCase` | 配列生成 |
+| `RecordHistoryEventUseCase` | 履歴イベント記録 |
+| `ObserveRecentHistoryUseCase` | 最新履歴の取得 |
 
 ---
 
@@ -71,3 +80,4 @@ domain/src/commonMain/kotlin/dotnet/sort/
 | [アルゴリズム追加ガイド](../doc/guide/tasks/ADD_ALGORITHM.md) | 新規アルゴリズム追加手順 |
 | [UseCase追加ガイド](../doc/guide/tasks/ADD_USECASE.md) | 新規UseCase追加手順 |
 | [アルゴリズムリファレンス](../doc/guide/reference/ALGORITHM.md) | 詳細仕様 |
+| [データ永続化ガイド](../doc/guide/tasks/ADD_PERSISTENCE.md) | 履歴保存の設計指針 |

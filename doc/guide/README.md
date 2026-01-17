@@ -1,7 +1,7 @@
 ---
 title: ベストプラクティスガイド
-version: 1.1.0
-last_updated: 2026-01-16
+version: 1.1.1
+last_updated: 2026-01-17
 maintainer: Team
 parent: "[📚 ドキュメント一覧](../README.md)"
 ---
@@ -24,6 +24,7 @@ parent: "[📚 ドキュメント一覧](../README.md)"
 | `FUNDAMENTALS.md` | 基礎ルール（サマリー） |
 | [tasks/](./tasks/README.md) | タスク別ステップガイド |
 | [reference/](./reference/README.md) | 詳細リファレンス |
+| [OPENCODE_SKILLS.md](./OPENCODE_SKILLS.md) | OpenCode skills 運用ガイド |
 
 ---
 

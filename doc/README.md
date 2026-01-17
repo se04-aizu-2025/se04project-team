@@ -1,7 +1,7 @@
 ---
 title: ドキュメント一覧
-version: 1.1.0
-last_updated: 2026-01-16
+version: 1.1.1
+last_updated: 2026-01-17
 maintainer: Team
 ---
 
@@ -92,6 +92,7 @@ DNSortプロジェクトの**すべてのドキュメントへのエントリー
 | [ガイド一覧 (README)](./guide/README.md) | 全ガイドのインデックス |
 | [オンボーディング](./guide/ONBOARDING.md) | アーキテクチャ概要 |
 | [基礎ルール](./guide/FUNDAMENTALS.md) | 命名・データモデル・禁止事項 |
+| [OpenCode Skills](./guide/OPENCODE_SKILLS.md) | OpenCode skills 運用ガイド |
 
 ### タスク別ガイド (14件)
 

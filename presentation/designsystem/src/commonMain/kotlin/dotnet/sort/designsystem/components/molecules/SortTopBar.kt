@@ -1,6 +1,7 @@
 package dotnet.sort.designsystem.components.molecules
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -11,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import dotnet.sort.designsystem.components.atoms.SortIconButton
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.designsystem.tokens.SpacingTokens
 
 /**
  * ソートアプリ用のトップアプリバー (Molecule)。
@@ -19,6 +21,7 @@ import dotnet.sort.designsystem.theme.SortTheme
  *
  * @param title タイトルテキスト
  * @param modifier Modifier
+ * @param onBackClick 戻るボタン押下時のコールバック（省略可能）
  * @param startAction 左端のアクション（省略可能）
  * @param endAction 右端のアクション（省略可能）
  */
@@ -26,11 +29,27 @@ import dotnet.sort.designsystem.theme.SortTheme
 fun SortTopBar(
     title: String,
     modifier: Modifier = Modifier,
+    onBackClick: (() -> Unit)? = null,
     startAction: (@Composable () -> Unit)? = null,
-    endAction: (@Composable () -> Unit)? = null
+    endAction: (@Composable () -> Unit)? = null,
 ) {
-    SortBarBase(modifier = modifier) {
-        startAction?.let {
+    val resolvedStartAction =
+        startAction ?: onBackClick?.let {
+            {
+                SortIconButton(
+                    icon = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "戻る",
+                    onClick = it,
+                )
+            }
+        }
+
+    SortBarBase(
+        modifier =
+            modifier
+                .padding(horizontal = SpacingTokens.M),
+    ) {
+        resolvedStartAction?.let {
             Box(modifier = Modifier.align(Alignment.CenterStart)) {
                 it()
             }
@@ -40,7 +59,7 @@ fun SortTopBar(
             modifier = Modifier.align(Alignment.Center),
             text = title,
             style = SortTheme.typography.titleLarge,
-            color = SortTheme.colorScheme.onSurface
+            color = SortTheme.colorScheme.onSurface,
         )
 
         endAction?.let {
@@ -61,16 +80,16 @@ private fun SortTopBarPreview() {
                 SortIconButton(
                     icon = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "戻る",
-                    onClick = {}
+                    onClick = {},
                 )
             },
             endAction = {
                 SortIconButton(
                     icon = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = "次へ",
-                    onClick = {}
+                    onClick = {},
                 )
-            }
+            },
         )
     }
 }

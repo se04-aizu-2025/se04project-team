@@ -18,16 +18,32 @@ import org.koin.core.annotation.KoinExperimentalAPI
  */
 @OptIn(KoinExperimentalAPI::class)
 fun NavGraphBuilder.sortDestination(
-    onBackClick: () -> Unit
+    currentScreen: Screen,
+    onNavigateToHome: () -> Unit,
+    onNavigateToSort: () -> Unit,
+    onNavigateToLearn: () -> Unit,
+    onNavigateToCompare: () -> Unit,
+    onNavigateToSettings: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     composable<Screen.Sort> {
         val viewModel: SortViewModel = koinViewModel()
         val state by viewModel.state.collectAsState()
 
         SortScreen(
+            isHomeSelected = currentScreen is Screen.Home,
+            isSortSelected = currentScreen is Screen.Sort,
+            isLearnSelected = currentScreen is Screen.Learn,
+            isCompareSelected = currentScreen is Screen.Compare,
+            isSettingsSelected = currentScreen is Screen.Settings,
+            onNavigateToHome = onNavigateToHome,
+            onNavigateToSort = onNavigateToSort,
+            onNavigateToLearn = onNavigateToLearn,
+            onNavigateToCompare = onNavigateToCompare,
+            onNavigateToSettings = onNavigateToSettings,
             state = state,
             onIntent = viewModel::send,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
         )
     }
 }
