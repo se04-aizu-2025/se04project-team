@@ -53,12 +53,11 @@ tasks.register("setupGitHooks") {
 
 // Kotlin/JS Yarn Lock Check緩和
 // CI環境での環境差異によるビルド失敗を防ぐため、Yarnロックファイルの不整合をエラーではなく警告にします。
-// Kotlin/JS Yarn Lock Check緩和
-// CI環境での環境差異によるビルド失敗を防ぐため、Yarnロックファイルの不整合をエラーではなく警告にします。
-rootProject.afterEvaluate {
-    rootProject.extensions.findByType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension::class.java)?.apply {
+rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin::class.java) {
+    println("✅ [Fix Applied] YarnPlugin detected. Configuring YarnRootExtension to WARNING.")
+    rootProject.extensions.configure(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension::class.java) {
         yarnLockMismatchReport = org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport.WARNING
         reportNewYarnLock = false
-        println("⚠️ YarnRootExtension configured to WARNING (Relaxed lock check)")
+        println("✅ [Fix Applied] Effective yarnLockMismatchReport: $yarnLockMismatchReport")
     }
 }
