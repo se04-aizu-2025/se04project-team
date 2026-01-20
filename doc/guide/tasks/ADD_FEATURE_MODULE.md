@@ -57,13 +57,13 @@ kotlin {
             // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material3)
+            
             implementation(compose.ui)
             
             // Project modules
             implementation(projects.domain)
             implementation(projects.presentation.common)
-            implementation(projects.presentation.designsystem)
+            implementation(projects.presentation.designsystem) // UIはここから取得
             
             // Koin
             implementation(libs.koin.core)
@@ -159,15 +159,12 @@ fun QuizScreen(
 ) {
     val state by viewModel.state.collectAsState()
     
-    Scaffold(
+    SortScaffold(
+        modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text("Quiz") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, null)
-                    }
-                }
+            SortTopBar(
+                title = "Quiz",
+                onBackClick = onBackClick
             )
         }
     ) { padding ->

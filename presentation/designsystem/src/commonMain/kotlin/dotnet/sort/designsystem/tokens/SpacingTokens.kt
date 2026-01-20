@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
  * 4px ベースのスケーリングシステムを採用しています。
  */
 object SpacingTokens {
-
     // === Base Spacing Scale ===
     /** 0dp - なし */
     val None: Dp = 0.dp
@@ -46,8 +45,9 @@ object SpacingTokens {
     val XXXL: Dp = 64.dp
 
     // === Component Specific ===
+
     /** バー間のスペース */
-    val BarGap: Dp = 2.dp
+    val BarGap: Dp = 1.dp
 
     /** パネルのパディング */
     val PanelPadding: Dp = 16.dp
@@ -66,4 +66,10 @@ object SpacingTokens {
 
     /** セクション間のスペース */
     val SectionGap: Dp = 24.dp
+
+    /** フローティングトップバーの余白 */
+    val FloatingTopBarInset: Dp = 80.dp
+
+    /** フローティングボトムバーの余白 */
+    val FloatingBottomBarInset: Dp = 96.dp
 }

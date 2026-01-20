@@ -1,63 +1,132 @@
 package dotnet.sort.presentation.navigation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dotnet.sort.presentation.feature.compare.CompareScreen
-import dotnet.sort.presentation.feature.home.HomeScreen
-import dotnet.sort.presentation.feature.learn.LearnScreen
-import dotnet.sort.presentation.feature.settings.SettingsScreen
-import dotnet.sort.presentation.feature.sort.SortScreen
 
 /**
- * The main entry point for navigation in the application.
+ * アプリケーションのメインナビゲーション。
  */
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val backStackEntry = navController.currentBackStackEntryAsState().value
+    val routeName = backStackEntry?.destination?.route?.substringAfterLast(".")
+    val currentScreen =
+        when (routeName) {
+            "Home" -> Screen.Home
+            "Sort" -> Screen.Sort
+            "Learn" -> Screen.Learn
+            "Compare" -> Screen.Compare
+            "Settings" -> Screen.Settings
+            else -> Screen.Home
+        }
 
     NavHost(
         navController = navController,
         startDestination = Screen.Home,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
-        composable<Screen.Home> {
-            HomeScreen(
-                onNavigateToSort = { navController.navigate(Screen.Sort) },
-                onNavigateToLearn = { navController.navigate(Screen.Learn) },
-                onNavigateToCompare = { navController.navigate(Screen.Compare) },
-                onNavigateToSettings = { navController.navigate(Screen.Settings) }
-            )
-        }
+        homeDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+        )
 
-        composable<Screen.Sort> {
-            SortScreen(
-                onBackClick = { navController.popBackStack() }
-            )
-        }
+        sortDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onBackClick = { navController.popBackStack() },
+        )
 
-        composable<Screen.Settings> {
-             SettingsScreen(
-                 onBackClick = { navController.popBackStack() }
-             )
-        }
-        
-        composable<Screen.Learn> {
-            LearnScreen(
-                onBackClick = { navController.popBackStack() }
-            )
-        }
-        
-        composable<Screen.Compare> {
-            CompareScreen(
-                onBackClick = { navController.popBackStack() }
-            )
-        }
+        settingsDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onBackClick = { navController.popBackStack() },
+        )
+
+        learnDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onBackClick = { navController.popBackStack() },
+        )
+
+        compareDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onBackClick = { navController.popBackStack() },
+        )
     }
 }

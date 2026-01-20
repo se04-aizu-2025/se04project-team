@@ -18,6 +18,7 @@ fun SortControlPanel(
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
     onResetClick: () -> Unit,
+    onShuffleClick: () -> Unit,
     onStepForwardClick: () -> Unit,
     onStepBackwardClick: () -> Unit,
     arraySize: Int,
@@ -91,6 +92,15 @@ fun SortControlPanel(
                 modifier = Modifier.weight(1f)
             )
         }
+
+        // Shuffle Button
+        SortButton(
+            text = "Shuffle Array",
+            onClick = onShuffleClick,
+            style = SortButtonStyle.Outlined,
+            enabled = enabled && !isPlaying,
+            modifier = Modifier.fillMaxWidth()
+        )
         
         // Manual Step Buttons
         Row(
