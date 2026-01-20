@@ -2,10 +2,12 @@ package dotnet.sort.designsystem.components.atoms
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.Sort
+
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Sort
+
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -65,8 +67,8 @@ private fun SortIconSettingsPreview() {
 
 object SortIcons {
     val Home: ImageVector = Icons.Default.Home
-    val Sort: ImageVector = Icons.Default.Sort
-    val Learn: ImageVector = Icons.Default.MenuBook
+    val Sort: ImageVector = Icons.AutoMirrored.Filled.Sort
+    val Learn: ImageVector = Icons.AutoMirrored.Filled.MenuBook
     val Compare: ImageVector = Icons.Default.Tune
     val Settings: ImageVector = Icons.Default.Settings
 }
