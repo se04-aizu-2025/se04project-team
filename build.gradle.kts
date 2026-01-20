@@ -51,10 +51,3 @@ tasks.register("setupGitHooks") {
     notCompatibleWithConfigurationCache("Uses project reference")
 }
 
-// CI環境での設定注入が不安定なため、物理的にタスクを無効化してエラーを回避します。
-rootProject.tasks.configureEach {
-    if (name == "kotlinWasmStoreYarnLock" || name == "kotlinStoreYarnLock") {
-        enabled = false
-        println("🚫 [Fix Applied] Task '$name' has been forcibly DISABLED.")
-    }
-}
