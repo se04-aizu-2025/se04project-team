@@ -50,4 +50,3 @@ tasks.register("setupGitHooks") {
     }
     notCompatibleWithConfigurationCache("Uses project reference")
 }
-
