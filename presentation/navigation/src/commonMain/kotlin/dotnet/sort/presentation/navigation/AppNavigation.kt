@@ -106,6 +106,13 @@ fun AppNavigation() {
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
+            onNavigateToDetail = { sortType ->
+                navController.navigateToAlgorithmDetail(sortType)
+            },
+            onBackClick = { navController.popBackStack() },
+        )
+
+        algorithmDetailDestination(
             onBackClick = { navController.popBackStack() },
         )
 

@@ -28,7 +28,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material) // For Icons
+            implementation(libs.material3) // For Icons and Theme utilities
 
             implementation(compose.ui)
             implementation(compose.components.resources)

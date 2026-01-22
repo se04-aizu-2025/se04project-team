@@ -27,6 +27,9 @@ import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import org.koin.compose.viewmodel.koinViewModel
 
+import androidx.compose.runtime.LaunchedEffect
+import dotnet.sort.model.SortType
+
 /**
  * Learn 画面。
  *
@@ -40,6 +43,7 @@ import org.koin.compose.viewmodel.koinViewModel
  * @param onNavigateToLearn Learn画面への遷移コールバック
  * @param onNavigateToCompare Compare画面への遷移コールバック
  * @param onNavigateToSettings Settings画面への遷移コールバック
+ * @param onNavigateToDetail アルゴリズム詳細画面への遷移コールバック
  * @param onBackClick 戻るボタン押下時のコールバック
  * @param modifier Modifier
  */
@@ -55,11 +59,19 @@ fun LearnScreen(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToDetail: (SortType) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = koinViewModel<LearnViewModel>()
     val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(state.navigationTarget) {
+        state.navigationTarget?.let { sortType ->
+            onNavigateToDetail(sortType)
+            viewModel.send(LearnIntent.ConsumeNavigation)
+        }
+    }
 
     SortScaffold(
         modifier = modifier.fillMaxSize(),

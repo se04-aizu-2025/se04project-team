@@ -10,6 +10,15 @@ import dotnet.sort.presentation.feature.learn.LearnScreen
  *
  * @param onBackClick 戻るボタン押下時のコールバック
  */
+import androidx.navigation.toRoute
+import dotnet.sort.model.SortType
+import dotnet.sort.presentation.feature.learn.AlgorithmDetailScreen
+
+/**
+ * Learn 機能のナビゲーションを NavGraph に登録する。
+ *
+ * @param onBackClick 戻るボタン押下時のコールバック
+ */
 fun NavGraphBuilder.learnDestination(
     currentScreen: Screen,
     onNavigateToHome: () -> Unit,
@@ -17,6 +26,7 @@ fun NavGraphBuilder.learnDestination(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToDetail: (SortType) -> Unit,
     onBackClick: () -> Unit,
 ) {
     composable<Screen.Learn> {
@@ -31,9 +41,33 @@ fun NavGraphBuilder.learnDestination(
             onNavigateToLearn = onNavigateToLearn,
             onNavigateToCompare = onNavigateToCompare,
             onNavigateToSettings = onNavigateToSettings,
+            onNavigateToDetail = onNavigateToDetail,
             onBackClick = onBackClick,
         )
     }
+}
+
+/**
+ * AlgorithmDetail 画面を NavGraph に登録する。
+ */
+fun NavGraphBuilder.algorithmDetailDestination(
+    onBackClick: () -> Unit,
+) {
+    composable<Screen.AlgorithmDetail> { backStackEntry ->
+        val args = backStackEntry.toRoute<Screen.AlgorithmDetail>()
+        val sortType = SortType.valueOf(args.sortTypeString)
+        AlgorithmDetailScreen(
+            sortType = sortType,
+            onBackClick = onBackClick
+        )
+    }
+}
+
+/**
+ * AlgorithmDetail 画面へ遷移する。
+ */
+fun NavController.navigateToAlgorithmDetail(sortType: SortType) {
+    navigate(Screen.AlgorithmDetail(sortTypeString = sortType.name))
 }
 
 /**

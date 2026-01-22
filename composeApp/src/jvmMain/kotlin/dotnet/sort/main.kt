@@ -11,6 +11,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import dotnet.sort.di.DataModule
 import dotnet.sort.di.DomainModule
+import dotnet.sort.di.platformDataModule
 import dotnet.sort.presentation.common.di.CommonModule
 import dotnet.sort.presentation.feature.home.di.HomeFeatureModule
 import dotnet.sort.presentation.feature.settings.di.SettingsFeatureModule
@@ -29,6 +30,7 @@ fun main() {
             SortFeatureModule().module,
             HomeFeatureModule().module,
             LearnFeatureModule().module,
+            platformDataModule,
             // TODO: NavigationModule を追加
         )
     }

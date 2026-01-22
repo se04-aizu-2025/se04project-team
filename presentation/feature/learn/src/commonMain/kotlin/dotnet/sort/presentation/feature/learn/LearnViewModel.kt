@@ -9,7 +9,10 @@ class LearnViewModel : BaseViewModel<LearnState, LearnIntent>(LearnState()) {
     override fun send(intent: LearnIntent) {
         when (intent) {
             is LearnIntent.SelectAlgorithm -> {
-                // TODO: Handle navigation in PR-52
+                updateState { copy(navigationTarget = intent.sortType) }
+            }
+            is LearnIntent.ConsumeNavigation -> {
+                updateState { copy(navigationTarget = null) }
             }
         }
     }
