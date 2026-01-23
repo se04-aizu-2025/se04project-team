@@ -21,7 +21,7 @@ class ValidateQuizAnswerUseCaseTest {
         // Swap order logic validation
         val valid = 1 to 2
         val user = 2 to 1
-        assertEquals(QuizFeedback.Correct, useCase(valid, user))
+        assertEquals(QuizFeedback.Correct(0), useCase(valid, user))
     }
 
     @Test

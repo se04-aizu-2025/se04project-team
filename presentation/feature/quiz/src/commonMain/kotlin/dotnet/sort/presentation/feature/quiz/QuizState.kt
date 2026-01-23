@@ -20,7 +20,8 @@ data class QuizState(
     val score: Int = 0,
     val timeLeftSeconds: Int = 10,
     val isGameActive: Boolean = false,
-    val feedback: QuizFeedback? = null
+    val feedback: QuizFeedback? = null,
+    val consecutiveCorrectCount: Int = 0
 ) : UiState
 
 /**

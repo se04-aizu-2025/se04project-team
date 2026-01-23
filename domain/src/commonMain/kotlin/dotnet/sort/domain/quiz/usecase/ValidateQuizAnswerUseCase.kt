@@ -21,7 +21,7 @@ class ValidateQuizAnswerUseCase {
                 (validAnswer.first == userAnswer.second && validAnswer.second == userAnswer.first)
 
         return if (isValid) {
-            QuizFeedback.Correct
+            QuizFeedback.Correct(0)
         } else {
             QuizFeedback.Incorrect(validAnswer)
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dotnet.sort.domain.model.SortType
 import dotnet.sort.domain.quiz.model.QuizFeedback
 import dotnet.sort.domain.quiz.usecase.GenerateQuizQuestionUseCase
+import dotnet.sort.domain.quiz.usecase.CalculateQuizScoreUseCase
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +19,8 @@ import org.koin.core.annotation.Factory
 @Factory
 class QuizViewModel(
     private val generateQuizQuestionUseCase: GenerateQuizQuestionUseCase,
-    private val validateQuizAnswerUseCase: dotnet.sort.domain.quiz.usecase.ValidateQuizAnswerUseCase
+    private val validateQuizAnswerUseCase: dotnet.sort.domain.quiz.usecase.ValidateQuizAnswerUseCase,
+    private val calculateQuizScoreUseCase: dotnet.sort.domain.quiz.usecase.CalculateQuizScoreUseCase
 ) : BaseViewModel<QuizState, QuizIntent>(QuizState()) {
     
     private var timerJob: Job? = null
@@ -69,15 +71,23 @@ class QuizViewModel(
         stopTimer()
         
         if (feedback is dotnet.sort.domain.quiz.model.QuizFeedback.Correct) {
+            val scoreDelta = calculateQuizScoreUseCase(
+                isCorrect = true,
+                timeLeftSeconds = state.value.timeLeftSeconds,
+                currentCombo = state.value.consecutiveCorrectCount
+            )
+            
             updateState {
                 copy(
-                    score = score + 10,
-                    feedback = feedback
+                    score = score + scoreDelta,
+                    consecutiveCorrectCount = consecutiveCorrectCount + 1,
+                    feedback = dotnet.sort.domain.quiz.model.QuizFeedback.Correct(scoreDelta)
                 )
             }
         } else {
             updateState {
                 copy(
+                    consecutiveCorrectCount = 0,
                     feedback = feedback
                 )
             }

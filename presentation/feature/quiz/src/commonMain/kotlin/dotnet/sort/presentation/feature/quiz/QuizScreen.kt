@@ -179,6 +179,13 @@ private fun QuizContent(
                     style = SortTheme.typography.titleLarge,
                     color = SortTheme.colorScheme.primary
                 )
+                if (state.consecutiveCorrectCount > 1) {
+                    SortText(
+                        text = "Combo x${state.consecutiveCorrectCount}!",
+                        style = SortTheme.typography.titleMedium,
+                        color = SortTheme.colorScheme.secondary
+                    )
+                }
                 SortText(
                     text = "Time: ${state.timeLeftSeconds}s",
                     style = SortTheme.typography.titleLarge,
@@ -266,7 +273,7 @@ private fun QuizContent(
                 when (val feedback = state.feedback) {
                     is QuizFeedback.Correct -> {
                         SortText(
-                            text = "✅ Correct! +10 points",
+                            text = "✅ Correct! +${feedback.scoreDelta} points",
                             style = SortTheme.typography.titleMedium,
                             color = SortTheme.colorScheme.primary,
                             modifier = Modifier.padding(top = SpacingTokens.M)

@@ -7,7 +7,12 @@ sealed interface QuizFeedback {
     /**
      * 正解。
      */
-    data object Correct : QuizFeedback
+    /**
+     * 正解。
+     * 
+     * @property scoreDelta 獲得したスコア
+     */
+    data class Correct(val scoreDelta: Int) : QuizFeedback
 
     /**
      * 不正解。
