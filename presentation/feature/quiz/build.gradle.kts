@@ -4,11 +4,13 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("com.android.library")
     alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
+    androidTarget()
+    jvmToolchain(21)
     jvm()
 
     js {
@@ -26,35 +28,26 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material3)
+            implementation(compose.material) // For Icons
+
             implementation(compose.ui)
             implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.navigation.compose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeViewModel)
             implementation(libs.koin.annotations)
-            implementation(libs.kotlinx.serialization.json)
-            // Common module
             implementation(projects.presentation.common)
-            // Design System
-            api(projects.presentation.designsystem)
-            // Feature modules (navigation aggregates all features)
-            api(projects.presentation.feature.home)
-            api(projects.presentation.feature.sort)
-            api(projects.domain)
-            api(projects.presentation.feature.learn)
-            api(projects.presentation.feature.compare)
-            api(projects.presentation.feature.quiz)
-            api(projects.presentation.feature.settings)
+            implementation(projects.presentation.designsystem)
+            implementation(projects.domain)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutinesSwing)
+        jvmTest.dependencies {
+            implementation(libs.turbine)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }
@@ -69,5 +62,13 @@ dependencies {
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+android {
+    namespace = "dotnet.sort.presentation.feature.quiz"
+    compileSdk = 35
+    defaultConfig {
+        minSdk = 24
     }
 }

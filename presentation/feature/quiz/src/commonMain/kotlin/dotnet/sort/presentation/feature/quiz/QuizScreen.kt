@@ -1,17 +1,14 @@
-package dotnet.sort.presentation.feature.home
+package dotnet.sort.presentation.feature.quiz
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,30 +17,21 @@ import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
-import dotnet.sort.designsystem.components.molecules.SortCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
 /**
- * ホーム画面のオプションデータ。
- */
-private data class HomeOption(
-    val title: String,
-    val description: String,
-    val icon: String,
-    val onClick: () -> Unit,
-    val enabled: Boolean = true,
-)
-
-/**
- * ホーム画面。
+ * Quiz画面。
+ *
+ * ゲーミフィケーション機能として、ソートアルゴリズムに関するクイズを提供します。
  *
  * @param isHomeSelected Home選択状態
  * @param isSortSelected Sort選択状態
  * @param isLearnSelected Learn選択状態
  * @param isCompareSelected Compare選択状態
+ * @param isQuizSelected Quiz選択状態
  * @param isSettingsSelected Settings選択状態
  * @param onNavigateToHome Home画面への遷移コールバック
  * @param onNavigateToSort Sort画面への遷移コールバック
@@ -51,14 +39,16 @@ private data class HomeOption(
  * @param onNavigateToCompare Compare画面への遷移コールバック
  * @param onNavigateToQuiz Quiz画面への遷移コールバック
  * @param onNavigateToSettings Settings画面への遷移コールバック
+ * @param onBackClick 戻るボタンのコールバック
  * @param modifier Modifier
  */
 @Composable
-fun HomeScreen(
+fun QuizScreen(
     isHomeSelected: Boolean,
     isSortSelected: Boolean,
     isLearnSelected: Boolean,
     isCompareSelected: Boolean,
+    isQuizSelected: Boolean,
     isSettingsSelected: Boolean,
     onNavigateToHome: () -> Unit,
     onNavigateToSort: () -> Unit,
@@ -66,47 +56,15 @@ fun HomeScreen(
     onNavigateToCompare: () -> Unit,
     onNavigateToQuiz: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val options =
-        listOf(
-            HomeOption(
-                title = "Visualizer",
-                description = "Visualize sorting algorithms in real-time.",
-                icon = "📊",
-                onClick = onNavigateToSort,
-            ),
-            HomeOption(
-                title = "Learn",
-                description = "Learn about different sorting algorithms.",
-                icon = "🎓",
-                onClick = onNavigateToLearn,
-            ),
-            HomeOption(
-                title = "Compare",
-                description = "Compare performance of algorithms.",
-                icon = "⚖️",
-                onClick = onNavigateToCompare,
-            ),
-            HomeOption(
-                title = "Quiz",
-                description = "Test your knowledge with interactive quizzes.",
-                icon = "🎮",
-                onClick = onNavigateToQuiz,
-            ),
-            HomeOption(
-                title = "Settings",
-                description = "App settings and themes.",
-                icon = "⚙️",
-                onClick = onNavigateToSettings,
-            ),
-        )
-
     SortScaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = "Home",
+                title = "Quiz",
+                onBackClick = onBackClick,
             )
         },
         bottomBar = {
@@ -167,27 +125,30 @@ fun HomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SortText(
-                        text = "DNSort",
+                        text = "🎮",
+                        style = SortTheme.typography.displayLarge,
+                    )
+
+                    SortText(
+                        text = "Quiz Mode",
                         style = SortTheme.typography.displayMedium,
                         color = SortTheme.colorScheme.primary,
                     )
 
                     SortText(
-                        text = "Algorithm Visualization Tool",
+                        text = "Coming Soon",
                         style = SortTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = SpacingTokens.L),
+                        color = SortTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = SpacingTokens.S),
+                    )
+
+                    SortText(
+                        text = "Test your knowledge of sorting algorithms with interactive quizzes!",
+                        style = SortTheme.typography.bodyMedium,
+                        color = SortTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = SpacingTokens.M),
                     )
                 }
-            }
-
-            items(options) { option ->
-                SortCard(
-                    title = option.title,
-                    description = option.description,
-                    icon = option.icon,
-                    onClick = option.onClick,
-                    enabled = option.enabled,
-                )
             }
         }
     }
