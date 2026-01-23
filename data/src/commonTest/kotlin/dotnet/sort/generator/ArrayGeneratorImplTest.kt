@@ -3,6 +3,7 @@ package dotnet.sort.generator
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import dotnet.sort.domain.generator.ArrayGeneratorType
 
 class ArrayGeneratorImplTest {
 
