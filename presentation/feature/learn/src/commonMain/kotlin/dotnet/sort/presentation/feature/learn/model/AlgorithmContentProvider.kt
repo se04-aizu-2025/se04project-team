@@ -344,4 +344,200 @@ object AlgorithmContentProvider {
             )
         }
     }
+
+    fun getImplementation(sortType: SortType): AlgorithmImplementation {
+        return when (sortType) {
+            SortType.BUBBLE -> AlgorithmImplementation(
+                sortType = SortType.BUBBLE,
+                code = """
+fun bubbleSort(arr: IntArray) {
+    val n = arr.size
+    for (i in 0 until n - 1) {
+        var swapped = false
+        for (j in 0 until n - i - 1) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j+1]
+                val temp = arr[j]
+                arr[j] = arr[j + 1]
+                arr[j + 1] = temp
+                swapped = true
+            }
+        }
+        // If no two elements were swapped by inner loop, then break
+        if (!swapped) break
+    }
+}
+                """.trimIndent(),
+                description = "Standard optimized Bubble Sort with early exit flag."
+            )
+            SortType.SELECTION -> AlgorithmImplementation(
+                sortType = SortType.SELECTION,
+                code = """
+fun selectionSort(arr: IntArray) {
+    val n = arr.size
+    for (i in 0 until n - 1) {
+        var minIdx = i
+        for (j in i + 1 until n) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j
+            }
+        }
+        // Swap the found minimum element with the first element
+        val temp = arr[minIdx]
+        arr[minIdx] = arr[i]
+        arr[i] = temp
+    }
+}
+                """.trimIndent(),
+                description = "Basic Selection Sort implementation."
+            )
+            SortType.INSERTION -> AlgorithmImplementation(
+                sortType = SortType.INSERTION,
+                code = """
+fun insertionSort(arr: IntArray) {
+    val n = arr.size
+    for (i in 1 until n) {
+        val key = arr[i]
+        var j = i - 1
+
+        // Move elements of arr[0..i-1], that are greater than key,
+        // to one position ahead of their current position
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j]
+            j = j - 1
+        }
+        arr[j + 1] = key
+    }
+}
+                """.trimIndent(),
+                description = "Standard Insertion Sort."
+            )
+            SortType.SHELL -> AlgorithmImplementation(
+                sortType = SortType.SHELL,
+                code = """
+fun shellSort(arr: IntArray) {
+    val n = arr.size
+    // Start with a big gap, then reduce the gap
+    var gap = n / 2
+    while (gap > 0) {
+        for (i in gap until n) {
+            val temp = arr[i]
+            var j = i
+            while (j >= gap && arr[j - gap] > temp) {
+                arr[j] = arr[j - gap]
+                j -= gap
+            }
+            arr[j] = temp
+        }
+        gap /= 2
+    }
+}
+                """.trimIndent(),
+                description = "Shell Sort using the original shell sequence (n/2, n/4, ...)."
+            )
+            SortType.MERGE -> AlgorithmImplementation(
+                sortType = SortType.MERGE,
+                code = """
+fun mergeSort(arr: IntArray) {
+    if (arr.size < 2) return
+    val mid = arr.size / 2
+    val left = arr.copyOfRange(0, mid)
+    val right = arr.copyOfRange(mid, arr.size)
+
+    mergeSort(left)
+    mergeSort(right)
+
+    merge(arr, left, right)
+}
+
+fun merge(arr: IntArray, left: IntArray, right: IntArray) {
+    var i = 0; var j = 0; var k = 0
+    while (i < left.size && j < right.size) {
+        if (left[i] <= right[j]) {
+            arr[k++] = left[i++]
+        } else {
+            arr[k++] = right[j++]
+        }
+    }
+    while (i < left.size) arr[k++] = left[i++]
+    while (j < right.size) arr[k++] = right[j++]
+}
+                """.trimIndent(),
+                description = "Recursive Merge Sort implementation."
+            )
+            SortType.QUICK -> AlgorithmImplementation(
+                sortType = SortType.QUICK,
+                code = """
+fun quickSort(arr: IntArray, low: Int, high: Int) {
+    if (low < high) {
+        val pi = partition(arr, low, high)
+        quickSort(arr, low, pi - 1)
+        quickSort(arr, pi + 1, high)
+    }
+}
+
+fun partition(arr: IntArray, low: Int, high: Int): Int {
+    val pivot = arr[high]
+    var i = (low - 1)
+    for (j in low until high) {
+        if (arr[j] < pivot) {
+            i++
+            val temp = arr[i]
+            arr[i] = arr[j]
+            arr[j] = temp
+        }
+    }
+    val temp = arr[i + 1]
+    arr[i + 1] = arr[high]
+    arr[high] = temp
+    return i + 1
+}
+                """.trimIndent(),
+                description = "Standard Quick Sort using Lomuto partition scheme."
+            )
+            SortType.HEAP -> AlgorithmImplementation(
+                sortType = SortType.HEAP,
+                code = """
+fun heapSort(arr: IntArray) {
+    val n = arr.size
+    // Build heap (rearrange array)
+    for (i in n / 2 - 1 downTo 0)
+        heapify(arr, n, i)
+
+    // One by one extract an element from heap
+    for (i in n - 1 downTo 0) {
+        // Move current root to end
+        val temp = arr[0]
+        arr[0] = arr[i]
+        arr[i] = temp
+
+        // call max heapify on the reduced heap
+        heapify(arr, i, 0)
+    }
+}
+
+fun heapify(arr: IntArray, n: Int, i: Int) {
+    var largest = i
+    val l = 2 * i + 1
+    val r = 2 * i + 2
+
+    if (l < n && arr[l] > arr[largest])
+        largest = l
+
+    if (r < n && arr[r] > arr[largest])
+        largest = r
+
+    if (largest != i) {
+        val swap = arr[i]
+        arr[i] = arr[largest]
+        arr[largest] = swap
+
+        heapify(arr, n, largest)
+    }
+}
+                """.trimIndent(),
+                description = "Heap Sort implementation."
+            )
+        }
+    }
 }
