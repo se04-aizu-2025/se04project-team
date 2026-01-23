@@ -13,6 +13,8 @@ import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.model.SortType
+import dotnet.sort.presentation.feature.learn.components.AlgorithmOverview
+import dotnet.sort.presentation.feature.learn.model.AlgorithmContentProvider
 
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -56,14 +58,25 @@ fun AlgorithmDetailScreen(
             
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(SpacingTokens.M),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize(), // Removed padding(SpacingTokens.M) to let scroll view handle it or sub-composables
+                contentAlignment = Alignment.TopStart // Changed to TopStart for scrollable content
             ) {
                 when (selectedTabIndex) {
-                    0 -> Text("Overview content coming soon (PR-53/54)")
-                    1 -> Text("Analysis content coming soon (PR-55/56)")
-                    2 -> Text("Implementation code coming soon (PR-57)")
+                    0 -> AlgorithmOverview(
+                        history = AlgorithmContentProvider.getHistory(sortType)
+                    )
+                    1 -> Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) { 
+                        Text("Analysis content coming soon (PR-55/56)") 
+                    }
+                    2 -> Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Implementation code coming soon (PR-57)")
+                    }
                 }
             }
         }
