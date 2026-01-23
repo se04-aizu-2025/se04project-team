@@ -32,6 +32,9 @@ data class SortColorScheme(
     val barSorted: Color,
     val barPivot: Color,
     val barSelected: Color,
+    // Code View Colors
+    val codeContainer: Color,
+    val onCodeContainer: Color,
 )
 
 /**
@@ -60,6 +63,8 @@ val LightColorScheme = SortColorScheme(
     barSorted = ColorTokens.BarSorted,
     barPivot = ColorTokens.BarPivot,
     barSelected = ColorTokens.BarSelected,
+    codeContainer = ColorTokens.CodeContainer,
+    onCodeContainer = ColorTokens.OnCodeContainer,
 )
 
 /**
@@ -88,4 +93,6 @@ val DarkColorScheme = SortColorScheme(
     barSorted = ColorTokens.BarSorted,
     barPivot = ColorTokens.BarPivot,
     barSelected = ColorTokens.BarSelected,
+    codeContainer = ColorTokens.CodeContainerDark,
+    onCodeContainer = ColorTokens.OnCodeContainerDark,
 )

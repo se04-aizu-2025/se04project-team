@@ -26,6 +26,10 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import dotnet.sort.designsystem.components.atoms.SortIcon
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
@@ -67,7 +71,7 @@ fun AlgorithmCodeView(
             ) {
                 // Code Container
                 Surface(
-                    color = Color(0xFF2B2B2B), // Dark background for code
+                    color = SortTheme.colorScheme.codeContainer,
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -76,7 +80,7 @@ fun AlgorithmCodeView(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color(0xFF1E1E1E)) // Slightly darker header
+                                .background(SortTheme.colorScheme.surfaceVariant)
                                 .padding(horizontal = SpacingTokens.M, vertical = SpacingTokens.XS),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
@@ -84,7 +88,7 @@ fun AlgorithmCodeView(
                             SortText(
                                 text = "Kotlin",
                                 style = SortTheme.typography.labelMedium,
-                                color = Color.Gray
+                                color = SortTheme.colorScheme.onSurfaceVariant
                             )
                             IconButton(
                                 onClick = {
@@ -92,28 +96,91 @@ fun AlgorithmCodeView(
                                 },
                                 modifier = Modifier.height(32.dp)
                             ) {
-                                Icon(
+                                SortIcon(
                                     imageVector = Icons.Default.ContentCopy,
                                     contentDescription = "Copy code",
-                                    tint = Color.Gray
+                                    tint = SortTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
 
-                        // Code Content
+                        // Code Content with Line Numbers
                         SelectionContainer {
-                            SortText(
-                                text = implementation.code,
-                                style = SortTheme.typography.bodyMedium.copy(
-                                    fontFamily = FontFamily.Monospace,
-                                    lineHeight = SortTheme.typography.bodyMedium.lineHeight * 1.2
-                                ),
-                                color = Color(0xFFA9B7C6), // Light grey text
-                                modifier = Modifier.padding(SpacingTokens.M)
-                            )
+                            Row(modifier = Modifier.padding(SpacingTokens.M)) {
+                                // Line Numbers
+                                val lineCount = implementation.code.lines().size
+                                SortText(
+                                    text = (1..lineCount).joinToString("\n"),
+                                    style = SortTheme.typography.bodyMedium.copy(
+                                        fontFamily = FontFamily.Monospace,
+                                        lineHeight = SortTheme.typography.bodyMedium.lineHeight * 1.2
+                                    ),
+                                    color = SortTheme.colorScheme.onCodeContainer.copy(alpha = 0.5f),
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.End,
+                                    modifier = Modifier.padding(end = SpacingTokens.M)
+                                )
+
+                                // Code
+                                SortText(
+                                    text = highlightCode(implementation.code),
+                                    style = SortTheme.typography.bodyMedium.copy(
+                                        fontFamily = FontFamily.Monospace,
+                                        lineHeight = SortTheme.typography.bodyMedium.lineHeight * 1.2
+                                    ),
+                                    color = SortTheme.colorScheme.onCodeContainer,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+private fun highlightCode(code: String): AnnotatedString {
+    val keywords = listOf("fun", "val", "var", "for", "while", "if", "else", "return", "break", "continue", "true", "false", "null", "class", "object", "package", "import", "data")
+    val types = listOf("Int", "IntArray", "String", "Boolean", "Unit", "List", "Array")
+    
+    return buildAnnotatedString {
+        val lines = code.lines()
+        lines.forEachIndexed { index, line ->
+            // Simple syntax highlighting logic
+            // Note: This is a very basic implementation and might not cover all cases perfectly
+            // For a robust solution, a proper lexer would be needed.
+            
+            var currentIndex = 0
+            val words = line.split(Regex("(?<=\\W)|(?=\\W)"))
+            
+            words.forEach { word ->
+                when {
+                    word in keywords -> {
+                        withStyle(style = SpanStyle(color = Color(0xFFCC7832))) { // Orange for keywords
+                            append(word)
+                        }
+                    }
+                    word in types -> {
+                         withStyle(style = SpanStyle(color = Color(0xFFDA70D6))) { // Orchid for types
+                            append(word)
+                        }
+                    }
+                    word.startsWith("//") -> {
+                         withStyle(style = SpanStyle(color = Color(0xFF808080))) { // Grey for comments
+                            append(word)
+                        }
+                    }
+                    word.matches(Regex("\\d+")) -> {
+                         withStyle(style = SpanStyle(color = Color(0xFF6897BB))) { // Light Blue for numbers
+                            append(word)
+                        }
+                    }
+                    else -> append(word)
+                }
+            }
+            
+            if (index < lines.size - 1) {
+                append("\n")
             }
         }
     }
