@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ComposeViewport
 import dotnet.sort.di.DataModule
 import dotnet.sort.di.DomainModule
+import dotnet.sort.di.platformDataModule
 import dotnet.sort.presentation.common.di.CommonModule
 import dotnet.sort.presentation.feature.home.di.HomeFeatureModule
 import dotnet.sort.presentation.feature.settings.di.SettingsFeatureModule
 import dotnet.sort.presentation.feature.sort.SortFeatureModule
+import dotnet.sort.presentation.feature.learn.di.LearnFeatureModule
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 
@@ -28,6 +30,8 @@ fun main() {
             SettingsFeatureModule().module,
             SortFeatureModule().module,
             HomeFeatureModule().module,
+            LearnFeatureModule().module,
+            platformDataModule,
             // TODO: NavigationModule を追加
         )
     }

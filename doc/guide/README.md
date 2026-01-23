@@ -22,6 +22,7 @@ parent: "[📚 ドキュメント一覧](../README.md)"
 |----------------------|------|
 | `ONBOARDING.md` | 新規参加者向けアーキテクチャ概要 |
 | `FUNDAMENTALS.md` | 基礎ルール（サマリー） |
+| `DOCUMENTATION_GUIDE.md` | ドキュメント作成ベストプラクティス |
 | [tasks/](./tasks/README.md) | タスク別ステップガイド |
 | [reference/](./reference/README.md) | 詳細リファレンス |
 | [OPENCODE_SKILLS.md](./OPENCODE_SKILLS.md) | OpenCode skills 運用ガイド |

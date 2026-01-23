@@ -1,14 +1,22 @@
 package dotnet.sort.presentation.feature.learn
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
@@ -17,6 +25,10 @@ import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import org.koin.compose.viewmodel.koinViewModel
+
+import androidx.compose.runtime.LaunchedEffect
+import dotnet.sort.model.SortType
 
 /**
  * Learn 画面。
@@ -31,6 +43,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
  * @param onNavigateToLearn Learn画面への遷移コールバック
  * @param onNavigateToCompare Compare画面への遷移コールバック
  * @param onNavigateToSettings Settings画面への遷移コールバック
+ * @param onNavigateToDetail アルゴリズム詳細画面への遷移コールバック
  * @param onBackClick 戻るボタン押下時のコールバック
  * @param modifier Modifier
  */
@@ -46,9 +59,20 @@ fun LearnScreen(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToDetail: (SortType) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val viewModel = koinViewModel<LearnViewModel>()
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(state.navigationTarget) {
+        state.navigationTarget?.let { sortType ->
+            onNavigateToDetail(sortType)
+            viewModel.send(LearnIntent.ConsumeNavigation)
+        }
+    }
+
     SortScaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -95,23 +119,19 @@ fun LearnScreen(
             )
         },
     ) { padding ->
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = SpacingTokens.M),
+            contentPadding = PaddingValues(vertical = SpacingTokens.M),
+            verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Spacer(modifier = Modifier.height(SpacingTokens.FloatingTopBarInset))
-                SortText(
-                    text = "Coming Soon",
-                    style = SortTheme.typography.headlineMedium,
-                    color = SortTheme.colorScheme.primary,
+            items(state.algorithms) { algorithm ->
+                SortButton(
+                    text = algorithm.displayName,
+                    onClick = {
+                        viewModel.send(LearnIntent.SelectAlgorithm(algorithm))
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(SpacingTokens.M))
-                SortText(
-                    text = "Learn about sorting algorithms here.",
-                    style = SortTheme.typography.bodyMedium,
-                )
-                Spacer(modifier = Modifier.height(SpacingTokens.FloatingBottomBarInset))
             }
         }
     }

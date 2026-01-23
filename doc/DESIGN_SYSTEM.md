@@ -1,7 +1,7 @@
 ---
 title: デザインシステム
-version: 1.1.0
-last_updated: 2026-01-17
+version: 1.2.0
+last_updated: 2026-01-23
 maintainer: Team
 ---
 
@@ -144,7 +144,7 @@ fun MyComponent() {
 
 ## コンポーネント
 
-### Atoms
+### Atoms (9)
 
 **SortBar** - ソート可視化のバー：
 
@@ -158,39 +158,30 @@ fun SortBar(
 )
 ```
 
-**BarState**:
+**BarState** - バーの状態:
 - `Default` - 通常状態
 - `Comparing` - 比較中
 - `Swapping` - 交換中
 - `Sorted` - ソート完了
 - `Pivot` - ピボット
 
-**SortButton** - アクションボタン：
+**SortButton** - アクションボタン
 
-```kotlin
-@Composable
-fun SortButton(
-    onClick: () -> Unit,
-    text: String,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true
-)
-```
+**SortSlider** - 値調整スライダー
 
-**SortSlider** - 値調整スライダー：
+**SortText** - テキスト表示 (+ `SortHeadline`, `SortTitle`, `SortLabel` バリエーション)
 
-```kotlin
-@Composable
-fun SortSlider(
-    value: Float,
-    onValueChange: (Float) -> Unit,
-    valueRange: ClosedFloatingPointRange<Float>,
-    label: String,
-    modifier: Modifier = Modifier
-)
-```
+**SortIcon** - アイコン表示
 
-### Molecules
+**SortIconButton** - アイコンボタン
+
+**SortDivider** - 区切り線
+
+**SortDropdown** - ドロップダウン選択
+
+---
+
+### Molecules (7)
 
 **ArrayBar** - 配列全体の可視化：
 
@@ -202,6 +193,36 @@ fun ArrayBar(
     sortedIndices: Set<Int> = emptySet(),
     pivotIndex: Int? = null,
     modifier: Modifier = Modifier
+)
+```
+
+**SortBarBase** - バー可視化の基盤コンポーネント
+
+**SortCard** - 汎用カード
+
+**SortSectionCard** - タイトル付きセクションカード
+
+**SortTopBar** - トップバー
+
+**SortBottomBar** - ボトムバー
+
+**SortSettingsRow** - 設定行コンポーネント
+
+**SortInfoRow** - 情報表示行コンポーネント
+
+---
+
+### Organisms (1)
+
+**SortScaffold** - 画面レイアウト：
+
+```kotlin
+@Composable
+fun SortScaffold(
+    modifier: Modifier = Modifier,
+    topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
+    content: @Composable (PaddingValues) -> Unit
 )
 ```
 
