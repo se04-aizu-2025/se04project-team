@@ -51,6 +51,7 @@ fun NavGraphBuilder.learnDestination(
  * AlgorithmDetail 画面を NavGraph に登録する。
  */
 fun NavGraphBuilder.algorithmDetailDestination(
+    onNavigateToSort: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     composable<Screen.AlgorithmDetail> { backStackEntry ->
@@ -58,7 +59,8 @@ fun NavGraphBuilder.algorithmDetailDestination(
         val sortType = SortType.valueOf(args.sortTypeString)
         AlgorithmDetailScreen(
             sortType = sortType,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onNavigateToSort = onNavigateToSort
         )
     }
 }

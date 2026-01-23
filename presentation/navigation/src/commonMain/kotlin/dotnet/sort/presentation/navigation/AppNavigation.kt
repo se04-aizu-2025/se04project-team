@@ -113,6 +113,9 @@ fun AppNavigation() {
         )
 
         algorithmDetailDestination(
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
             onBackClick = { navController.popBackStack() },
         )
 

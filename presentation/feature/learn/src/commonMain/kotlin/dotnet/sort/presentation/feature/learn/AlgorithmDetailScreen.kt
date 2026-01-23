@@ -16,6 +16,7 @@ import dotnet.sort.presentation.feature.learn.components.AlgorithmOverview
 import dotnet.sort.presentation.feature.learn.components.AlgorithmConceptsView
 import dotnet.sort.presentation.feature.learn.components.AlgorithmComplexityView
 import dotnet.sort.presentation.feature.learn.components.AlgorithmUseCaseView
+import dotnet.sort.presentation.feature.learn.components.AlgorithmExampleView
 import dotnet.sort.presentation.feature.learn.components.AlgorithmCodeView
 import dotnet.sort.presentation.feature.learn.model.AlgorithmContentProvider
 
@@ -40,10 +41,11 @@ import androidx.compose.runtime.setValue
 fun AlgorithmDetailScreen(
     sortType: SortType,
     onBackClick: () -> Unit,
+    onNavigateToSort: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Overview", "Analysis", "Complexity", "Use Case", "Implementation")
+    val tabs = listOf("Overview", "Example", "Analysis", "Complexity", "Use Case", "Implementation")
 
     SortScaffold(
         modifier = modifier.fillMaxSize(),
@@ -78,16 +80,20 @@ fun AlgorithmDetailScreen(
                     0 -> AlgorithmOverview(
                         history = AlgorithmContentProvider.getHistory(sortType)
                     )
-                    1 -> AlgorithmConceptsView(
+                    1 -> AlgorithmExampleView(
+                        example = AlgorithmContentProvider.getExample(sortType),
+                        onNavigateToSort = onNavigateToSort
+                    )
+                    2 -> AlgorithmConceptsView(
                         concept = AlgorithmContentProvider.getConcept(sortType)
                     )
-                    2 -> AlgorithmComplexityView(
+                    3 -> AlgorithmComplexityView(
                         complexity = AlgorithmContentProvider.getComplexity(sortType)
                     )
-                    3 -> AlgorithmUseCaseView(
+                    4 -> AlgorithmUseCaseView(
                         useCase = AlgorithmContentProvider.getUseCase(sortType)
                     )
-                    4 -> AlgorithmCodeView(
+                    5 -> AlgorithmCodeView(
                         implementation = AlgorithmContentProvider.getImplementation(sortType)
                     )
                 }

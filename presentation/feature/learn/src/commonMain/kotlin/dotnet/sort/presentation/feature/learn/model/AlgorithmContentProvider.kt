@@ -540,4 +540,102 @@ fun heapify(arr: IntArray, n: Int, i: Int) {
             )
         }
     }
+
+    fun getExample(sortType: SortType): AlgorithmExample {
+        val initialArray = listOf(5, 3, 1, 4, 2)
+        return when (sortType) {
+            SortType.BUBBLE -> AlgorithmExample(
+                sortType = SortType.BUBBLE,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(3, 5, 1, 4, 2), "Compare 5 and 3. 5 > 3, so Swap.", listOf(0, 1), StepModificationType.SWAP),
+                    AlgorithmExampleStep(2, listOf(3, 1, 5, 4, 2), "Compare 5 and 1. 5 > 1, so Swap.", listOf(1, 2), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(3, 1, 4, 5, 2), "Compare 5 and 4. 5 > 4, so Swap.", listOf(2, 3), StepModificationType.SWAP),
+                    AlgorithmExampleStep(4, listOf(3, 1, 4, 2, 5), "Compare 5 and 2. 5 > 2, so Swap. 5 reaches end.", listOf(3, 4), StepModificationType.SWAP),
+                    AlgorithmExampleStep(5, listOf(3, 1, 4, 2, 5), "Pass 2: Compare 3 and 1. Swap.", listOf(0, 1), StepModificationType.SWAP),
+                    AlgorithmExampleStep(6, listOf(1, 3, 4, 2, 5), "Pass 2: Compare 3 and 4. No swap.", listOf(1, 2), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(7, listOf(1, 3, 2, 4, 5), "Pass 2: Compare 4 and 2. Swap.", listOf(2, 3), StepModificationType.SWAP),
+                    AlgorithmExampleStep(8, listOf(1, 3, 2, 4, 5), "Pass 3: Compare 1 and 3. No swap.", listOf(0, 1), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(9, listOf(1, 2, 3, 4, 5), "Pass 3: Compare 3 and 2. Swap.", listOf(1, 2), StepModificationType.SWAP),
+                    AlgorithmExampleStep(10, listOf(1, 2, 3, 4, 5), "Sorted!", emptyList(), StepModificationType.NONE)
+                )
+            )
+            SortType.SELECTION -> AlgorithmExample(
+                sortType = SortType.SELECTION,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Start. Min is 5 at index 0.", listOf(0), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(2, listOf(5, 3, 1, 4, 2), "Found smaller: 1 at index 2.", listOf(2), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(3, listOf(1, 3, 5, 4, 2), "Swap min (1) with first element (5).", listOf(0, 2), StepModificationType.SWAP),
+                    AlgorithmExampleStep(4, listOf(1, 3, 5, 4, 2), "Next pass. Min is 3 at index 1.", listOf(1), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(5, listOf(1, 3, 5, 4, 2), "Found smaller: 2 at index 4.", listOf(4), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(6, listOf(1, 2, 5, 4, 3), "Swap min (2) with index 1 (3).", listOf(1, 4), StepModificationType.SWAP),
+                    AlgorithmExampleStep(7, listOf(1, 2, 3, 5, 4), "Next pass. 3 is smallest in remaining. Swap 3 and 5.", listOf(2, 2), StepModificationType.SET),
+                    AlgorithmExampleStep(8, listOf(1, 2, 3, 4, 5), "Last pass. Swap 4 and 5.", listOf(3, 4), StepModificationType.SWAP),
+                    AlgorithmExampleStep(9, listOf(1, 2, 3, 4, 5), "Sorted.", emptyList(), StepModificationType.NONE)
+                )
+            )
+            SortType.INSERTION -> AlgorithmExample(
+                sortType = SortType.INSERTION,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Take 3. 5 > 3, shift 5.", listOf(0, 1), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(2, listOf(3, 5, 1, 4, 2), "Insert 3.", listOf(0), StepModificationType.SET),
+                    AlgorithmExampleStep(3, listOf(3, 5, 1, 4, 2), "Take 1. 5 > 1, shift 5.", listOf(2), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(4, listOf(3, 5, 5, 4, 2), "3 > 1, shift 3.", listOf(1), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(5, listOf(1, 3, 5, 4, 2), "Insert 1.", listOf(0), StepModificationType.SET),
+                    AlgorithmExampleStep(6, listOf(1, 3, 5, 4, 2), "Take 4. 5 > 4, shift 5.", listOf(2), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(7, listOf(1, 3, 4, 5, 2), "3 < 4, insert 4.", listOf(2), StepModificationType.SET),
+                    AlgorithmExampleStep(8, listOf(1, 3, 4, 5, 2), "Take 2. Shift 5, 4, 3.", listOf(4), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(9, listOf(1, 2, 3, 4, 5), "Insert 2.", listOf(1), StepModificationType.SET),
+                    AlgorithmExampleStep(10, listOf(1, 2, 3, 4, 5), "Sorted.", emptyList(), StepModificationType.NONE)
+                )
+            )
+            SortType.SHELL -> AlgorithmExample(
+                sortType = SortType.SHELL,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Gap = 2. Compare 5 and 1.", listOf(0, 2), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(2, listOf(1, 3, 5, 4, 2), "Swap 5 and 1.", listOf(0, 2), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(1, 3, 5, 4, 2), "Gap = 2. Compare 3 and 4. No swap.", listOf(1, 3), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(4, listOf(1, 3, 5, 4, 2), "Gap = 2. Compare 5 and 2.", listOf(2, 4), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(5, listOf(1, 3, 2, 4, 5), "Swap 5 and 2.", listOf(2, 4), StepModificationType.SWAP),
+                    AlgorithmExampleStep(6, listOf(1, 3, 2, 4, 5), "Gap = 1 (Insertion Sort).", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(7, listOf(1, 2, 3, 4, 5), "Insertion Sort pass completes. Sorted.", emptyList(), StepModificationType.NONE)
+                )
+            )
+            SortType.MERGE -> AlgorithmExample(
+                sortType = SortType.MERGE,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Split: [5, 3] and [1, 4, 2]", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(3, 5, 1, 4, 2), "Sort left: [3, 5]", listOf(0, 1), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(3, 5, 1, 2, 4), "Sort right: [1, 2, 4]", listOf(2, 3, 4), StepModificationType.SET),
+                    AlgorithmExampleStep(4, listOf(1, 2, 3, 4, 5), "Merge [3, 5] and [1, 2, 4].", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.QUICK -> AlgorithmExample(
+                sortType = SortType.QUICK,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Pivot = 2 (last).", listOf(4), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(1, 3, 5, 4, 2), "Partition: 1 < 2, move to front.", listOf(2), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(1, 2, 5, 4, 3), "Place pivot 2 after 1.", listOf(1, 4), StepModificationType.SWAP),
+                    AlgorithmExampleStep(4, listOf(1, 2, 5, 4, 3), "Recursively sort [5, 4, 3]. Pivot = 3.", listOf(4), StepModificationType.NONE),
+                    AlgorithmExampleStep(5, listOf(1, 2, 3, 4, 5), "Sorted.", emptyList(), StepModificationType.NONE)
+                )
+            )
+            SortType.HEAP -> AlgorithmExample(
+                sortType = SortType.HEAP,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 4, 2, 3, 1), "Build Max Heap.", emptyList(), StepModificationType.SET),
+                    AlgorithmExampleStep(2, listOf(1, 4, 2, 3, 5), "Swap Max(5) with Last(1). Heap size reduces.", listOf(0, 4), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(4, 3, 2, 1, 5), "Heapify root.", emptyList(), StepModificationType.SET),
+                    AlgorithmExampleStep(4, listOf(1, 3, 2, 4, 5), "Swap Max(4) with Last(1).", listOf(0, 3), StepModificationType.SWAP),
+                    AlgorithmExampleStep(5, listOf(1, 2, 3, 4, 5), "Continue until sorted.", emptyList(), StepModificationType.NONE)
+                )
+            )
+        }
+    }
 }
