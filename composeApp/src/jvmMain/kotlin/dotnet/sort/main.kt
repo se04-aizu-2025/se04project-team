@@ -17,6 +17,7 @@ import dotnet.sort.presentation.feature.home.di.HomeFeatureModule
 import dotnet.sort.presentation.feature.settings.di.SettingsFeatureModule
 import dotnet.sort.presentation.feature.sort.SortFeatureModule
 import dotnet.sort.presentation.feature.learn.di.LearnFeatureModule
+import dotnet.sort.presentation.feature.compare.di.CompareFeatureModule
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 
@@ -30,6 +31,7 @@ fun main() {
             SortFeatureModule().module,
             HomeFeatureModule().module,
             LearnFeatureModule().module,
+            CompareFeatureModule().module,
             platformDataModule,
             // TODO: NavigationModule を追加
         )
