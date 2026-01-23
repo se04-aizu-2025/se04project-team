@@ -144,4 +144,79 @@ object AlgorithmContentProvider {
             )
         }
     }
+
+    fun getComplexity(sortType: SortType): AlgorithmComplexity {
+        return when (sortType) {
+            SortType.BUBBLE -> AlgorithmComplexity(
+                sortType = SortType.BUBBLE,
+                timeComplexityBest = "O(n)",
+                timeComplexityAverage = "O(n²)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Best case occurs when the array is already sorted (one pass). Average and worst cases require nested loops to traverse the array n times.",
+                spaceComplexityExplanation = "Sorts in-place, requiring only a constant amount of extra memory for temporary variables.",
+                intuition = "Comparing every pair requires roughly n² operations. With an 'already sorted' check, we can stop early."
+            )
+            SortType.SELECTION -> AlgorithmComplexity(
+                sortType = SortType.SELECTION,
+                timeComplexityBest = "O(n²)",
+                timeComplexityAverage = "O(n²)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Always performs O(n²) comparisons regardless of the initial order, as it must scan the remaining unsorted portion to find the minimum.",
+                spaceComplexityExplanation = "Sorts in-place, using minimal extra space.",
+                intuition = "We must loop through the entire remaining list for every single position to find the absolute smallest item."
+            )
+            SortType.INSERTION -> AlgorithmComplexity(
+                sortType = SortType.INSERTION,
+                timeComplexityBest = "O(n)",
+                timeComplexityAverage = "O(n²)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Linear time O(n) if the array is already sorted. Quadratic O(n²) in average/worst cases due to shifting elements.",
+                spaceComplexityExplanation = "In-place sorting.",
+                intuition = "Like sorting cards: usually quick to slide a card into place, but if we have to shift every card for every new card, it's slow."
+            )
+            SortType.SHELL -> AlgorithmComplexity(
+                sortType = SortType.SHELL,
+                timeComplexityBest = "O(n log n)",
+                timeComplexityAverage = "Depends on gap sequence",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Highly dependent on the gap sequence used. Can be much faster than O(n²) (e.g., O(n^1.5)) but worst case remains O(n²) with poor gaps.",
+                spaceComplexityExplanation = "In-place sorting.",
+                intuition = "Moving elements long distances early on reduces the number of small shifts required later, improving efficiency."
+            )
+            SortType.MERGE -> AlgorithmComplexity(
+                sortType = SortType.MERGE,
+                timeComplexityBest = "O(n log n)",
+                timeComplexityAverage = "O(n log n)",
+                timeComplexityWorst = "O(n log n)",
+                spaceComplexity = "O(n)",
+                timeComplexityExplanation = "Consistently O(n log n) because it always divides the array in half (log n levels) and merges them linearly O(n).",
+                spaceComplexityExplanation = "Requires O(n) auxiliary space for the temporary arrays used during merging.",
+                intuition = "Splitting is fast. Merging two sorted lists is efficient (linear). We do this 'splitting and merging' log(n) times."
+            )
+            SortType.QUICK -> AlgorithmComplexity(
+                sortType = SortType.QUICK,
+                timeComplexityBest = "O(n log n)",
+                timeComplexityAverage = "O(n log n)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(log n)",
+                timeComplexityExplanation = "O(n log n) on average due to partitioning. Degrades to O(n²) if the pivot is always the smallest/largest element (e.g., sorted array).",
+                spaceComplexityExplanation = "In-place, but requires O(log n) stack space for recursion.",
+                intuition = "If we pick a good pivot, we cut the problem in half each time. If we pick a bad pivot (min/max), we only shrink the problem by 1."
+            )
+            SortType.HEAP -> AlgorithmComplexity(
+                sortType = SortType.HEAP,
+                timeComplexityBest = "O(n log n)",
+                timeComplexityAverage = "O(n log n)",
+                timeComplexityWorst = "O(n log n)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Guaranteed O(n log n). Building the heap takes O(n), and extracting n elements takes O(log n) each.",
+                spaceComplexityExplanation = "In-place sorting (using the array itself as the heap).",
+                intuition = "A heap structure guarantees we can find and remove the max element in logarithmic time, regardless of data order."
+            )
+        }
+    }
 }

@@ -14,6 +14,7 @@ import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.feature.learn.components.AlgorithmOverview
 import dotnet.sort.presentation.feature.learn.components.AlgorithmConceptsView
+import dotnet.sort.presentation.feature.learn.components.AlgorithmComplexityView
 import dotnet.sort.presentation.feature.learn.model.AlgorithmContentProvider
 
 // NOTE: Tab, TabRow は Material3 を使用 (Design System に代替なし)
@@ -40,7 +41,7 @@ fun AlgorithmDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Overview", "Analysis", "Implementation")
+    val tabs = listOf("Overview", "Analysis", "Complexity", "Implementation")
 
     SortScaffold(
         modifier = modifier.fillMaxSize(),
@@ -78,7 +79,10 @@ fun AlgorithmDetailScreen(
                     1 -> AlgorithmConceptsView(
                         concept = AlgorithmContentProvider.getConcept(sortType)
                     )
-                    2 -> Box(
+                    2 -> AlgorithmComplexityView(
+                        complexity = AlgorithmContentProvider.getComplexity(sortType)
+                    )
+                    3 -> Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
