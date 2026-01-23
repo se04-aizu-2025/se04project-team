@@ -36,5 +36,11 @@ potential-bugs:
 performance:
   active: true
 
+  UnnecessaryFullyQualifiedName:
+    active: true
+
+  UnnecessaryFullyQualifiedName:
+    active: true
+
 empty-blocks:
   active: true
