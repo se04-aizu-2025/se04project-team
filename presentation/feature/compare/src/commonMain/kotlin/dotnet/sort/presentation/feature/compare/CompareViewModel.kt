@@ -27,6 +27,7 @@ class CompareViewModel(
                 is CompareIntent.StartComparison -> startComparison()
                 is CompareIntent.TogglePlay -> togglePlay()
                 is CompareIntent.SetSpeed -> updateState { copy(playbackSpeed = intent.speed) }
+                is CompareIntent.SetGeneratorType -> updateState { copy(generatorType = intent.type) }
                 CompareIntent.Reset -> reset()
             }
         }
@@ -48,8 +49,8 @@ class CompareViewModel(
         }
 
         execute {
-            // Generate random array for comparison
-            val input = generateArrayUseCase(currentState.arraySize, ArrayGeneratorType.RANDOM)
+            // Generate array based on selected pattern
+            val input = generateArrayUseCase(currentState.arraySize, currentState.generatorType)
             updateState { copy(initialArray = input) }
 
             // Run algorithms in parallel

@@ -49,6 +49,7 @@ import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.designsystem.tokens.ColorTokens
+import dotnet.sort.generator.ArrayGeneratorType
 import kotlin.math.abs
 
 /**
@@ -180,6 +181,35 @@ fun CompareScreen(
                     valueRange = 10f..100f,
                     steps = 8, // 10, 20, 30, ..., 100
                     enabled = !state.isRunning,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                
+                Spacer(modifier = Modifier.height(SpacingTokens.M))
+                
+                SortDropdown(
+                    label = "Input Pattern",
+                    selectedItem = state.generatorType,
+                    items = ArrayGeneratorType.entries,
+                    onItemSelected = { viewModel.send(CompareIntent.SetGeneratorType(it)) },
+                    itemLabel = { it.name.lowercase().replaceFirstChar { char -> char.uppercase() }.replace("_", " ") },
+                    enabled = !state.isRunning,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                
+                val patternDescription = when (state.generatorType) {
+                    ArrayGeneratorType.RANDOM -> "Completely random elements. Good for general performance testing."
+                    ArrayGeneratorType.ASCENDING -> "Already sorted elements. Best case for some algorithms, but worst for others like Quick Sort (if pivot selection is poor)."
+                    ArrayGeneratorType.DESCENDING -> "Elements in reverse order. Testing how algorithms handle worst-case scenarios."
+                    ArrayGeneratorType.PARTIALLY_SORTED -> "Mostly sorted with some random swaps. Useful for real-world scenarios where data is near-sorted."
+                    ArrayGeneratorType.DUPLICATES -> "Many elements have the same value. High duplicate count affects performance of some algorithms."
+                }
+                
+                Spacer(modifier = Modifier.height(SpacingTokens.S))
+                
+                SortText(
+                    text = patternDescription,
+                    style = SortTheme.typography.bodySmall,
+                    color = SortTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.fillMaxWidth()
                 )
                 
