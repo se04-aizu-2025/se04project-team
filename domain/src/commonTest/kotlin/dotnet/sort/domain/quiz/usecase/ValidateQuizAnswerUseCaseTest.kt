@@ -13,7 +13,7 @@ class ValidateQuizAnswerUseCaseTest {
     fun `GIVEN exact match WHEN invoke called THEN returns Correct`() {
         val valid = 1 to 2
         val user = 1 to 2
-        assertEquals(QuizFeedback.Correct, useCase(valid, user))
+        assertEquals(QuizFeedback.Correct(0), useCase(valid, user))
     }
 
     @Test
