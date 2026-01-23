@@ -16,6 +16,7 @@ import dotnet.sort.presentation.feature.learn.components.AlgorithmOverview
 import dotnet.sort.presentation.feature.learn.components.AlgorithmConceptsView
 import dotnet.sort.presentation.feature.learn.components.AlgorithmComplexityView
 import dotnet.sort.presentation.feature.learn.components.AlgorithmUseCaseView
+import dotnet.sort.presentation.feature.learn.components.AlgorithmCodeView
 import dotnet.sort.presentation.feature.learn.model.AlgorithmContentProvider
 
 // NOTE: Tab, TabRow は Material3 を使用 (Design System に代替なし)
@@ -86,16 +87,9 @@ fun AlgorithmDetailScreen(
                     3 -> AlgorithmUseCaseView(
                         useCase = AlgorithmContentProvider.getUseCase(sortType)
                     )
-                    4 -> Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        SortText(
-                            text = "Implementation code coming soon (PR-57)",
-                            style = SortTheme.typography.bodyMedium,
-                            color = SortTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    4 -> AlgorithmCodeView(
+                        implementation = AlgorithmContentProvider.getImplementation(sortType)
+                    )
                 }
             }
         }
