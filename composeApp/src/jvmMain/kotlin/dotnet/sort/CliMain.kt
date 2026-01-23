@@ -3,7 +3,7 @@ package dotnet.sort
 import dotnet.sort.CliParser
 import dotnet.sort.InteractiveMode
 import dotnet.sort.CliVisualizer
-import dotnet.sort.domain.generator.ArrayGeneratorImpl
+import dotnet.sort.generator.ArrayGeneratorImpl
 import dotnet.sort.domain.generator.ArrayGeneratorType
 import dotnet.sort.domain.model.SortType
 import dotnet.sort.domain.usecase.ExecuteSortUseCase
