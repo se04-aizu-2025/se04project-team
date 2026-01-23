@@ -51,10 +51,6 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
         }
-        wasmJsMain.dependencies {
-            implementation(npm("path-browserify", "1.0.1"))
-            implementation(npm("crypto-browserify", "3.12.1"))
-        }
     }
 }
 
