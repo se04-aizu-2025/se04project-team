@@ -219,4 +219,129 @@ object AlgorithmContentProvider {
             )
         }
     }
+    
+    fun getUseCase(sortType: SortType): AlgorithmUseCase {
+        return when (sortType) {
+            SortType.BUBBLE -> AlgorithmUseCase(
+                sortType = SortType.BUBBLE,
+                bestUseCases = listOf(
+                    "Educational purpose (easy to understand)",
+                    "Checking if a list is already sorted (one pass)",
+                    "Very small datasets where code simplicity is key"
+                ),
+                notRecommended = listOf(
+                    "Large datasets (very slow)",
+                    "Performance-critical applications",
+                    "Reverse-sorted data (worst case)"
+                ),
+                realWorldExamples = listOf(
+                    "Rarely used in production",
+                    "Computer graphics (detecting nearly sorted polygons)"
+                )
+            )
+            SortType.SELECTION -> AlgorithmUseCase(
+                sortType = SortType.SELECTION,
+                bestUseCases = listOf(
+                    "When memory writes are extremely expensive (minimizes swaps)",
+                    "Small lists",
+                    "Embedded systems with limited write cycles"
+                ),
+                notRecommended = listOf(
+                    "Large datasets",
+                    "Already sorted lists (still performs comparisons)"
+                ),
+                realWorldExamples = listOf(
+                    "Flash memory sorting (minimizing writes)",
+                    "Simple microcontrollers"
+                )
+            )
+            SortType.INSERTION -> AlgorithmUseCase(
+                sortType = SortType.INSERTION,
+                bestUseCases = listOf(
+                    "Small arrays (typically < 50 elements)",
+                    "Nearly sorted arrays (extremely fast)",
+                    "Sorting data as it arrives (online sorting)"
+                ),
+                notRecommended = listOf(
+                    "Large, random datasets",
+                    "Reverse-sorted data"
+                ),
+                realWorldExamples = listOf(
+                    "Standard library implementations (e.g., used for small chunks in TimSort)",
+                    "Insertion in a sorted database"
+                )
+            )
+            SortType.SHELL -> AlgorithmUseCase(
+                sortType = SortType.SHELL,
+                bestUseCases = listOf(
+                    "Medium-sized arrays",
+                    "Systems with limited stack space (no recursion)",
+                    "Hardware implementations (simple logic)"
+                ),
+                notRecommended = listOf(
+                    "Very large datasets (Merge/Quick sort are better)",
+                    "When stability (preserving order) is required"
+                ),
+                realWorldExamples = listOf(
+                    "Embedded systems (uClibc qsort)",
+                    "Older operating system kernels"
+                )
+            )
+            SortType.MERGE -> AlgorithmUseCase(
+                sortType = SortType.MERGE,
+                bestUseCases = listOf(
+                    "Sorting linked lists (no random access needed)",
+                    "Large datasets (stable and guaranteed O(n log n))",
+                    "External sorting (data doesn't fit in RAM)"
+                ),
+                notRecommended = listOf(
+                    "Memory-constrained environments (requires O(n) space)",
+                    "Small arrays (slower than insertion sort due to overhead)"
+                ),
+                realWorldExamples = listOf(
+                    "Java's Collections.sort (legacy)",
+                    "Python's Timsort (hybrid of Merge and Insertion)",
+                    "Perl, Firefox (Array.prototype.sort)",
+                    "Database external merge sort"
+                )
+            )
+            SortType.QUICK -> AlgorithmUseCase(
+                sortType = SortType.QUICK,
+                bestUseCases = listOf(
+                    "General-purpose sorting for arrays",
+                    "Large datasets in memory",
+                    "When average performance matters most"
+                ),
+                notRecommended = listOf(
+                    "Worst-case sensitive applications (unless randomized pivot used)",
+                    "Stable sort requirements (Quick Sort is unstable)",
+                    "Already sorted data (with naive pivot)"
+                ),
+                realWorldExamples = listOf(
+                    "C standard library (qsort)",
+                    "C++ STL (std::sort - usually hybrid)",
+                    "Java's Arrays.sort (for primitives)",
+                    "Unix sort command"
+                )
+            )
+            SortType.HEAP -> AlgorithmUseCase(
+                sortType = SortType.HEAP,
+                bestUseCases = listOf(
+                    "Systems requiring guaranteed O(n log n) with O(1) space",
+                    "Real-time systems (consistent performance)",
+                    "Priority queues"
+                ),
+                notRecommended = listOf(
+                    "When stability is required",
+                    "When cache performance is critical (poor locality of reference)",
+                    "Small arrays"
+                ),
+                realWorldExamples = listOf(
+                    "Linux Kernel (heapsort)",
+                    "C++ STL (std::partial_sort)",
+                    "Introsort (fallback for QuickSort depth)"
+                )
+            )
+        }
+    }
 }

@@ -31,6 +31,8 @@ kotlin {
             // ⚠️ Material3: Design System コンポーネントを優先使用すること
             // Tab/TabRow のみ使用可 (Design System に代替なし)
             implementation(libs.material3)
+            implementation(compose.material) // For Icons
+            implementation(compose.materialIconsExtended) // For extended Icons
 
             implementation(compose.ui)
             implementation(compose.components.resources)
