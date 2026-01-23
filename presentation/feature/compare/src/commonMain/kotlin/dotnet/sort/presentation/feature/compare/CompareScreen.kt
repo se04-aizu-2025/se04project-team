@@ -3,15 +3,20 @@ package dotnet.sort.presentation.feature.compare
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.components.molecules.SortSectionCard
+import dotnet.sort.model.ComplexityMetrics
 import org.koin.compose.viewmodel.koinViewModel
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortDropdown
@@ -142,6 +147,22 @@ fun CompareScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 
+                Spacer(modifier = Modifier.height(SpacingTokens.M))
+                
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    SortText(
+                        text = "Array Size: ${state.arraySize}",
+                        style = SortTheme.typography.bodyMedium
+                    )
+                    Slider(
+                        value = state.arraySize.toFloat(),
+                        onValueChange = { viewModel.send(CompareIntent.SetArraySize(it.toInt())) },
+                        valueRange = 10f..100f,
+                        steps = 8, // 10, 20, 30, ..., 100
+                        enabled = !state.isRunning
+                    )
+                }
+                
                 Spacer(modifier = Modifier.height(SpacingTokens.XL))
                 
                 SortButton(
@@ -151,12 +172,66 @@ fun CompareScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(SpacingTokens.M))
+                Spacer(modifier = Modifier.height(SpacingTokens.L))
 
-                if (state.isRunning) {
-                    SortText(text = "Comparison logic will be implemented in PR-60")
+                if (state.algorithm1Result != null && state.algorithm2Result != null) {
+                    SortSectionCard(title = "Comparison Metrics") {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            MetricsColumn(
+                                title = state.selectedAlgorithm1.displayName,
+                                metrics = state.algorithm1Result!!.complexityMetrics,
+                                modifier = Modifier.weight(1f)
+                            )
+                            MetricsColumn(
+                                title = state.selectedAlgorithm2.displayName,
+                                metrics = state.algorithm2Result!!.complexityMetrics,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun MetricsColumn(
+    title: String,
+    metrics: ComplexityMetrics,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(SpacingTokens.S),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        SortText(text = title, style = SortTheme.typography.titleSmall)
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        MetricRow(label = "Time", value = formatNs(metrics.executionTimeNs))
+        MetricRow(label = "Compares", value = metrics.comparisonCount.toString())
+        MetricRow(label = "Swaps", value = metrics.swapCount.toString())
+    }
+}
+
+@Composable
+private fun MetricRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        SortText(text = "$label:", style = SortTheme.typography.bodySmall)
+        SortText(text = value, style = SortTheme.typography.bodySmall, color = SortTheme.colorScheme.primary)
+    }
+}
+
+private fun formatNs(ns: Long): String {
+    return when {
+        ns > 1_000_000_000 -> "${(ns / 1_000_000_000.0).toString().take(4)} s"
+        ns > 1_000_000 -> "${(ns / 1_000_000.0).toInt()} ms"
+        ns > 1_000 -> "${(ns / 1_000.0).toInt()} μs"
+        else -> "$ns ns"
     }
 }

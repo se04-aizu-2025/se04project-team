@@ -3,10 +3,18 @@ package dotnet.sort.presentation.feature.compare
 import androidx.lifecycle.viewModelScope
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
+import dotnet.sort.generator.ArrayGeneratorType
+import dotnet.sort.usecase.ExecuteSortUseCase
+import dotnet.sort.usecase.GenerateArrayUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import org.koin.core.annotation.Factory
 
 @Factory
-class CompareViewModel : BaseViewModel<CompareState, CompareIntent>(
+class CompareViewModel(
+    private val executeSortUseCase: ExecuteSortUseCase,
+    private val generateArrayUseCase: GenerateArrayUseCase
+) : BaseViewModel<CompareState, CompareIntent>(
     initialState = CompareState()
 ) {
     override fun send(intent: CompareIntent) {
@@ -21,8 +29,40 @@ class CompareViewModel : BaseViewModel<CompareState, CompareIntent>(
     }
 
     private fun startComparison() {
-        updateState { copy(isRunning = true) }
-        // TODO: Implement comparison execution logic (PR-60)
+        val currentState = state.value
+        if (currentState.isRunning) return
+
+        updateState {
+            copy(
+                isRunning = true,
+                algorithm1Result = null,
+                algorithm2Result = null
+            )
+        }
+
+        execute {
+            // Generate random array for comparison
+            val input = generateArrayUseCase(currentState.arraySize, ArrayGeneratorType.RANDOM)
+
+            // Run algorithms in parallel
+            val deferred1 = async(Dispatchers.Default) {
+                executeSortUseCase.execute(currentState.selectedAlgorithm1, input)
+            }
+            val deferred2 = async(Dispatchers.Default) {
+                executeSortUseCase.execute(currentState.selectedAlgorithm2, input)
+            }
+
+            val result1 = deferred1.await()
+            val result2 = deferred2.await()
+
+            updateState {
+                copy(
+                    isRunning = false,
+                    algorithm1Result = result1,
+                    algorithm2Result = result2
+                )
+            }
+        }
     }
 
     private fun updateAlgorithm1(intent: CompareIntent.SelectAlgorithm1) {
