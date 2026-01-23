@@ -52,6 +52,9 @@ maintainer: Team
 - 大きな変更時は `version` を上げる（セマンティックバージョニング）
 - 破壊的変更がある場合はドキュメント冒頭に注記
 
+> [!TIP]
+> 読者視点での書き方のベストプラクティスについては [DOCUMENTATION_GUIDE.md](./guide/DOCUMENTATION_GUIDE.md) を参照してください。
+
 ---
 
 ## ドキュメント構造

@@ -4,18 +4,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
-import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.feature.learn.components.AlgorithmOverview
+import dotnet.sort.presentation.feature.learn.components.AlgorithmConceptsView
 import dotnet.sort.presentation.feature.learn.model.AlgorithmContentProvider
 
+// NOTE: Tab, TabRow は Material3 を使用 (Design System に代替なし)
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.runtime.remember
@@ -23,6 +24,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
+/**
+ * アルゴリズム詳細画面。
+ *
+ * Overview, Analysis, Implementation の3つのタブを持つ。
+ *
+ * @param sortType 表示するアルゴリズムの種類
+ * @param onBackClick 戻るボタン押下時のコールバック
+ * @param modifier Modifier
+ */
 @Composable
 fun AlgorithmDetailScreen(
     sortType: SortType,
@@ -46,36 +56,37 @@ fun AlgorithmDetailScreen(
                 .fillMaxSize()
                 .padding(padding),
         ) {
+            // NOTE: TabRow/Tab は Design System に代替がないため Material3 を直接使用
             TabRow(selectedTabIndex = selectedTabIndex) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
                         selected = selectedTabIndex == index,
                         onClick = { selectedTabIndex = index },
-                        text = { Text(title) }
+                        text = { SortText(text = title) }
                     )
                 }
             }
             
             Box(
-                modifier = Modifier
-                    .fillMaxSize(), // Removed padding(SpacingTokens.M) to let scroll view handle it or sub-composables
-                contentAlignment = Alignment.TopStart // Changed to TopStart for scrollable content
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopStart
             ) {
                 when (selectedTabIndex) {
                     0 -> AlgorithmOverview(
                         history = AlgorithmContentProvider.getHistory(sortType)
                     )
-                    1 -> Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) { 
-                        Text("Analysis content coming soon (PR-55/56)") 
-                    }
+                    1 -> AlgorithmConceptsView(
+                        concept = AlgorithmContentProvider.getConcept(sortType)
+                    )
                     2 -> Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Implementation code coming soon (PR-57)")
+                        SortText(
+                            text = "Implementation code coming soon (PR-57)",
+                            style = SortTheme.typography.bodyMedium,
+                            color = SortTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }

@@ -28,7 +28,9 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(libs.material3) // For Icons and Theme utilities
+            // ⚠️ Material3: Design System コンポーネントを優先使用すること
+            // Tab/TabRow のみ使用可 (Design System に代替なし)
+            implementation(libs.material3)
 
             implementation(compose.ui)
             implementation(compose.components.resources)
