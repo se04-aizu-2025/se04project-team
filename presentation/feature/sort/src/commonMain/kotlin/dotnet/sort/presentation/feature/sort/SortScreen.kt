@@ -26,7 +26,7 @@ import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
 import dotnet.sort.presentation.feature.sort.components.MetricsDisplay
 import dotnet.sort.presentation.feature.sort.components.SortControlPanel
-import dotnet.sort.presentation.feature.sort.components.SortVisualizer
+import dotnet.sort.designsystem.components.organisms.SortVisualizer
 
 /**
  * ソート可視化画面。

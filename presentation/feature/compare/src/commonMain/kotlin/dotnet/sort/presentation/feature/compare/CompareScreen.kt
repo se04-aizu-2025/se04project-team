@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +25,13 @@ import org.koin.compose.viewmodel.koinViewModel
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortDropdown
 import dotnet.sort.designsystem.components.atoms.SortSlider
+import dotnet.sort.designsystem.components.atoms.SortIconButton
+import dotnet.sort.designsystem.components.atoms.SortIcon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Pause
+import dotnet.sort.designsystem.components.organisms.SortVisualizer
 import dotnet.sort.model.SortType
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
@@ -173,9 +183,78 @@ fun CompareScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(SpacingTokens.L))
-
                 if (state.algorithm1Result != null && state.algorithm2Result != null) {
+                    Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+                    // Playback Controls
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        SortIconButton(
+                            icon = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            contentDescription = if (state.isPlaying) "Pause" else "Play",
+                            onClick = { viewModel.send(CompareIntent.TogglePlay) }
+                        )
+                        Spacer(modifier = Modifier.width(SpacingTokens.M))
+                        SortIconButton(
+                            icon = Icons.Default.Refresh,
+                            contentDescription = "Reset",
+                            onClick = { viewModel.send(CompareIntent.Reset) }
+                        )
+                    }
+
+                    SortSlider(
+                        label = "Playback Speed",
+                        value = state.playbackSpeed,
+                        onValueChange = { viewModel.send(CompareIntent.SetSpeed(it)) },
+                        valueRange = 0.5f..5.0f,
+                        valueLabel = "${state.playbackSpeed.toString().take(3)}x",
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+                    // Visualization Row
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S)
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            SortText(
+                                text = state.selectedAlgorithm1.displayName,
+                                style = SortTheme.typography.titleSmall,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            val step1 = state.algorithm1Result?.steps?.getOrNull(state.currentStepIndex1)
+                            SortVisualizer(
+                                array = step1?.arrayState ?: emptyList(),
+                                highlightIndices = step1?.highlightingIndices ?: emptyList(),
+                                description = "",
+                                modifier = Modifier.height(200.dp)
+                            )
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            SortText(
+                                text = state.selectedAlgorithm2.displayName,
+                                style = SortTheme.typography.titleSmall,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            val step2 = state.algorithm2Result?.steps?.getOrNull(state.currentStepIndex2)
+                            SortVisualizer(
+                                array = step2?.arrayState ?: emptyList(),
+                                highlightIndices = step2?.highlightingIndices ?: emptyList(),
+                                description = "",
+                                modifier = Modifier.height(200.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(SpacingTokens.L))
+
                     SortSectionCard(title = "Comparison Metrics") {
                         Row(
                             modifier = Modifier.fillMaxWidth(),

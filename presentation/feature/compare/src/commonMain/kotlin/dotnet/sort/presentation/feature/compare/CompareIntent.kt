@@ -8,4 +8,7 @@ sealed class CompareIntent : Intent {
     data class SelectAlgorithm2(val sortType: SortType) : CompareIntent()
     data class SetArraySize(val size: Int) : CompareIntent()
     data object StartComparison : CompareIntent()
+    data object TogglePlay : CompareIntent()
+    data class SetSpeed(val speed: Float) : CompareIntent()
+    data object Reset : CompareIntent()
 }

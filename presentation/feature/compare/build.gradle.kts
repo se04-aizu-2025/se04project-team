@@ -29,6 +29,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material) // For Icons
+            implementation(compose.materialIconsExtended)
 
             implementation(compose.ui)
             implementation(compose.components.resources)

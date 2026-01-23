@@ -8,6 +8,7 @@ import dotnet.sort.usecase.ExecuteSortUseCase
 import dotnet.sort.usecase.GenerateArrayUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import org.koin.core.annotation.Factory
 
 @Factory
@@ -24,6 +25,9 @@ class CompareViewModel(
                 is CompareIntent.SelectAlgorithm2 -> updateAlgorithm2(intent)
                 is CompareIntent.SetArraySize -> updateArraySize(intent)
                 is CompareIntent.StartComparison -> startComparison()
+                is CompareIntent.TogglePlay -> togglePlay()
+                is CompareIntent.SetSpeed -> updateState { copy(playbackSpeed = intent.speed) }
+                CompareIntent.Reset -> reset()
             }
         }
     }
@@ -35,6 +39,9 @@ class CompareViewModel(
         updateState {
             copy(
                 isRunning = true,
+                isPlaying = false,
+                currentStepIndex1 = 0,
+                currentStepIndex2 = 0,
                 algorithm1Result = null,
                 algorithm2Result = null
             )
@@ -43,6 +50,7 @@ class CompareViewModel(
         execute {
             // Generate random array for comparison
             val input = generateArrayUseCase(currentState.arraySize, ArrayGeneratorType.RANDOM)
+            updateState { copy(initialArray = input) }
 
             // Run algorithms in parallel
             val deferred1 = async(Dispatchers.Default) {
@@ -62,6 +70,69 @@ class CompareViewModel(
                     algorithm2Result = result2
                 )
             }
+        }
+    }
+
+    private fun togglePlay() {
+        if (state.value.isPlaying) {
+            updateState { copy(isPlaying = false) }
+        } else {
+            startAutoPlay()
+        }
+    }
+
+    private fun startAutoPlay() {
+        val currentState = state.value
+        if (currentState.isPlaying) return
+        
+        // Check if we have results and not at the end
+        val res1 = currentState.algorithm1Result
+        val res2 = currentState.algorithm2Result
+        if (res1 == null || res2 == null) return
+        
+        if (currentState.currentStepIndex1 >= res1.steps.size - 1 && 
+            currentState.currentStepIndex2 >= res2.steps.size - 1) {
+            return
+        }
+
+        updateState { copy(isPlaying = true) }
+        
+        execute {
+            while (state.value.isPlaying) {
+                val delayTime = (500L / state.value.playbackSpeed.coerceAtLeast(0.1f)).toLong()
+                delay(delayTime)
+                
+                if (!state.value.isPlaying) break
+                
+                val current = state.value
+                val r1 = current.algorithm1Result
+                val r2 = current.algorithm2Result
+                
+                val canStep1 = r1 != null && current.currentStepIndex1 < r1.steps.size - 1
+                val canStep2 = r2 != null && current.currentStepIndex2 < r2.steps.size - 1
+                
+                if (canStep1 || canStep2) {
+                    updateState {
+                        copy(
+                            currentStepIndex1 = if (canStep1) currentStepIndex1 + 1 else currentStepIndex1,
+                            currentStepIndex2 = if (canStep2) currentStepIndex2 + 1 else currentStepIndex2
+                        )
+                    }
+                } else {
+                    updateState { copy(isPlaying = false) }
+                    break
+                }
+            }
+        }
+    }
+
+    private fun reset() {
+        updateState {
+            copy(
+                isPlaying = false,
+                currentStepIndex1 = 0,
+                currentStepIndex2 = 0
+            )
         }
     }
 

@@ -9,6 +9,11 @@ data class CompareState(
     val selectedAlgorithm2: SortType = SortType.SELECTION,
     val arraySize: Int = 30, // Default size for comparison
     val isRunning: Boolean = false,
+    val isPlaying: Boolean = false,
+    val playbackSpeed: Float = 1.0f,
+    val currentStepIndex1: Int = 0,
+    val currentStepIndex2: Int = 0,
+    val initialArray: List<Int> = emptyList(),
     val algorithm1Result: SortResult? = null,
     val algorithm2Result: SortResult? = null
 ) : UiState
