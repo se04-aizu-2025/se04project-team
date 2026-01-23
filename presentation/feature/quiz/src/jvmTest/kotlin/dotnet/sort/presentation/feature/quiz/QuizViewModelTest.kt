@@ -5,6 +5,7 @@ import dotnet.sort.domain.quiz.usecase.GenerateQuizQuestionUseCase
 import dotnet.sort.domain.quiz.model.QuizQuestion
 import dotnet.sort.domain.model.SortType
 import dotnet.sort.domain.quiz.generator.QuizGenerator
+import dotnet.sort.domain.quiz.model.QuizFeedback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -46,8 +47,10 @@ class QuizViewModelTest {
             }
         }
         
+        
         generateQuizQuestionUseCase = GenerateQuizQuestionUseCase(fakeQuizGenerator)
-        viewModel = QuizViewModel(generateQuizQuestionUseCase)
+        val validateQuizAnswerUseCase = dotnet.sort.domain.quiz.usecase.ValidateQuizAnswerUseCase()
+        viewModel = QuizViewModel(generateQuizQuestionUseCase, validateQuizAnswerUseCase)
     }
 
     @AfterTest

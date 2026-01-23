@@ -2,6 +2,7 @@ package dotnet.sort.presentation.feature.quiz
 
 import androidx.lifecycle.viewModelScope
 import dotnet.sort.domain.model.SortType
+import dotnet.sort.domain.quiz.model.QuizFeedback
 import dotnet.sort.domain.quiz.usecase.GenerateQuizQuestionUseCase
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
@@ -16,7 +17,8 @@ import org.koin.core.annotation.Factory
  */
 @Factory
 class QuizViewModel(
-    private val generateQuizQuestionUseCase: GenerateQuizQuestionUseCase
+    private val generateQuizQuestionUseCase: GenerateQuizQuestionUseCase,
+    private val validateQuizAnswerUseCase: dotnet.sort.domain.quiz.usecase.ValidateQuizAnswerUseCase
 ) : BaseViewModel<QuizState, QuizIntent>(QuizState()) {
     
     private var timerJob: Job? = null
@@ -62,34 +64,21 @@ class QuizViewModel(
     private fun submitAnswer(selectedIndices: Pair<Int, Int>) {
         val currentQuestion = state.value.currentQuestion ?: return
         
-        // 順序を正規化して比較
-        val normalizedSelected = if (selectedIndices.first < selectedIndices.second) {
-            selectedIndices
-        } else {
-            selectedIndices.second to selectedIndices.first
-        }
-        
-        val normalizedCorrect = if (currentQuestion.correctIndices.first < currentQuestion.correctIndices.second) {
-            currentQuestion.correctIndices
-        } else {
-            currentQuestion.correctIndices.second to currentQuestion.correctIndices.first
-        }
-        
-        val isCorrect = normalizedSelected == normalizedCorrect
+        val feedback = validateQuizAnswerUseCase(currentQuestion.correctIndices, selectedIndices)
         
         stopTimer()
         
-        if (isCorrect) {
+        if (feedback is dotnet.sort.domain.quiz.model.QuizFeedback.Correct) {
             updateState {
                 copy(
                     score = score + 10,
-                    feedback = QuizFeedback.Correct
+                    feedback = feedback
                 )
             }
         } else {
             updateState {
                 copy(
-                    feedback = QuizFeedback.Incorrect(currentQuestion.correctIndices)
+                    feedback = feedback
                 )
             }
         }

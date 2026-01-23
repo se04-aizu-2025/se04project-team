@@ -2,6 +2,7 @@ package dotnet.sort.presentation.feature.quiz
 
 import dotnet.sort.presentation.common.viewmodel.UiState
 import dotnet.sort.domain.quiz.model.QuizQuestion
+import dotnet.sort.domain.quiz.model.QuizFeedback
 
 /**
  * Quiz画面のUI状態。
@@ -25,7 +26,4 @@ data class QuizState(
 /**
  * クイズの正誤フィードバック
  */
-sealed interface QuizFeedback {
-    data object Correct : QuizFeedback
-    data class Incorrect(val correctIndices: Pair<Int, Int>) : QuizFeedback
-}
+

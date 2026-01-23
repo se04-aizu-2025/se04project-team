@@ -1,5 +1,7 @@
 package dotnet.sort.presentation.feature.quiz
 
+import dotnet.sort.domain.quiz.model.QuizFeedback
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -217,12 +219,13 @@ private fun QuizContent(
                             it.first == index || it.second == index 
                         } ?: false
                         
+                        val feedback = state.feedback
                         val barState = when {
-                            state.feedback is QuizFeedback.Correct && isSelected -> BarState.Sorted
-                            state.feedback is QuizFeedback.Incorrect && isSelected -> BarState.Comparing
-                            state.feedback is QuizFeedback.Incorrect && 
-                                (state.feedback.correctIndices.first == index || 
-                                 state.feedback.correctIndices.second == index) -> BarState.Swapping
+                            feedback is QuizFeedback.Correct && isSelected -> BarState.Sorted
+                            feedback is QuizFeedback.Incorrect && isSelected -> BarState.Comparing
+                            feedback is QuizFeedback.Incorrect && 
+                                (feedback.correctIndices.first == index || 
+                                 feedback.correctIndices.second == index) -> BarState.Swapping
                             isSelected -> BarState.Selected
                             else -> BarState.Default
                         }
