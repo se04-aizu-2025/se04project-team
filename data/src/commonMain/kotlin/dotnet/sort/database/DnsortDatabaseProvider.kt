@@ -4,9 +4,9 @@ import app.cash.sqldelight.async.coroutines.awaitCreate
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import dotnet.sort.data.DnsortDatabase
-import dotnet.sort.model.AlgorithmHistoryEntry
-import dotnet.sort.model.HistoryEventType
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.AlgorithmHistoryEntry
+import dotnet.sort.domain.model.HistoryEventType
+import dotnet.sort.domain.model.SortType
 import dotnet.sort.repository.historyEventTypeFromDb
 import dotnet.sort.repository.sortTypeFromDb
 import dotnet.sort.repository.toDbValue

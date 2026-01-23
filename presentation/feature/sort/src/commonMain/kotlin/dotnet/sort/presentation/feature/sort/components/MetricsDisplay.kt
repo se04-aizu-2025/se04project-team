@@ -10,7 +10,7 @@ import dotnet.sort.designsystem.components.molecules.SortInfoRow
 import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
-import dotnet.sort.model.ComplexityMetrics
+import dotnet.sort.domain.model.ComplexityMetrics
 
 /**
  * パフォーマンスメトリクス表示コンポーネント。

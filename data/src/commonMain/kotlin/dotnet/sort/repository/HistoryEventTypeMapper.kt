@@ -1,6 +1,6 @@
 package dotnet.sort.repository
 
-import dotnet.sort.model.HistoryEventType
+import dotnet.sort.domain.model.HistoryEventType
 
 internal fun HistoryEventType.toDbValue(): String = name
 

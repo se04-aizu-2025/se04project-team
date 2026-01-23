@@ -1,7 +1,7 @@
 package dotnet.sort.presentation.feature.sort
 
-import dotnet.sort.model.SortType
-import dotnet.sort.generator.ArrayGeneratorType
+import dotnet.sort.domain.model.SortType
+import dotnet.sort.domain.generator.ArrayGeneratorType
 
 import dotnet.sort.presentation.common.viewmodel.Intent
 

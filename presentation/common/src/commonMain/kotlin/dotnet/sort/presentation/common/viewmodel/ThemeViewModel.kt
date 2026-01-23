@@ -1,7 +1,7 @@
 package dotnet.sort.presentation.common.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import dotnet.sort.repository.SettingsRepository
+import dotnet.sort.domain.repository.SettingsRepository
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 

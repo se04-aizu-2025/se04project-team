@@ -1,9 +1,10 @@
 package dotnet.sort.repository
 
 import dotnet.sort.database.DnsortDatabaseProvider
-import dotnet.sort.model.AlgorithmHistoryEntry
-import dotnet.sort.model.HistoryEventType
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.AlgorithmHistoryEntry
+import dotnet.sort.domain.model.HistoryEventType
+import dotnet.sort.domain.model.SortType
+import dotnet.sort.domain.repository.AlgorithmHistoryRepository
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.annotation.Single
 import kotlin.time.Clock

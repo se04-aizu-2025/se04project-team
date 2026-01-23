@@ -1,8 +1,8 @@
 package dotnet.sort.presentation.feature.compare
 
-import dotnet.sort.generator.ArrayGeneratorType
-import dotnet.sort.model.SortResult
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.generator.ArrayGeneratorType
+import dotnet.sort.domain.model.SortResult
+import dotnet.sort.domain.model.SortType
 import dotnet.sort.presentation.common.viewmodel.UiState
 
 data class CompareState(

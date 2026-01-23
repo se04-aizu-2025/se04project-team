@@ -1,22 +1,13 @@
 package dotnet.sort.presentation.feature.quiz
 
+import androidx.lifecycle.viewModelScope
+import dotnet.sort.domain.model.SortType
+import dotnet.sort.domain.quiz.usecase.GenerateQuizQuestionUseCase
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
-import dotnet.sort.presentation.common.viewmodel.UiState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
-
-/**
- * Quiz画面のユーザーアクション。
- */
-sealed interface QuizIntent : dotnet.sort.presentation.common.viewmodel.Intent
-
-/**
- * Quiz画面のUI状態。
- *
- * @property isLoading ローディング状態
- */
-data class QuizState(
-    val isLoading: Boolean = false,
-) : UiState
 
 /**
  * Quiz画面のViewModel。
@@ -24,8 +15,131 @@ data class QuizState(
  * クイズ機能の状態管理とビジネスロジックを担当します。
  */
 @Factory
-class QuizViewModel : BaseViewModel<QuizState, QuizIntent>(QuizState()) {
+class QuizViewModel(
+    private val generateQuizQuestionUseCase: GenerateQuizQuestionUseCase
+) : BaseViewModel<QuizState, QuizIntent>(QuizState()) {
+    
+    private var timerJob: Job? = null
+    
     override fun send(intent: QuizIntent) {
-        // TODO: PR-65以降で実装
+        when (intent) {
+            is QuizIntent.StartGame -> startGame()
+            is QuizIntent.SubmitAnswer -> submitAnswer(intent.selectedIndices)
+            is QuizIntent.NextQuestion -> nextQuestion()
+            is QuizIntent.Tick -> tick()
+            is QuizIntent.EndGame -> endGame()
+        }
+    }
+    
+    private fun startGame() {
+        updateState {
+            copy(
+                isGameActive = true,
+                score = 0,
+                feedback = null
+            )
+        }
+        nextQuestion()
+    }
+    
+    private fun nextQuestion() {
+        // ランダムにアルゴリズムを選択
+        val randomAlgorithm = SortType.entries.random()
+        
+        execute {
+            val question = generateQuizQuestionUseCase(randomAlgorithm)
+            updateState {
+                copy(
+                    currentQuestion = question,
+                    timeLeftSeconds = question.timeLimitSeconds,
+                    feedback = null
+                )
+            }
+            startTimer()
+        }
+    }
+    
+    private fun submitAnswer(selectedIndices: Pair<Int, Int>) {
+        val currentQuestion = state.value.currentQuestion ?: return
+        
+        // 順序を正規化して比較
+        val normalizedSelected = if (selectedIndices.first < selectedIndices.second) {
+            selectedIndices
+        } else {
+            selectedIndices.second to selectedIndices.first
+        }
+        
+        val normalizedCorrect = if (currentQuestion.correctIndices.first < currentQuestion.correctIndices.second) {
+            currentQuestion.correctIndices
+        } else {
+            currentQuestion.correctIndices.second to currentQuestion.correctIndices.first
+        }
+        
+        val isCorrect = normalizedSelected == normalizedCorrect
+        
+        stopTimer()
+        
+        if (isCorrect) {
+            updateState {
+                copy(
+                    score = score + 10,
+                    feedback = QuizFeedback.Correct
+                )
+            }
+        } else {
+            updateState {
+                copy(
+                    feedback = QuizFeedback.Incorrect(currentQuestion.correctIndices)
+                )
+            }
+        }
+    }
+    
+    private fun tick() {
+        val newTime = state.value.timeLeftSeconds - 1
+        if (newTime <= 0) {
+            stopTimer()
+            updateState {
+                copy(
+                    timeLeftSeconds = 0,
+                    feedback = state.value.currentQuestion?.let { 
+                        QuizFeedback.Incorrect(it.correctIndices) 
+                    }
+                )
+            }
+        } else {
+            updateState { copy(timeLeftSeconds = newTime) }
+        }
+    }
+    
+    private fun startTimer() {
+        stopTimer()
+        timerJob = viewModelScope.launch {
+            while (state.value.timeLeftSeconds > 0 && state.value.feedback == null) {
+                delay(1000)
+                send(QuizIntent.Tick)
+            }
+        }
+    }
+    
+    private fun stopTimer() {
+        timerJob?.cancel()
+        timerJob = null
+    }
+    
+    private fun endGame() {
+        stopTimer()
+        updateState {
+            copy(
+                isGameActive = false,
+                currentQuestion = null,
+                feedback = null
+            )
+        }
+    }
+    
+    override fun onCleared() {
+        super.onCleared()
+        stopTimer()
     }
 }

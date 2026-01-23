@@ -1,11 +1,11 @@
 package dotnet.sort.presentation.feature.sort
 
-import dotnet.sort.generator.ArrayGenerator
-import dotnet.sort.generator.ArrayGeneratorType
-import dotnet.sort.model.SortType
-import dotnet.sort.usecase.ExecuteSortUseCase
-import dotnet.sort.usecase.GenerateArrayUseCase
-import dotnet.sort.usecase.RecordHistoryEventUseCase
+import dotnet.sort.domain.generator.ArrayGenerator
+import dotnet.sort.domain.generator.ArrayGeneratorType
+import dotnet.sort.domain.model.SortType
+import dotnet.sort.domain.usecase.ExecuteSortUseCase
+import dotnet.sort.domain.usecase.GenerateArrayUseCase
+import dotnet.sort.domain.usecase.RecordHistoryEventUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

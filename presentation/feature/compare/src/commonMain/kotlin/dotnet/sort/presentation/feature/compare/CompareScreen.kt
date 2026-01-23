@@ -26,7 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Star
 import dotnet.sort.designsystem.components.molecules.SortSectionCard
-import dotnet.sort.model.ComplexityMetrics
+import dotnet.sort.domain.model.ComplexityMetrics
 import org.koin.compose.viewmodel.koinViewModel
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortDropdown
@@ -39,7 +39,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.EmojiEvents
 import dotnet.sort.designsystem.components.organisms.SortVisualizer
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.SortType
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
@@ -49,7 +49,7 @@ import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.designsystem.tokens.ColorTokens
-import dotnet.sort.generator.ArrayGeneratorType
+import dotnet.sort.domain.generator.ArrayGeneratorType
 import kotlin.math.abs
 
 /**

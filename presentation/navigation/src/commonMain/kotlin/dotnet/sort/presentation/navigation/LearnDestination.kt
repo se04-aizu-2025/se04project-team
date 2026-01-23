@@ -11,7 +11,7 @@ import dotnet.sort.presentation.feature.learn.LearnScreen
  * @param onBackClick 戻るボタン押下時のコールバック
  */
 import androidx.navigation.toRoute
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.SortType
 import dotnet.sort.presentation.feature.learn.AlgorithmDetailScreen
 
 /**

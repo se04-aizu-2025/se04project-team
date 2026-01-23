@@ -1,8 +1,8 @@
 package dotnet.sort.presentation.feature.compare
 
-import dotnet.sort.model.SortType
-import dotnet.sort.usecase.ExecuteSortUseCase
-import dotnet.sort.usecase.GenerateArrayUseCase
+import dotnet.sort.domain.model.SortType
+import dotnet.sort.domain.usecase.ExecuteSortUseCase
+import dotnet.sort.domain.usecase.GenerateArrayUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

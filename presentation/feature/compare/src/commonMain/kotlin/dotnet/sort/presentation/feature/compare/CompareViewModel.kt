@@ -3,9 +3,9 @@ package dotnet.sort.presentation.feature.compare
 import androidx.lifecycle.viewModelScope
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
-import dotnet.sort.generator.ArrayGeneratorType
-import dotnet.sort.usecase.ExecuteSortUseCase
-import dotnet.sort.usecase.GenerateArrayUseCase
+import dotnet.sort.domain.generator.ArrayGeneratorType
+import dotnet.sort.domain.usecase.ExecuteSortUseCase
+import dotnet.sort.domain.usecase.GenerateArrayUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay

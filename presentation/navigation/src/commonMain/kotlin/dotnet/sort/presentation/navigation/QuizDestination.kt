@@ -1,9 +1,14 @@
 package dotnet.sort.presentation.navigation
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dotnet.sort.presentation.feature.quiz.QuizScreen
+import dotnet.sort.presentation.feature.quiz.QuizViewModel
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
 /**
  * Quiz 機能のナビゲーションを NavGraph に登録する。
@@ -17,6 +22,7 @@ import dotnet.sort.presentation.feature.quiz.QuizScreen
  * @param onNavigateToSettings Settings画面への遷移コールバック
  * @param onBackClick 戻るボタンのコールバック
  */
+@OptIn(KoinExperimentalAPI::class)
 fun NavGraphBuilder.quizDestination(
     currentScreen: Screen,
     onNavigateToHome: () -> Unit,
@@ -28,7 +34,12 @@ fun NavGraphBuilder.quizDestination(
     onBackClick: () -> Unit,
 ) {
     composable<Screen.Quiz> {
+        val viewModel: QuizViewModel = koinViewModel()
+        val state by viewModel.state.collectAsState()
+        
         QuizScreen(
+            state = state,
+            onIntent = viewModel::send,
             isHomeSelected = currentScreen is Screen.Home,
             isSortSelected = currentScreen is Screen.Sort,
             isLearnSelected = currentScreen is Screen.Learn,

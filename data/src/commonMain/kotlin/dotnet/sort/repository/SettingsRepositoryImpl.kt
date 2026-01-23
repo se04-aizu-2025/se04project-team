@@ -3,6 +3,7 @@ package dotnet.sort.repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import dotnet.sort.domain.repository.SettingsRepository
 import org.koin.core.annotation.Single
 
 @Single

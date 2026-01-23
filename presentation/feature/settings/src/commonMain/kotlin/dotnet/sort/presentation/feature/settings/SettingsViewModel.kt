@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import dotnet.sort.presentation.common.viewmodel.Intent
 import dotnet.sort.presentation.common.viewmodel.UiState
-import dotnet.sort.repository.SettingsRepository
+import dotnet.sort.domain.repository.SettingsRepository
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 

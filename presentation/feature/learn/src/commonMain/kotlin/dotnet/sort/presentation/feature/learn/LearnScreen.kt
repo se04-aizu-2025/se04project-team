@@ -28,7 +28,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
 import org.koin.compose.viewmodel.koinViewModel
 
 import androidx.compose.runtime.LaunchedEffect
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.SortType
 
 /**
  * Learn 画面。

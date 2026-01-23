@@ -3,7 +3,7 @@ package dotnet.sort.presentation.feature.sort.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortDropdown
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.SortType
 
 /**
  * アルゴリズム選択コンポーネント。

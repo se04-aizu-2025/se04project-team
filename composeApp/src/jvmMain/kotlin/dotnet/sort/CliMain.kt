@@ -3,11 +3,11 @@ package dotnet.sort
 import dotnet.sort.CliParser
 import dotnet.sort.InteractiveMode
 import dotnet.sort.CliVisualizer
-import dotnet.sort.generator.ArrayGeneratorImpl
-import dotnet.sort.generator.ArrayGeneratorType
-import dotnet.sort.model.SortType
-import dotnet.sort.usecase.ExecuteSortUseCase
-import dotnet.sort.usecase.GenerateArrayUseCase
+import dotnet.sort.domain.generator.ArrayGeneratorImpl
+import dotnet.sort.domain.generator.ArrayGeneratorType
+import dotnet.sort.domain.model.SortType
+import dotnet.sort.domain.usecase.ExecuteSortUseCase
+import dotnet.sort.domain.usecase.GenerateArrayUseCase
 
 fun main(args: Array<String>) {
     val parser = CliParser()

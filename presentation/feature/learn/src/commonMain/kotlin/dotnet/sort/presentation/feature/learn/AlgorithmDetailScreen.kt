@@ -11,7 +11,7 @@ import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.SortType
 import dotnet.sort.presentation.feature.learn.components.AlgorithmOverview
 import dotnet.sort.presentation.feature.learn.components.AlgorithmConceptsView
 import dotnet.sort.presentation.feature.learn.components.AlgorithmComplexityView

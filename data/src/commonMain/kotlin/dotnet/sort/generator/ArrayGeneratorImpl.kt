@@ -1,6 +1,8 @@
 package dotnet.sort.generator
 
 import kotlin.random.Random
+import dotnet.sort.domain.generator.ArrayGenerator
+import dotnet.sort.domain.generator.ArrayGeneratorType
 
 import org.koin.core.annotation.Single
 

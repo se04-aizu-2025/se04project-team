@@ -1,6 +1,6 @@
 package dotnet.sort.presentation.feature.learn.model
 
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.SortType
 
 /**
  * アルゴリズムの計算量と複雑性に関する情報を保持するデータクラス

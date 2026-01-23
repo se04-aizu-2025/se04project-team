@@ -1,6 +1,6 @@
 package dotnet.sort
 
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.model.SortType
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

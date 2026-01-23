@@ -1,15 +1,15 @@
 package dotnet.sort.presentation.feature.sort
 
-import dotnet.sort.algorithm.SortAlgorithmFactory
-import dotnet.sort.generator.ArrayGeneratorType
-import dotnet.sort.model.HistoryEventType
-import dotnet.sort.model.SortResult
-import dotnet.sort.model.SortType
+import dotnet.sort.domain.algorithm.SortAlgorithmFactory
+import dotnet.sort.domain.generator.ArrayGeneratorType
+import dotnet.sort.domain.model.HistoryEventType
+import dotnet.sort.domain.model.SortResult
+import dotnet.sort.domain.model.SortType
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import dotnet.sort.presentation.common.viewmodel.UiState
-import dotnet.sort.usecase.ExecuteSortUseCase
-import dotnet.sort.usecase.GenerateArrayUseCase
-import dotnet.sort.usecase.RecordHistoryEventUseCase
+import dotnet.sort.domain.usecase.ExecuteSortUseCase
+import dotnet.sort.domain.usecase.GenerateArrayUseCase
+import dotnet.sort.domain.usecase.RecordHistoryEventUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
