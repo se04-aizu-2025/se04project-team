@@ -10,8 +10,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -19,6 +21,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.background
+import androidx.compose.material.icons.filled.Star
 import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.model.ComplexityMetrics
 import org.koin.compose.viewmodel.koinViewModel
@@ -31,6 +37,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.EmojiEvents
 import dotnet.sort.designsystem.components.organisms.SortVisualizer
 import dotnet.sort.model.SortType
 import dotnet.sort.designsystem.components.atoms.SortIcons
@@ -41,6 +48,8 @@ import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.designsystem.tokens.ColorTokens
+import kotlin.math.abs
 
 /**
  * Compare 画面。
@@ -255,19 +264,63 @@ fun CompareScreen(
 
                     Spacer(modifier = Modifier.height(SpacingTokens.L))
 
-                    SortSectionCard(title = "Comparison Metrics") {
+                    SortSectionCard(title = "Comparison Summary") {
+                        val m1 = state.algorithm1Result!!.complexityMetrics
+                        val m2 = state.algorithm2Result!!.complexityMetrics
+                        
+                        MetricComparisonRow(
+                            label = "Execution Time",
+                            value1 = m1.executionTimeNs.toFloat(),
+                            value2 = m2.executionTimeNs.toFloat(),
+                            displayValue1 = formatNs(m1.executionTimeNs),
+                            displayValue2 = formatNs(m2.executionTimeNs)
+                        )
+                        
+                        Spacer(modifier = Modifier.height(SpacingTokens.M))
+                        
+                        MetricComparisonRow(
+                            label = "Comparisons",
+                            value1 = m1.comparisonCount.toFloat(),
+                            value2 = m2.comparisonCount.toFloat(),
+                            displayValue1 = m1.comparisonCount.toString(),
+                            displayValue2 = m2.comparisonCount.toString()
+                        )
+                        
+                        Spacer(modifier = Modifier.height(SpacingTokens.M))
+                        
+                        MetricComparisonRow(
+                            label = "Swaps",
+                            value1 = m1.swapCount.toFloat(),
+                            value2 = m2.swapCount.toFloat(),
+                            displayValue1 = m1.swapCount.toString(),
+                            displayValue2 = m2.swapCount.toString()
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+                    SortSectionCard(title = "Detailed Metrics") {
+                        val m1 = state.algorithm1Result!!.complexityMetrics
+                        val m2 = state.algorithm2Result!!.complexityMetrics
+                        
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
                             MetricsColumn(
                                 title = state.selectedAlgorithm1.displayName,
-                                metrics = state.algorithm1Result!!.complexityMetrics,
+                                metrics = m1,
+                                isTimeWinner = m1.executionTimeNs <= m2.executionTimeNs,
+                                isCompareWinner = m1.comparisonCount <= m2.comparisonCount,
+                                isSwapWinner = m1.swapCount <= m2.swapCount,
                                 modifier = Modifier.weight(1f)
                             )
                             MetricsColumn(
                                 title = state.selectedAlgorithm2.displayName,
-                                metrics = state.algorithm2Result!!.complexityMetrics,
+                                metrics = m2,
+                                isTimeWinner = m2.executionTimeNs <= m1.executionTimeNs,
+                                isCompareWinner = m2.comparisonCount <= m1.comparisonCount,
+                                isSwapWinner = m2.swapCount <= m1.swapCount,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -282,6 +335,9 @@ fun CompareScreen(
 private fun MetricsColumn(
     title: String,
     metrics: ComplexityMetrics,
+    isTimeWinner: Boolean,
+    isCompareWinner: Boolean,
+    isSwapWinner: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -290,22 +346,127 @@ private fun MetricsColumn(
     ) {
         SortText(text = title, style = SortTheme.typography.titleSmall)
         Spacer(modifier = Modifier.height(SpacingTokens.S))
-        MetricRow(label = "Time", value = formatNs(metrics.executionTimeNs))
-        MetricRow(label = "Compares", value = metrics.comparisonCount.toString())
-        MetricRow(label = "Swaps", value = metrics.swapCount.toString())
+        MetricRow(
+            label = "Time", 
+            value = formatNs(metrics.executionTimeNs), 
+            isWinner = isTimeWinner
+        )
+        MetricRow(
+            label = "Compares", 
+            value = metrics.comparisonCount.toString(), 
+            isWinner = isCompareWinner
+        )
+        MetricRow(
+            label = "Swaps", 
+            value = metrics.swapCount.toString(), 
+            isWinner = isSwapWinner
+        )
     }
 }
 
 @Composable
-private fun MetricRow(label: String, value: String) {
+private fun MetricRow(
+    label: String, 
+    value: String, 
+    isWinner: Boolean = false
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         SortText(text = "$label:", style = SortTheme.typography.bodySmall)
-        SortText(text = value, style = SortTheme.typography.bodySmall, color = SortTheme.colorScheme.primary)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (isWinner) {
+                SortIcon(
+                    imageVector = Icons.Default.EmojiEvents,
+                    contentDescription = "Winner",
+                    tint = Color(0xFFFFD700), // Gold
+                    modifier = Modifier.size(14.dp).padding(end = 2.dp)
+                )
+            }
+            SortText(
+                text = value, 
+                style = SortTheme.typography.bodySmall, 
+                color = if (isWinner) ColorTokens.BarSorted else SortTheme.colorScheme.primary
+            )
+        }
     }
 }
+
+@Composable
+private fun MetricComparisonRow(
+    label: String,
+    value1: Float,
+    value2: Float,
+    displayValue1: String,
+    displayValue2: String
+) {
+    val total = value1 + value2
+    val ratio1 = if (total > 0) value1 / total else 0.5f
+    val ratio2 = if (total > 0) value2 / total else 0.5f
+    
+    val diffPercent = if (value1 > 0 && value2 > 0) {
+        val diff = abs(value1 - value2)
+        val minVal = minKt(value1, value2)
+        (diff / minVal * 100).toInt()
+    } else 0
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            SortText(text = label, style = SortTheme.typography.labelMedium)
+            if (diffPercent > 0) {
+                val winner = if (value1 < value2) "Left" else "Right"
+                SortText(
+                    text = "$winner is $diffPercent% better",
+                    style = SortTheme.typography.labelSmall,
+                    color = ColorTokens.BarSorted
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(SpacingTokens.XS))
+        
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+                .background(SortTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp))
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(ratio1.coerceAtLeast(0.01f))
+                    .fillMaxHeight()
+                    .background(
+                        if (value1 <= value2) ColorTokens.BarSorted else ColorTokens.BarComparing,
+                        RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp)
+                    )
+            )
+            Box(
+                modifier = Modifier
+                    .weight(ratio2.coerceAtLeast(0.01f))
+                    .fillMaxHeight()
+                    .background(
+                        if (value2 < value1) ColorTokens.BarSorted else ColorTokens.BarComparing,
+                        RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp)
+                    )
+            )
+        }
+        
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            SortText(text = displayValue1, style = SortTheme.typography.bodySmall)
+            SortText(text = displayValue2, style = SortTheme.typography.bodySmall)
+        }
+    }
+}
+
+private fun minKt(a: Float, b: Float): Float = if (a < b) a else b
 
 private fun formatNs(ns: Long): String {
     return when {
