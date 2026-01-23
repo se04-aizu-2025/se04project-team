@@ -3,6 +3,9 @@ package dotnet.sort.presentation.feature.compare
 import dotnet.sort.domain.model.SortType
 import dotnet.sort.domain.usecase.ExecuteSortUseCase
 import dotnet.sort.domain.usecase.GenerateArrayUseCase
+import dotnet.sort.domain.generator.ArrayGenerator
+import dotnet.sort.domain.generator.ArrayGeneratorType
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -23,9 +26,9 @@ class CompareViewModelTest {
         Dispatchers.setMain(testDispatcher)
         // Stubs for use cases that are not used in these basic tests
         val executeSortUseCaseStub = ExecuteSortUseCase()
-        val generateArrayUseCaseStub = GenerateArrayUseCase(object : dotnet.sort.generator.ArrayGenerator {
-            override fun generate(s: Int, t: dotnet.sort.generator.ArrayGeneratorType) = emptyList<Int>()
-            override fun generate(s: Int, t: dotnet.sort.generator.ArrayGeneratorType, r: IntRange) = emptyList<Int>()
+        val generateArrayUseCaseStub = GenerateArrayUseCase(object : dotnet.sort.domain.generator.ArrayGenerator {
+            override fun generate(s: Int, t: dotnet.sort.domain.generator.ArrayGeneratorType) = emptyList<Int>()
+            override fun generate(s: Int, t: dotnet.sort.domain.generator.ArrayGeneratorType, r: IntRange) = emptyList<Int>()
         })
         
         viewModel = CompareViewModel(executeSortUseCaseStub, generateArrayUseCaseStub)

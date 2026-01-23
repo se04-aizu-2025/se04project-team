@@ -6,6 +6,9 @@ import dotnet.sort.domain.model.SortType
 import dotnet.sort.domain.usecase.ExecuteSortUseCase
 import dotnet.sort.domain.usecase.GenerateArrayUseCase
 import dotnet.sort.domain.usecase.RecordHistoryEventUseCase
+import dotnet.sort.domain.repository.AlgorithmHistoryRepository
+import dotnet.sort.domain.model.HistoryEventType
+import dotnet.sort.domain.model.AlgorithmHistoryEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -28,9 +31,9 @@ class SortViewModelTest {
             override fun generate(size: Int, type: ArrayGeneratorType): List<Int> = List(size) { it }
             override fun generate(size: Int, type: ArrayGeneratorType, range: IntRange): List<Int> = List(size) { it }
         }
-        val recordHistoryStub = RecordHistoryEventUseCase(object : dotnet.sort.repository.AlgorithmHistoryRepository {
-            override suspend fun recordEvent(a: SortType?, e: dotnet.sort.model.HistoryEventType, m: String?) = Unit
-            override fun observeRecentEvents(limit: Int) = kotlinx.coroutines.flow.flowOf<List<dotnet.sort.model.AlgorithmHistoryEntry>>(emptyList())
+        val recordHistoryStub = RecordHistoryEventUseCase(object : AlgorithmHistoryRepository {
+            override suspend fun recordEvent(a: SortType?, e: HistoryEventType, m: String?) = Unit
+            override fun observeRecentEvents(limit: Int) = kotlinx.coroutines.flow.flowOf<List<AlgorithmHistoryEntry>>(emptyList())
         })
         
         viewModel = SortViewModel(
