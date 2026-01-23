@@ -10,7 +10,10 @@ private const val SqlJsWorkerPath = "sqljs.worker.js"
 @Single
 actual class DatabaseDriverFactory {
     actual fun createDriver(): SqlDriver {
-        val worker = Worker(SqlJsWorkerPath)
-        return WebWorkerDriver(worker)
+        return WebWorkerDriver(jsWorker())
     }
 }
+
+@OptIn(ExperimentalWasmJsInterop::class)
+internal fun jsWorker(): Worker =
+    js("""new Worker(new URL("@cashapp/sqldelight-sqljs-worker/sqljs.worker.js", import.meta.url))""")
