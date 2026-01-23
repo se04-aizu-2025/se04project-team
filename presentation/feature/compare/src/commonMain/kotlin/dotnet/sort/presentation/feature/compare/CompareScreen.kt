@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,6 +19,7 @@ import dotnet.sort.model.ComplexityMetrics
 import org.koin.compose.viewmodel.koinViewModel
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortDropdown
+import dotnet.sort.designsystem.components.atoms.SortSlider
 import dotnet.sort.model.SortType
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
@@ -149,19 +149,16 @@ fun CompareScreen(
                 
                 Spacer(modifier = Modifier.height(SpacingTokens.M))
                 
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    SortText(
-                        text = "Array Size: ${state.arraySize}",
-                        style = SortTheme.typography.bodyMedium
-                    )
-                    Slider(
-                        value = state.arraySize.toFloat(),
-                        onValueChange = { viewModel.send(CompareIntent.SetArraySize(it.toInt())) },
-                        valueRange = 10f..100f,
-                        steps = 8, // 10, 20, 30, ..., 100
-                        enabled = !state.isRunning
-                    )
-                }
+                SortSlider(
+                    label = "Array Size",
+                    valueLabel = state.arraySize.toString(),
+                    value = state.arraySize.toFloat(),
+                    onValueChange = { viewModel.send(CompareIntent.SetArraySize(it.toInt())) },
+                    valueRange = 10f..100f,
+                    steps = 8, // 10, 20, 30, ..., 100
+                    enabled = !state.isRunning,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 
                 Spacer(modifier = Modifier.height(SpacingTokens.XL))
                 
