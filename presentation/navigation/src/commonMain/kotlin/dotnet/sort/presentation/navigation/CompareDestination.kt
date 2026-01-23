@@ -16,6 +16,7 @@ fun NavGraphBuilder.compareDestination(
     onNavigateToSort: () -> Unit,
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onBackClick: () -> Unit,
 ) {

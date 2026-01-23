@@ -23,6 +23,7 @@ fun NavGraphBuilder.sortDestination(
     onNavigateToSort: () -> Unit,
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onBackClick: () -> Unit,
 ) {
