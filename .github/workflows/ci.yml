@@ -40,7 +40,7 @@ jobs:
 
       # Kotlin/JS および Wasm 用の Node.js キャッシュ
       - name: Cache Kotlin/JS and Wasm dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.yarn
@@ -52,7 +52,7 @@ jobs:
 
       # Kotlin/Native (Konan) キャッシュ
       - name: Cache Kotlin Konan
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ hashFiles('**/build.gradle.kts', '**/gradle/libs.versions.toml') }}
@@ -104,7 +104,7 @@ jobs:
 
       # Kotlin/JS および Wasm 用の Node.js キャッシュ
       - name: Cache Kotlin/JS and Wasm dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.yarn
