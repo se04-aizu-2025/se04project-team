@@ -1,54 +1,34 @@
 ---
-name: context
-description: Gather comprehensive project context and current development status
-compatibility: opencode
-metadata:
-  audience: developers
-  workflow: development
+description: Read and understand all project documentation to build context
 ---
 
-## What I do
-- Read and summarize AGENTS.md for project overview and architecture
-- Analyze current git status and branch information
-- Check development plan and current phase
-- Provide project structure overview
-- Summarize recent commits and changes
+# Context Building Workflow
 
-## When to use me
-Use this skill when you need to understand the current project context, development status, or get oriented with the codebase before starting work.
+This workflow instructs the agent to read all key project documentation to establish a complete understanding of the project context, architecture, and guidelines.
 
-## Output format
-Return a structured summary in the following format:
+## Step 1: Read High-Level Docs
 
-```markdown
-# Project Context Summary
+Read the following files to understand the project overview and rules:
+1. `AGENTS.md` - Project Context for AI
+2. `doc/README.md` - Documentation Map
+3. `doc/guide/ONBOARDING.md` - Architecture Overview
+4. `doc/guide/FUNDAMENTALS.md` - Core Rules
 
-## Project Overview
-[Brief description from AGENTS.md]
+## Step 2: Read Planning Docs
 
-## Current Development Phase
-[Current phase and progress from DEVELOPMENT_PLAN.md]
+Understand the development plan and status:
+1. `doc/DEVELOPMENT_PLAN.md` - Implementation Phases
+2. `doc/REQUIREMENTS_DEFINITION.md` - Requirements
 
-## Technical Stack
-[Key technologies and frameworks]
+## Step 3: Read Technical Reference
 
-## Current Status
-- **Branch**: [current branch name]
-- **Status**: [clean/dirty with changes]
-- **Recent Commits**: [last 3 commits summary]
+Understand the technical details:
+1. `doc/ARCHITECTURE.md` - Detailed Architecture
+2. `doc/DESIGN_SYSTEM.md` - UI/UX System
+3. `doc/guide/reference/NAMING_CONVENTIONS.md` - Naming Rules
+4. `doc/guide/reference/STATE_MANAGEMENT.md` - MVI & State
+5. `doc/guide/reference/DEPENDENCY_INJECTION.md` - Koin Usage
 
-## Key Architecture Points
-[Bullet points of important architectural decisions]
+## Step 4: Summary
 
-## Active Development Areas
-[Current focus areas based on development plan]
-```
-
-## Required inputs
-- Access to AGENTS.md and project documentation
-- Current git repository state
-
-## Notes
-- Always read AGENTS.md first for project context
-- Focus on actionable information for development
-- Include relevant file paths for easy navigation
+Summarize the project status and key architectural constraints to the user to demonstrate understanding.
