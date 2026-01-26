@@ -23,6 +23,11 @@ sealed interface GuessIntent : Intent {
     data class SelectAlgorithm(val algorithm: SortType) : GuessIntent
 
     /**
+     * 難易度を選択する
+     */
+    data class SelectDifficulty(val difficulty: GuessDifficulty) : GuessIntent
+
+    /**
      * 回答を確定する
      */
     data object ConfirmAnswer : GuessIntent
@@ -41,4 +46,9 @@ sealed interface GuessIntent : Intent {
      * ゲームを終了する
      */
     data object EndGame : GuessIntent
+
+    /**
+     * タイマーのカウントダウン
+     */
+    data object Tick : GuessIntent
 }

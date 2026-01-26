@@ -1,19 +1,12 @@
 package dotnet.sort.presentation.feature.guess
 
-import dotnet.sort.domain.model.SortResult
 import dotnet.sort.domain.model.SortSnapshot
 import dotnet.sort.domain.model.SortType
 import dotnet.sort.domain.usecase.ExecuteSortUseCase
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
-import dotnet.sort.presentation.common.viewmodel.UiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import androidx.lifecycle.viewModelScope
 import org.koin.core.annotation.Factory
 
@@ -23,6 +16,7 @@ class GuessViewModel(
 ) : BaseViewModel<GuessState, GuessIntent>(GuessState()) {
 
     private var animationJob: Job? = null
+    private var timerJob: Job? = null
     private var currentSortSteps: List<SortSnapshot> = emptyList()
 
     override fun send(intent: GuessIntent) {
@@ -30,16 +24,20 @@ class GuessViewModel(
             is GuessIntent.StartGame -> startGame()
             is GuessIntent.StartAnimation -> startAnimation()
             is GuessIntent.SelectAlgorithm -> selectAlgorithm(intent.algorithm)
+            is GuessIntent.SelectDifficulty -> selectDifficulty(intent.difficulty)
             is GuessIntent.ConfirmAnswer -> confirmAnswer()
             is GuessIntent.ShowHint -> showHint()
             is GuessIntent.NextQuestion -> nextQuestion()
             is GuessIntent.EndGame -> endGame()
+            is GuessIntent.Tick -> tick()
         }
     }
 
     private fun startGame() {
         // 利用可能なアルゴリズムを設定
         val availableAlgorithms = SortType.entries.toList().shuffled()
+        stopTimer()
+        animationJob?.cancel()
 
         updateState {
             copy(
@@ -52,14 +50,19 @@ class GuessViewModel(
                 isAnimationPlaying = false,
                 currentStepIndex = 0,
                 totalSteps = 0,
-                currentSnapshot = null
+                currentSnapshot = null,
+                timeLeftSeconds = difficulty.timeLimitSeconds
             )
         }
+
+        nextQuestion()
     }
 
     private fun nextQuestion() {
+        stopTimer()
         // ランダムに正解アルゴリズムを選択
         val correctAlgorithm = SortType.entries.random()
+        val difficulty = state.value.difficulty
 
         updateState {
             copy(
@@ -70,7 +73,8 @@ class GuessViewModel(
                 isAnimationPlaying = false,
                 currentStepIndex = 0,
                 totalSteps = 0,
-                currentSnapshot = null
+                currentSnapshot = null,
+                timeLeftSeconds = difficulty.timeLimitSeconds
             )
         }
 
@@ -78,7 +82,7 @@ class GuessViewModel(
         viewModelScope.launch {
             val result = executeSortUseCase.execute(
                 correctAlgorithm,
-                (1..20).shuffled() // 小さめの配列で
+                (1..difficulty.arraySize).shuffled()
             )
             currentSortSteps = result.steps
             updateState {
@@ -117,6 +121,7 @@ class GuessViewModel(
                     gamePhase = GuessGamePhase.SELECTING
                 )
             }
+            startTimer()
         }
     }
 
@@ -125,6 +130,7 @@ class GuessViewModel(
     }
 
     private fun confirmAnswer() {
+        stopTimer()
         val isCorrect = state.value.selectedAlgorithm == state.value.correctAlgorithm
         val newScore = if (isCorrect) state.value.score + 1 else state.value.score
 
@@ -151,12 +157,55 @@ class GuessViewModel(
         updateState { copy(hint = hint) }
     }
 
+    private fun selectDifficulty(difficulty: GuessDifficulty) {
+        if (state.value.gamePhase != GuessGamePhase.WAITING) return
+        updateState { copy(difficulty = difficulty, timeLeftSeconds = difficulty.timeLimitSeconds) }
+    }
+
+    private fun tick() {
+        val newTime = state.value.timeLeftSeconds - 1
+        if (newTime <= 0) {
+            stopTimer()
+            updateState {
+                copy(
+                    timeLeftSeconds = 0,
+                    selectedAlgorithm = null,
+                    gamePhase = GuessGamePhase.RESULT
+                )
+            }
+        } else {
+            updateState { copy(timeLeftSeconds = newTime) }
+        }
+    }
+
+    private fun startTimer() {
+        stopTimer()
+        timerJob = viewModelScope.launch {
+            while (state.value.timeLeftSeconds > 0 && state.value.gamePhase == GuessGamePhase.SELECTING) {
+                delay(1000)
+                send(GuessIntent.Tick)
+            }
+        }
+    }
+
+    private fun stopTimer() {
+        timerJob?.cancel()
+        timerJob = null
+    }
+
     private fun endGame() {
+        stopTimer()
         updateState {
             copy(
                 gamePhase = GuessGamePhase.FINISHED
             )
         }
+        animationJob?.cancel()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopTimer()
         animationJob?.cancel()
     }
 }

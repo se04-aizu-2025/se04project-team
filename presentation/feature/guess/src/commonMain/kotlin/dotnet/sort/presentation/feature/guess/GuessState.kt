@@ -17,6 +17,8 @@ import dotnet.sort.domain.model.SortSnapshot
  * @property hint ヒント情報
  * @property score 現在のスコア
  * @property isAnimationPlaying アニメーション再生中かどうか
+ * @property difficulty 難易度設定
+ * @property timeLeftSeconds 残り時間（秒）
  */
 data class GuessState(
     val isLoading: Boolean = false,
@@ -31,7 +33,9 @@ data class GuessState(
     val isAnimationPlaying: Boolean = false,
     val currentStepIndex: Int = 0,
     val totalSteps: Int = 0,
-    val currentSnapshot: SortSnapshot? = null
+    val currentSnapshot: SortSnapshot? = null,
+    val difficulty: GuessDifficulty = GuessDifficulty.MEDIUM,
+    val timeLeftSeconds: Int = GuessDifficulty.MEDIUM.timeLimitSeconds
 ) : UiState
 
 /**
@@ -52,6 +56,28 @@ enum class GuessGamePhase {
 
     /** ゲーム終了 */
     FINISHED
+}
+
+/**
+ * Guessゲームの難易度。
+ *
+ * @property displayName 表示名
+ * @property arraySize 問題で使用する配列サイズ
+ * @property timeLimitSeconds 制限時間（秒）
+ */
+enum class GuessDifficulty(
+    val displayName: String,
+    val arraySize: Int,
+    val timeLimitSeconds: Int
+) {
+    /** 初級: 小さい配列・制限時間長め */
+    EASY("Easy", arraySize = 10, timeLimitSeconds = 25),
+
+    /** 中級: 中程度の配列 */
+    MEDIUM("Medium", arraySize = 20, timeLimitSeconds = 15),
+
+    /** 上級: 大きい配列・制限時間短め */
+    HARD("Hard", arraySize = 30, timeLimitSeconds = 8)
 }
 
 /**

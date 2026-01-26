@@ -26,7 +26,6 @@ import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.components.organisms.SortVisualizer
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
-import dotnet.sort.domain.model.SortType
 
 /**
  * アルゴリズム推測ゲーム画面。
@@ -136,10 +135,19 @@ fun GuessScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SortText(
-                    text = "Score: ${state.score}",
-                    style = SortTheme.typography.titleMedium
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(SpacingTokens.XS)
+                ) {
+                    SortText(
+                        text = "Score: ${state.score}",
+                        style = SortTheme.typography.titleMedium
+                    )
+                    SortText(
+                        text = "Time: ${state.timeLeftSeconds}s",
+                        style = SortTheme.typography.bodyMedium,
+                        color = SortTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
                 when (state.gamePhase) {
                     GuessGamePhase.RESULT -> {
@@ -152,6 +160,14 @@ fun GuessScreen(
                     }
                     else -> Spacer(modifier = Modifier)
                 }
+            }
+
+            if (state.gamePhase == GuessGamePhase.WAITING) {
+                DifficultySelector(
+                    selectedDifficulty = state.difficulty,
+                    onDifficultySelected = { onIntent(GuessIntent.SelectDifficulty(it)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             // Animation Area
@@ -270,5 +286,42 @@ fun GuessScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun DifficultySelector(
+    selectedDifficulty: GuessDifficulty,
+    onDifficultySelected: (GuessDifficulty) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)
+    ) {
+        SortText(
+            text = "Difficulty",
+            style = SortTheme.typography.titleSmall
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S)
+        ) {
+            GuessDifficulty.entries.forEach { difficulty ->
+                val isSelected = selectedDifficulty == difficulty
+                SortButton(
+                    text = difficulty.displayName,
+                    onClick = { onDifficultySelected(difficulty) },
+                    style = if (isSelected) SortButtonStyle.Primary else SortButtonStyle.Outlined,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+
+        SortText(
+            text = "Array ${selectedDifficulty.arraySize} • ${selectedDifficulty.timeLimitSeconds}s",
+            style = SortTheme.typography.bodySmall,
+            color = SortTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
