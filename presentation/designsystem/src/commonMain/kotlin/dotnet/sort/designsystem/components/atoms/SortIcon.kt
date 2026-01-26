@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 
 import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.filled.EmojiObjects
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
@@ -70,5 +72,7 @@ object SortIcons {
     val Sort: ImageVector = Icons.AutoMirrored.Filled.Sort
     val Learn: ImageVector = Icons.AutoMirrored.Filled.MenuBook
     val Compare: ImageVector = Icons.Default.Tune
+    val Quiz: ImageVector = Icons.Outlined.HelpOutline
+    val Guess: ImageVector = Icons.Filled.EmojiObjects
     val Settings: ImageVector = Icons.Default.Settings
 }

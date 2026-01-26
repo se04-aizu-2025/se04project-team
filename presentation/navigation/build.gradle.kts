@@ -47,6 +47,7 @@ kotlin {
             api(projects.presentation.feature.learn)
             api(projects.presentation.feature.compare)
             api(projects.presentation.feature.quiz)
+            api(projects.presentation.feature.guess)
             api(projects.presentation.feature.settings)
         }
         commonTest.dependencies {

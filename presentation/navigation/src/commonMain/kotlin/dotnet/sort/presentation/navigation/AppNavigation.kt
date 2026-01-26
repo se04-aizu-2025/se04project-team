@@ -22,6 +22,7 @@ fun AppNavigation() {
             "Learn" -> Screen.Learn
             "Compare" -> Screen.Compare
             "Quiz" -> Screen.Quiz
+            "Guess" -> Screen.Guess
             "Settings" -> Screen.Settings
             else -> Screen.Home
         }
@@ -48,6 +49,9 @@ fun AppNavigation() {
             onNavigateToQuiz = {
                 if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
             },
+            onNavigateToGuess = {
+                if (currentScreen !is Screen.Guess) navController.navigate(Screen.Guess)
+            },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
@@ -69,6 +73,9 @@ fun AppNavigation() {
             },
             onNavigateToQuiz = {
                 if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
+            },
+            onNavigateToGuess = {
+                if (currentScreen !is Screen.Guess) navController.navigate(Screen.Guess)
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
@@ -93,6 +100,9 @@ fun AppNavigation() {
             onNavigateToQuiz = {
                 if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
             },
+            onNavigateToGuess = {
+                if (currentScreen !is Screen.Guess) navController.navigate(Screen.Guess)
+            },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
@@ -115,6 +125,9 @@ fun AppNavigation() {
             },
             onNavigateToQuiz = {
                 if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
+            },
+            onNavigateToGuess = {
+                if (currentScreen !is Screen.Guess) navController.navigate(Screen.Guess)
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
@@ -149,6 +162,9 @@ fun AppNavigation() {
             onNavigateToQuiz = {
                 if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
             },
+            onNavigateToGuess = {
+                if (currentScreen !is Screen.Guess) navController.navigate(Screen.Guess)
+            },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
@@ -171,6 +187,35 @@ fun AppNavigation() {
             },
             onNavigateToQuiz = {
                 if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
+            },
+            onNavigateToGuess = {
+                if (currentScreen !is Screen.Guess) navController.navigate(Screen.Guess)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onBackClick = { navController.popBackStack() },
+        )
+
+        guessDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToQuiz = {
+                if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
+            },
+            onNavigateToGuess = {
+                if (currentScreen !is Screen.Guess) navController.navigate(Screen.Guess)
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)

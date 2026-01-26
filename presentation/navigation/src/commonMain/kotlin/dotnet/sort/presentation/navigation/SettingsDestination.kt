@@ -24,6 +24,7 @@ fun NavGraphBuilder.settingsDestination(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToQuiz: () -> Unit,
+    onNavigateToGuess: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onBackClick: () -> Unit,
 ) {

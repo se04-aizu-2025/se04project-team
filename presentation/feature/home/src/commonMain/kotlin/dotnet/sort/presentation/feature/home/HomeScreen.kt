@@ -65,6 +65,7 @@ fun HomeScreen(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToQuiz: () -> Unit,
+    onNavigateToGuess: () -> Unit,
     onNavigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
