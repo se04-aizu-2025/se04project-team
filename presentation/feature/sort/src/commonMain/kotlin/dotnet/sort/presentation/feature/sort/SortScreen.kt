@@ -24,7 +24,11 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
@@ -122,7 +126,7 @@ fun SortScreen(
                 .focusable(),
         topBar = {
             SortTopBar(
-                title = "Visualizer",
+                title = stringResource(Res.string.sort_title),
                 onBackClick = onBackClick,
             )
         },
@@ -132,31 +136,31 @@ fun SortScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = "Home",
+                            contentDescription = stringResource(Res.string.nav_home),
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = "Sort",
+                            contentDescription = stringResource(Res.string.nav_sort),
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = "Learn",
+                            contentDescription = stringResource(Res.string.nav_learn),
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = "Compare",
+                            contentDescription = stringResource(Res.string.nav_compare),
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(Res.string.nav_settings),
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),

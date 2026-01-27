@@ -41,7 +41,7 @@ fun <T> SortDropdown(
     selectedItem: T,
     items: List<T>,
     onItemSelected: (T) -> Unit,
-    itemLabel: (T) -> String,
+    itemLabel: @Composable (T) -> String,
     enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {

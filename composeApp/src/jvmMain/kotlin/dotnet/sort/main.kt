@@ -22,6 +22,10 @@ import dotnet.sort.presentation.feature.sort.SortFeatureModule
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.app_name
+import org.jetbrains.compose.resources.stringResource
+
 fun main() {
     startKoin {
         modules(
@@ -42,7 +46,7 @@ fun main() {
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "DNSort",
+            title = stringResource(Res.string.app_name),
         ) {
             App() // Common Entry Point
         }

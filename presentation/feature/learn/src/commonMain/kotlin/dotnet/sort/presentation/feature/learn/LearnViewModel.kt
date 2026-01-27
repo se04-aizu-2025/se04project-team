@@ -6,10 +6,13 @@ import dotnet.sort.presentation.common.viewmodel.Intent
 import dotnet.sort.presentation.common.viewmodel.UiState
 import org.koin.core.annotation.Factory
 
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.StringResource
+
 data class LearnAlgorithmItem(
     val type: SortType,
-    val title: String,
-    val description: String,
+    val description: StringResource,
     val icon: String,
 )
 
@@ -41,13 +44,13 @@ class LearnViewModel : BaseViewModel<LearnState, LearnIntent>(
 
 private fun buildAlgorithmItems(): List<LearnAlgorithmItem> {
     val descriptions = mapOf(
-        SortType.BUBBLE to "Adjacent swaps, simple but slow.",
-        SortType.SELECTION to "Find min and place it.",
-        SortType.INSERTION to "Build sorted prefix gradually.",
-        SortType.SHELL to "Gap-based insertion optimization.",
-        SortType.MERGE to "Divide and merge efficiently.",
-        SortType.QUICK to "Partition around a pivot.",
-        SortType.HEAP to "Heap-based selection of max/min.",
+        SortType.BUBBLE to Res.string.learn_desc_bubble,
+        SortType.SELECTION to Res.string.learn_desc_selection,
+        SortType.INSERTION to Res.string.learn_desc_insertion,
+        SortType.SHELL to Res.string.learn_desc_shell,
+        SortType.MERGE to Res.string.learn_desc_merge,
+        SortType.QUICK to Res.string.learn_desc_quick,
+        SortType.HEAP to Res.string.learn_desc_heap,
     )
     val icons = mapOf(
         SortType.BUBBLE to "🫧",
@@ -58,12 +61,16 @@ private fun buildAlgorithmItems(): List<LearnAlgorithmItem> {
         SortType.QUICK to "⚡",
         SortType.HEAP to "⛰️",
     )
-    return SortType.entries.map { type ->
-        LearnAlgorithmItem(
-            type = type,
-            title = type.displayName,
-            description = descriptions[type] ?: "",
-            icon = icons[type] ?: "📘",
-        )
+    return SortType.entries.mapNotNull { type ->
+        val desc = descriptions[type]
+        if (desc != null) {
+            LearnAlgorithmItem(
+                type = type,
+                description = desc,
+                icon = icons[type] ?: "📘",
+            )
+        } else {
+            null
+        }
     }
 }

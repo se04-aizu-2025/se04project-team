@@ -3,11 +3,15 @@ import dotnet.sort.generator.ArrayGeneratorType
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.feature.sort.SortIntent
 import dotnet.sort.presentation.feature.sort.SortViewModel
+import dotnet.sort.repository.SettingsRepository
 import dotnet.sort.usecase.ExecuteSortUseCase
 import dotnet.sort.usecase.GenerateArrayUseCase
 import dotnet.sort.usecase.RecordHistoryEventUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -49,7 +53,7 @@ class SortFeatureIntegrationTest {
                         }
                 },
             )
-        viewModel = SortViewModel(executeUseCase, generateUseCase, recordHistoryEventUseCase)
+        viewModel = SortViewModel(executeUseCase, generateUseCase, recordHistoryEventUseCase, FakeSettingsRepository())
     }
 
     @After
@@ -81,4 +85,38 @@ class SortFeatureIntegrationTest {
             // We check if we get a result eventually.
             // This is "Integration" because it uses real logic from Domain/Data layers, not mocks.
         }
+}
+
+private class FakeSettingsRepository : SettingsRepository {
+    private val _isDarkTheme = MutableStateFlow(false)
+    private val _language = MutableStateFlow(dotnet.sort.domain.model.Language.ENGLISH)
+    private val _barTheme = MutableStateFlow(dotnet.sort.domain.model.BarColorTheme.KOTLIN)
+    private val _isSoundEnabled = MutableStateFlow(true)
+    private val _soundVolume = MutableStateFlow(0.6f)
+
+    override val isDarkTheme: Flow<Boolean> = _isDarkTheme.asStateFlow()
+    override val language: Flow<dotnet.sort.domain.model.Language> = _language.asStateFlow()
+    override val barTheme: Flow<dotnet.sort.domain.model.BarColorTheme> = _barTheme.asStateFlow()
+    override val isSoundEnabled: Flow<Boolean> = _isSoundEnabled.asStateFlow()
+    override val soundVolume: Flow<Float> = _soundVolume.asStateFlow()
+
+    override suspend fun setDarkTheme(isDark: Boolean) {
+        _isDarkTheme.value = isDark
+    }
+
+    override suspend fun setLanguage(language: dotnet.sort.domain.model.Language) {
+        _language.value = language
+    }
+
+    override suspend fun setBarTheme(theme: dotnet.sort.domain.model.BarColorTheme) {
+        _barTheme.value = theme
+    }
+
+    override suspend fun setSoundEnabled(enabled: Boolean) {
+        _isSoundEnabled.value = enabled
+    }
+
+    override suspend fun setSoundVolume(volume: Float) {
+        _soundVolume.value = volume
+    }
 }

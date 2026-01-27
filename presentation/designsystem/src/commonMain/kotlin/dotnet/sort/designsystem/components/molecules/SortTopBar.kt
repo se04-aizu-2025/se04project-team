@@ -10,6 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dotnet.sort.designsystem.components.atoms.SortIconButton
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.nav_back
+import org.jetbrains.compose.resources.stringResource
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
@@ -38,7 +41,7 @@ fun SortTopBar(
             {
                 SortIconButton(
                     icon = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "戻る",
+                    contentDescription = stringResource(Res.string.nav_back),
                     onClick = it,
                 )
             }

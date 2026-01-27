@@ -23,8 +23,11 @@ import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * ホーム画面のオプションデータ。
@@ -71,32 +74,32 @@ fun HomeScreen(
     val options =
         listOf(
             HomeOption(
-                title = "Visualizer",
-                description = "Visualize sorting algorithms in real-time.",
+                title = stringResource(Res.string.home_card_visualizer_title),
+                description = stringResource(Res.string.home_card_visualizer_desc),
                 icon = "📊",
                 onClick = onNavigateToSort,
             ),
             HomeOption(
-                title = "Learn",
-                description = "Learn about different sorting algorithms.",
+                title = stringResource(Res.string.home_card_learn_title),
+                description = stringResource(Res.string.home_card_learn_desc),
                 icon = "🎓",
                 onClick = onNavigateToLearn,
             ),
             HomeOption(
-                title = "Compare",
-                description = "Compare performance of algorithms.",
+                title = stringResource(Res.string.home_card_compare_title),
+                description = stringResource(Res.string.home_card_compare_desc),
                 icon = "⚖️",
                 onClick = onNavigateToCompare,
             ),
             HomeOption(
-                title = "Quiz",
-                description = "Test your algorithm knowledge.",
+                title = stringResource(Res.string.home_card_quiz_title),
+                description = stringResource(Res.string.home_card_quiz_desc),
                 icon = "🧠",
                 onClick = onNavigateToQuiz,
             ),
             HomeOption(
-                title = "Settings",
-                description = "App settings and themes.",
+                title = stringResource(Res.string.home_card_settings_title),
+                description = stringResource(Res.string.home_card_settings_desc),
                 icon = "⚙️",
                 onClick = onNavigateToSettings,
             ),
@@ -106,7 +109,7 @@ fun HomeScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = "Home",
+                title = stringResource(Res.string.home_title),
             )
         },
         bottomBar = {
@@ -115,31 +118,31 @@ fun HomeScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = "Home",
+                            contentDescription = stringResource(Res.string.nav_home),
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = "Sort",
+                            contentDescription = stringResource(Res.string.nav_sort),
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = "Learn",
+                            contentDescription = stringResource(Res.string.nav_learn),
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = "Compare",
+                            contentDescription = stringResource(Res.string.nav_compare),
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(Res.string.nav_settings),
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),
@@ -167,13 +170,13 @@ fun HomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SortText(
-                        text = "DNSort",
+                        text = stringResource(Res.string.app_name),
                         style = SortTheme.typography.displayMedium,
                         color = SortTheme.colorScheme.primary,
                     )
 
                     SortText(
-                        text = "Algorithm Visualization Tool",
+                        text = stringResource(Res.string.app_description),
                         style = SortTheme.typography.titleMedium,
                         modifier = Modifier.padding(bottom = SpacingTokens.L),
                     )

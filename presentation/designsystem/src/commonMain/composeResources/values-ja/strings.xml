@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DNSort</string>
+    <string name="app_description">アルゴリズム可視化ツール</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">ホーム</string>
+    <string name="nav_sort">可視化</string>
+    <string name="nav_learn">学習</string>
+    <string name="nav_compare">比較</string>
+    <string name="nav_quiz">クイズ</string>
+    <string name="nav_settings">設定</string>
+    <string name="nav_back">戻る</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">ホーム</string>
+    <string name="home_card_visualizer_title">可視化</string>
+    <string name="home_card_visualizer_desc">ソートアルゴリズムの動作をリアルタイムで可視化します。</string>
+    <string name="home_card_learn_title">学習</string>
+    <string name="home_card_learn_desc">様々なソートアルゴリズムについて学びます。</string>
+    <string name="home_card_compare_title">比較</string>
+    <string name="home_card_compare_desc">アルゴリズムのパフォーマンスを比較します。</string>
+    <string name="home_card_quiz_title">クイズ</string>
+    <string name="home_card_quiz_desc">アルゴリズムの知識をテストします。</string>
+    <string name="home_card_settings_title">設定</string>
+    <string name="home_card_settings_desc">アプリの設定やテーマを変更します。</string>
+
+    <!-- Sort Screen -->
+    <string name="sort_title">可視化</string>
+    <string name="sort_algorithm_selector_label">アルゴリズム</string>
+    <string name="sort_controls_play">再生</string>
+    <string name="sort_controls_pause">一時停止</string>
+    <string name="sort_controls_reset">リセット</string>
+    <string name="sort_controls_shuffle">シャッフル</string>
+    <string name="sort_label_size">サイズ</string>
+    <string name="sort_label_speed">速度</string>
+    <string name="sort_metrics_comparisons">比較回数</string>
+    <string name="sort_metrics_swaps">交換回数</string>
+    <string name="sort_metrics_title">パフォーマンス指標</string>
+    <string name="sort_metrics_time">実行時間 (実測)</string>
+    <string name="sort_metrics_time_complexity">時間計算量</string>
+    <string name="sort_metrics_space_complexity">空間計算量</string>
+    <string name="sort_metrics_no_data">データなし</string>
+    
+    <string name="sort_controls_progress">進捗</string>
+    <string name="sort_controls_sort_resume">ソート / 再開</string>
+    <string name="sort_controls_step_prev">&lt; 前へ</string>
+    <string name="sort_controls_step_next">次へ &gt;</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">設定</string>
+    <string name="settings_section_appearance">表示</string>
+    <string name="settings_section_language">言語</string>
+    <string name="settings_language_label">言語</string>
+    <string name="settings_dark_mode_title">ダークモード</string>
+    <string name="settings_dark_mode_desc">ライト/ダークテーマを切り替えます</string>
+    <string name="settings_section_visualization">可視化</string>
+    <string name="settings_bar_theme_label">バーのテーマ</string>
+    <string name="settings_section_sound">サウンド</string>
+    <string name="settings_sound_effects_title">効果音</string>
+    <string name="settings_sound_effects_desc">比較・交換時の効果音を有効にする</string>
+    <string name="settings_volume_label">音量</string>
+    <string name="settings_section_about">アプリ情報</string>
+    <string name="settings_version_prefix">バージョン: </string>
+    
+    <!-- Bar Themes -->
+    <string name="theme_kotlin">Kotlin</string>
+    <string name="theme_ocean">海</string>
+    <string name="theme_forest">森</string>
+
+    <!-- Algorithms -->
+    <string name="algo_bubble">バブルソート</string>
+    <string name="algo_selection">選択ソート</string>
+    <string name="algo_insertion">挿入ソート</string>
+    <string name="algo_shell">シェルソート</string>
+    <string name="algo_merge">マージソート</string>
+    <string name="algo_quick">クイックソート</string>
+    <string name="algo_heap">ヒープソート</string>
+    <string name="algo_counting">分布数え上げソート</string>
+    <string name="algo_radix">基数ソート</string>
+    <string name="algo_bucket">バケットソート</string>
+    <string name="algo_tim">Timソート</string>
+    <string name="algo_comb">コムソート</string>
+    <string name="algo_cocktail">シェーカーソート</string>
+    <string name="algo_gnome">ノームソート</string>
+    <string name="algo_oddeven">奇偶転置ソート</string>
+    <string name="algo_bogo">ボゴソート</string>
+    <string name="algo_bitonic">バイトニックソート</string>
+
+    <!-- Learn Descriptions -->
+    <string name="learn_desc_bubble">隣接要素を交換する、単純だが遅い手法。</string>
+    <string name="learn_desc_selection">最小値を見つけて配置する。</string>
+    <string name="learn_desc_insertion">徐々に整列済み部分を構築する。</string>
+    <string name="learn_desc_shell">間隔を空けた挿入ソートによる最適化。</string>
+    <string name="learn_desc_merge">分割して効率的にマージする。</string>
+    <string name="learn_desc_quick">ピボットを中心に分割する。</string>
+    <string name="learn_desc_heap">ヒープ構造を使って最大/最小を選択する。</string>
+
+    <string name="learn_detail_history">歴史</string>
+    <string name="learn_detail_how_it_works">仕組み</string>
+    <string name="learn_detail_complexity">計算量</string>
+    <string name="learn_detail_space_fmt">空間計算量: %s</string>
+    <string name="learn_detail_use_cases">用途</string>
+    <string name="learn_detail_kotlin">Kotlin実装例</string>
+    <string name="learn_detail_example_steps">実行例</string>
+    <string name="learn_detail_view_in_sort">可視化を見る</string>
+    <string name="learn_detail_algorithm_default">アルゴリズム</string>
+    <string name="learn_detail_select_prompt">一覧からアルゴリズムを選択してください。</string>
+
+    <!-- Quiz UI -->
+    <string name="quiz_mode_label">モード</string>
+    <string name="quiz_difficulty_label">難易度</string>
+    <string name="quiz_status_label">ステータス</string>
+    <string name="quiz_time_format">時間: %.1f秒</string>
+    <string name="quiz_question_progress_format">問題: %d/%d</string>
+    <string name="quiz_score_section">スコア</string>
+    <string name="quiz_score_format">スコア: %d</string>
+    <string name="quiz_streak_format">連続正解: %d</string>
+    <string name="quiz_correct_format">正解数: %d/%d</string>
+    <string name="quiz_longest_streak_format">最大連続正解: %d</string>
+    <string name="quiz_question_section">問題</string>
+    <string name="quiz_hint_show">ヒントを表示</string>
+    <string name="quiz_hint_hide">ヒントを隠す</string>
+    <string name="quiz_hint_prefix">ヒント: </string>
+    <string name="quiz_options_section">選択肢</string>
+    <string name="quiz_action_start">スタート</string>
+    <string name="quiz_action_submit">回答する</string>
+    <string name="quiz_action_next">次へ</string>
+    <string name="quiz_result_label">結果</string>
+    <string name="quiz_result_correct">正解！</string>
+    <string name="quiz_result_incorrect">不正解。</string>
+    <string name="quiz_summary_label">結果サマリー</string>
+    <string name="quiz_action_play_again">もう一度プレイ</string>
+    <string name="quiz_leaderboard_label">ランキング</string>
+
+    <!-- Quiz Modes/Difficulty -->
+    <string name="quiz_mode_speed_swap">スピードスワップ</string>
+    <string name="quiz_mode_guess_algo">アルゴリズム当て</string>
+    <string name="quiz_diff_easy">初級</string>
+    <string name="quiz_diff_medium">中級</string>
+    <string name="quiz_diff_hard">上級</string>
+
+    <!-- Quiz Questions -->
+    <string name="quiz_q_bubble_next_swap">バブルソートで次に交換されるペアは？</string>
+    <string name="quiz_q_check_pair_0_1">(0,1)</string>
+    <string name="quiz_q_check_pair_1_2">(1,2)</string>
+    <string name="quiz_q_check_pair_2_3">(2,3)</string>
+    
+    <string name="quiz_q_selection_move_end">選択ソートで最後に移動する要素は？</string>
+    <string name="quiz_opt_min">最小値</string>
+    <string name="quiz_opt_max">最大値</string>
+    <string name="quiz_opt_middle">中央値</string>
+
+    <string name="quiz_q_pivot_partition">ピボットに基づく分割を使用する。</string>
+    <string name="quiz_hint_n_log_n_avg">平均計算量 $O(n \log n)$</string>
+    
+    <string name="quiz_q_heap_extract">ヒープから最大/最小を繰り返し取り出す。</string>
+    <string name="quiz_hint_binary_heap">バイナリヒープ構造を使用</string>
+    
+    <string name="quiz_q_divide_merge">半分に分割してマージする。</string>
+    <string name="quiz_q_gap_insertion">ギャップを用いた挿入パス。</string>
+
+    
+    <string name="language_english">English</string>
+    <string name="language_japanese">日本語</string>
+</resources>

@@ -11,8 +11,11 @@ import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortButtonStyle
 import dotnet.sort.designsystem.components.atoms.SortSlider
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
 import dotnet.sort.designsystem.tokens.AnimationTokens
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SortControlPanel(
@@ -39,7 +42,7 @@ fun SortControlPanel(
         // Progress Control (Seek Bar)
         val progressEnabled = enabled && totalSteps > 0
         SortSlider(
-            label = "Progress",
+            label = stringResource(Res.string.sort_controls_progress),
             valueLabel = if (progressEnabled) "$currentStep / ${totalSteps - 1}" else "-",
             value = currentStep.toFloat(),
             onValueChange = { onSeek(it.toInt()) },
@@ -50,7 +53,7 @@ fun SortControlPanel(
 
         // Speed Control
         SortSlider(
-            label = "Speed",
+            label = stringResource(Res.string.sort_label_speed),
             valueLabel = "${(playbackSpeed * 10).toInt() / 10f}x",
             value = playbackSpeed,
             onValueChange = onSpeedChange,
@@ -87,7 +90,7 @@ fun SortControlPanel(
 
         // Array Size Control
         SortSlider(
-            label = "Array Size",
+            label = stringResource(Res.string.sort_label_size),
             valueLabel = arraySize.toString(),
             value = arraySize.toFloat(),
             onValueChange = { onArraySizeChange(it.toInt()) },
@@ -104,7 +107,7 @@ fun SortControlPanel(
             horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S)
         ) {
             SortButton(
-                text = if (isPlaying) "Pause" else "Sort / Resume",
+                text = if (isPlaying) stringResource(Res.string.sort_controls_pause) else stringResource(Res.string.sort_controls_sort_resume),
                 onClick = onPlayPauseClick,
                 style = SortButtonStyle.Primary,
                 enabled = enabled,
@@ -112,7 +115,7 @@ fun SortControlPanel(
             )
 
             SortButton(
-                text = "Reset",
+                text = stringResource(Res.string.sort_controls_reset),
                 onClick = onResetClick,
                 style = SortButtonStyle.Outlined,
                 enabled = enabled,
@@ -122,7 +125,7 @@ fun SortControlPanel(
 
         // Shuffle Button
         SortButton(
-            text = "Shuffle Array",
+            text = stringResource(Res.string.sort_controls_shuffle),
             onClick = onShuffleClick,
             style = SortButtonStyle.Outlined,
             enabled = enabled && !isPlaying,
@@ -135,14 +138,14 @@ fun SortControlPanel(
             horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S)
         ) {
              SortButton(
-                text = "< Step",
+                text = stringResource(Res.string.sort_controls_step_prev),
                 onClick = onStepBackwardClick,
                 style = SortButtonStyle.Text,
                 enabled = enabled && !isPlaying && currentStep > 0,
                 modifier = Modifier.weight(1f)
             )
             SortButton(
-                text = "Step >",
+                text = stringResource(Res.string.sort_controls_step_next),
                 onClick = onStepForwardClick,
                 style = SortButtonStyle.Text,
                 enabled = enabled && !isPlaying && currentStep < totalSteps - 1,

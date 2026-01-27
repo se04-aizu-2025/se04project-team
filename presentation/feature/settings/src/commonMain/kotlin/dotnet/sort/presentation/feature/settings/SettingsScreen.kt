@@ -9,9 +9,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import dotnet.sort.designsystem.utils.toDisplayName
+import org.jetbrains.compose.resources.stringResource
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortDropdown
 import dotnet.sort.designsystem.components.atoms.SortSlider
+import dotnet.sort.domain.model.Language
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
@@ -61,7 +66,7 @@ fun SettingsScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = "Settings",
+                title = stringResource(Res.string.settings_title),
                 onBackClick = onBackClick,
             )
         },
@@ -71,31 +76,31 @@ fun SettingsScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = "Home",
+                            contentDescription = stringResource(Res.string.nav_home),
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = "Sort",
+                            contentDescription = stringResource(Res.string.nav_sort),
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = "Learn",
+                            contentDescription = stringResource(Res.string.nav_learn),
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = "Compare",
+                            contentDescription = stringResource(Res.string.nav_compare),
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(Res.string.nav_settings),
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),
@@ -137,44 +142,60 @@ fun SettingsContent(
                 ),
     ) {
         SortSettingsRow(
-            title = "Dark Mode",
-            description = "Switch between light and dark themes",
+            title = stringResource(Res.string.settings_dark_mode_title),
+            description = stringResource(Res.string.settings_dark_mode_desc),
             checked = state.isDarkTheme,
             onCheckedChange = { onIntent(SettingsIntent.ToggleTheme(it)) },
         )
 
         Spacer(modifier = Modifier.height(SpacingTokens.L))
 
-        SortText(
-            text = "Visualization",
+         SortText(
+            text = stringResource(Res.string.settings_section_language),
             style = SortTheme.typography.titleSmall,
             color = SortTheme.colorScheme.primary,
         )
         Spacer(modifier = Modifier.height(SpacingTokens.S))
         SortDropdown(
-            label = "Bar Theme",
-            selectedItem = state.barTheme,
-            items = BarColorTheme.entries.toList(),
-            onItemSelected = { onIntent(SettingsIntent.SelectBarTheme(it)) },
-            itemLabel = { it.displayName },
+            label = stringResource(Res.string.settings_language_label),
+            selectedItem = state.language,
+            items = Language.entries.toList(),
+            onItemSelected = { onIntent(SettingsIntent.SelectLanguage(it)) },
+            itemLabel = { stringResource(it.toDisplayName()) },
         )
 
         Spacer(modifier = Modifier.height(SpacingTokens.L))
 
         SortText(
-            text = "Sound",
+            text = stringResource(Res.string.settings_section_visualization),
+            style = SortTheme.typography.titleSmall,
+            color = SortTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        SortDropdown(
+            label = stringResource(Res.string.settings_bar_theme_label),
+            selectedItem = state.barTheme,
+            items = BarColorTheme.entries.toList(),
+            onItemSelected = { onIntent(SettingsIntent.SelectBarTheme(it)) },
+            itemLabel = { stringResource(it.toDisplayName()) },
+        )
+
+        Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+        SortText(
+            text = stringResource(Res.string.settings_section_sound),
             style = SortTheme.typography.titleSmall,
             color = SortTheme.colorScheme.primary,
         )
         Spacer(modifier = Modifier.height(SpacingTokens.S))
         SortSettingsRow(
-            title = "Sound Effects",
-            description = "Enable compare/swap sounds",
+            title = stringResource(Res.string.settings_sound_effects_title),
+            description = stringResource(Res.string.settings_sound_effects_desc),
             checked = state.isSoundEnabled,
             onCheckedChange = { onIntent(SettingsIntent.ToggleSound(it)) },
         )
         SortSlider(
-            label = "Volume",
+            label = stringResource(Res.string.settings_volume_label),
             valueLabel = "${(state.soundVolume * 100).toInt()}%",
             value = state.soundVolume,
             onValueChange = { onIntent(SettingsIntent.SetSoundVolume(it)) },
@@ -186,13 +207,13 @@ fun SettingsContent(
         Spacer(modifier = Modifier.height(SpacingTokens.L))
 
         SortText(
-            text = "App Info",
+            text = stringResource(Res.string.settings_section_about),
             style = SortTheme.typography.titleSmall,
             color = SortTheme.colorScheme.primary,
         )
         Spacer(modifier = Modifier.height(SpacingTokens.S))
         SortText(
-            text = "Version: ${state.appVersion}",
+            text = "${stringResource(Res.string.settings_version_prefix)}${state.appVersion}",
             style = SortTheme.typography.bodyMedium,
         )
     }

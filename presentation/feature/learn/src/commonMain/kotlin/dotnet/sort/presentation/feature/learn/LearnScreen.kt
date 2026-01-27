@@ -17,6 +17,10 @@ import dotnet.sort.designsystem.components.molecules.SortCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import dotnet.sort.designsystem.utils.toDisplayName
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Learn 画面。
@@ -56,7 +60,7 @@ fun LearnScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = "Learn",
+                title = stringResource(Res.string.nav_learn),
                 onBackClick = onBackClick,
             )
         },
@@ -120,8 +124,8 @@ private fun LearnContent(
     ) {
         items(state.algorithms, key = { it.type.name }) { item ->
             SortCard(
-                title = item.title,
-                description = item.description,
+                title = stringResource(item.type.toDisplayName()),
+                description = stringResource(item.description),
                 icon = item.icon,
                 onClick = {
                     onIntent(LearnIntent.SelectAlgorithm(item.type))

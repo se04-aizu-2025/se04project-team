@@ -19,6 +19,10 @@ import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import dotnet.sort.designsystem.utils.toDisplayName
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Learn 詳細画面。
@@ -47,7 +51,7 @@ fun LearnDetailScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = selectedItem?.title ?: "Learn",
+                title = selectedItem?.type?.toDisplayName()?.let { stringResource(it) } ?: stringResource(Res.string.learn_detail_algorithm_default),
                 onBackClick = onBackClick,
             )
         },
@@ -97,51 +101,51 @@ fun LearnDetailScreen(
                     .padding(padding)
                     .padding(SpacingTokens.M),
         ) {
-            SortSectionCard(title = selectedItem?.title ?: "Algorithm") {
-                SortText(text = selectedItem?.description ?: "Select an algorithm from Learn list.")
+            SortSectionCard(title = selectedItem?.type?.toDisplayName()?.let { stringResource(it) } ?: stringResource(Res.string.learn_detail_algorithm_default)) {
+                SortText(text = selectedItem?.description?.let { stringResource(it) } ?: stringResource(Res.string.learn_detail_select_prompt))
             }
 
             Spacer(modifier = Modifier.height(SpacingTokens.M))
 
-            SortSectionCard(title = "History") {
+            SortSectionCard(title = stringResource(Res.string.learn_detail_history)) {
                 SortText(text = detail?.history ?: "-")
             }
 
             Spacer(modifier = Modifier.height(SpacingTokens.M))
 
-            SortSectionCard(title = "How it works") {
+            SortSectionCard(title = stringResource(Res.string.learn_detail_how_it_works)) {
                 SortText(text = detail?.principle ?: "-")
             }
 
             Spacer(modifier = Modifier.height(SpacingTokens.M))
 
-            SortSectionCard(title = "Complexity") {
+            SortSectionCard(title = stringResource(Res.string.learn_detail_complexity)) {
                 SortText(text = detail?.complexity ?: "-")
-                SortText(text = "Space: ${detail?.spaceComplexity ?: "-"}")
+                SortText(text = stringResource(Res.string.learn_detail_space_fmt, detail?.spaceComplexity ?: "-"))
             }
 
             Spacer(modifier = Modifier.height(SpacingTokens.M))
 
-            SortSectionCard(title = "Use cases") {
+            SortSectionCard(title = stringResource(Res.string.learn_detail_use_cases)) {
                 SortText(text = detail?.useCases ?: "-")
             }
 
             Spacer(modifier = Modifier.height(SpacingTokens.M))
 
-            SortSectionCard(title = "Kotlin example") {
+            SortSectionCard(title = stringResource(Res.string.learn_detail_kotlin)) {
                 SortText(text = detail?.kotlinCode ?: "-")
             }
 
             Spacer(modifier = Modifier.height(SpacingTokens.M))
 
-            SortSectionCard(title = "Example steps") {
+            SortSectionCard(title = stringResource(Res.string.learn_detail_example_steps)) {
                 SortText(text = detail?.example ?: "-")
             }
 
             Spacer(modifier = Modifier.height(SpacingTokens.M))
 
             SortButton(
-                text = "View in Sort",
+                text = stringResource(Res.string.learn_detail_view_in_sort),
                 onClick = onNavigateToSort,
                 style = SortButtonStyle.Primary,
             )
