@@ -5,8 +5,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,4 +67,19 @@ fun SortBar(
             .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
             .background(animatedColor)
     )
+}
+
+@Preview
+@Composable
+private fun SortBarPreview() {
+    SortTheme {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.height(200.dp)
+        ) {
+            SortBar(value = 30, maxValue = 100, state = BarState.Default)
+            SortBar(value = 60, maxValue = 100, state = BarState.Comparing)
+            SortBar(value = 90, maxValue = 100, state = BarState.Sorted)
+        }
+    }
 }

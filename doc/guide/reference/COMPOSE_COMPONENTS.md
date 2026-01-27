@@ -12,6 +12,10 @@ designsystem/components/
 │   ├── SortBar.kt
 │   ├── SortButton.kt
 │   ├── SortSlider.kt
+│   ├── SortText.kt     # 🆕
+│   ├── SortDivider.kt  # 🆕
+│   ├── SortDropdown.kt # 🆕
+│   ├── SortTopBar.kt   # 🆕
 │   └── BarState.kt
 └── molecules/      # 複合コンポーネント
     └── ArrayBar.kt
@@ -19,9 +23,9 @@ designsystem/components/
 
 | 種類 | 定義 | 例 |
 |------|------|-----|
-| **Atoms** | 単一責任、再利用可能な最小単位 | Bar, Button, Slider |
-| **Molecules** | 複数の Atoms を組み合わせ | AlgorithmSelector, ControlPanel |
-| **Organisms** | 独立した機能単位 (画面固有) | SortVisualizer, MetricsDisplay |
+| **Atoms** | 単一責任、再利用可能な最小単位 | SortText, SortButton, SortDivider |
+| **Molecules** | 複数の Atoms を組み合わせ | SortCard, SortSettingsRow, SortInfoRow |
+| **Organisms** | 独立した機能単位 (画面固有) | SortScaffold, SortVisualizer, MetricsDisplay |
 
 ---
 
@@ -222,6 +226,12 @@ fun BadBar(...) {
             .background(Color(0xFF123456))  // ❌
             .padding(16.dp)                  // ❌ SpacingTokens を使う
     )
+}
+
+// ❌ 禁止 - Raw Material3 Component
+@Composable
+fun BadText() {
+    Text("Hello") // ❌ SortText を使う
 }
 ```
 

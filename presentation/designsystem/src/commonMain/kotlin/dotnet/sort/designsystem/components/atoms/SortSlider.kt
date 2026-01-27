@@ -9,6 +9,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.theme.SortTheme
@@ -78,6 +79,19 @@ fun SortSlider(
                 activeTrackColor = colorScheme.primary,
                 inactiveTrackColor = colorScheme.surfaceVariant,
             ),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SortSliderPreview() {
+    SortTheme {
+        SortSlider(
+            value = 0.5f,
+            onValueChange = {},
+            label = "Speed",
+            valueLabel = "1.0x"
         )
     }
 }
