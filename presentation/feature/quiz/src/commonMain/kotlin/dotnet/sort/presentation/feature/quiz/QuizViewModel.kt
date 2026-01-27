@@ -40,7 +40,13 @@ class QuizViewModel(
             copy(
                 isGameActive = true,
                 score = 0,
-                feedback = null
+                feedback = null,
+                consecutiveCorrectCount = 0,
+                longestCorrectStreak = 0,
+                totalAnsweredQuestions = 0,
+                correctAnswers = 0,
+                incorrectCounts = emptyMap(),
+                showSummary = false
             )
         }
         nextQuestion()
@@ -81,6 +87,9 @@ class QuizViewModel(
                 copy(
                     score = score + scoreDelta,
                     consecutiveCorrectCount = consecutiveCorrectCount + 1,
+                    longestCorrectStreak = maxOf(longestCorrectStreak, consecutiveCorrectCount + 1),
+                    totalAnsweredQuestions = totalAnsweredQuestions + 1,
+                    correctAnswers = correctAnswers + 1,
                     feedback = dotnet.sort.domain.quiz.model.QuizFeedback.Correct(scoreDelta)
                 )
             }
@@ -88,6 +97,8 @@ class QuizViewModel(
             updateState {
                 copy(
                     consecutiveCorrectCount = 0,
+                    totalAnsweredQuestions = totalAnsweredQuestions + 1,
+                    incorrectCounts = incorrectCounts.increment(currentQuestion.algorithmType),
                     feedback = feedback
                 )
             }
@@ -98,12 +109,18 @@ class QuizViewModel(
         val newTime = state.value.timeLeftSeconds - 1
         if (newTime <= 0) {
             stopTimer()
+            val currentQuestion = state.value.currentQuestion
             updateState {
                 copy(
                     timeLeftSeconds = 0,
-                    feedback = state.value.currentQuestion?.let { 
-                        QuizFeedback.Incorrect(it.correctIndices) 
-                    }
+                    feedback = currentQuestion?.let {
+                        QuizFeedback.Incorrect(it.correctIndices)
+                    },
+                    consecutiveCorrectCount = 0,
+                    totalAnsweredQuestions = totalAnsweredQuestions + 1,
+                    incorrectCounts =
+                        currentQuestion?.let { incorrectCounts.increment(it.algorithmType) }
+                            ?: incorrectCounts
                 )
             }
         } else {
@@ -132,7 +149,8 @@ class QuizViewModel(
             copy(
                 isGameActive = false,
                 currentQuestion = null,
-                feedback = null
+                feedback = null,
+                showSummary = true
             )
         }
     }
@@ -141,4 +159,9 @@ class QuizViewModel(
         super.onCleared()
         stopTimer()
     }
+}
+
+private fun Map<SortType, Int>.increment(type: SortType): Map<SortType, Int> {
+    val current = this[type] ?: 0
+    return this + (type to (current + 1))
 }

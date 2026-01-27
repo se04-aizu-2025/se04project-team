@@ -18,6 +18,8 @@ import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.atoms.BarState
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
+import dotnet.sort.designsystem.components.molecules.SortInfoRow
+import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
@@ -144,27 +146,35 @@ private fun QuizContent(
         verticalArrangement = Arrangement.spacedBy(SpacingTokens.L)
     ) {
         if (!state.isGameActive) {
-            // Start screen
-            SortText(
-                text = "🎮",
-                style = SortTheme.typography.displayLarge,
-            )
-            SortText(
-                text = "Sorting Speed Quiz",
-                style = SortTheme.typography.displayMedium,
-                color = SortTheme.colorScheme.primary,
-            )
-            SortText(
-                text = "Guess which elements will be swapped next!",
-                style = SortTheme.typography.bodyMedium,
-                color = SortTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = SpacingTokens.M),
-            )
-            SortButton(
-                text = "Start Game",
-                onClick = { onIntent(QuizIntent.StartGame) },
-                modifier = Modifier.padding(top = SpacingTokens.L)
-            )
+            if (state.showSummary) {
+                QuizSummary(
+                    state = state,
+                    onRetry = { onIntent(QuizIntent.StartGame) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            } else {
+                // Start screen
+                SortText(
+                    text = "🎮",
+                    style = SortTheme.typography.displayLarge,
+                )
+                SortText(
+                    text = "Sorting Speed Quiz",
+                    style = SortTheme.typography.displayMedium,
+                    color = SortTheme.colorScheme.primary,
+                )
+                SortText(
+                    text = "Guess which elements will be swapped next!",
+                    style = SortTheme.typography.bodyMedium,
+                    color = SortTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = SpacingTokens.M),
+                )
+                SortButton(
+                    text = "Start Game",
+                    onClick = { onIntent(QuizIntent.StartGame) },
+                    modifier = Modifier.padding(top = SpacingTokens.L)
+                )
+            }
         } else {
             // Game active
             val question = state.currentQuestion
@@ -328,5 +338,58 @@ private fun QuizContent(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun QuizSummary(
+    state: QuizState,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val total = state.totalAnsweredQuestions
+    val accuracy = if (total == 0) 0 else (state.correctAnswers * 100) / total
+    val weakness = state.incorrectCounts.entries
+        .sortedByDescending { it.value }
+        .take(3)
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(SpacingTokens.L)
+    ) {
+        SortText(
+            text = "🏁 Quiz Summary",
+            style = SortTheme.typography.displayMedium,
+            color = SortTheme.colorScheme.primary
+        )
+
+        SortSectionCard(title = "Results") {
+            SortInfoRow(label = "Accuracy", value = "$accuracy%")
+            SortInfoRow(label = "Total Score", value = state.score.toString())
+            SortInfoRow(label = "Longest Streak", value = state.longestCorrectStreak.toString())
+        }
+
+        SortSectionCard(title = "Weak Algorithms") {
+            if (weakness.isEmpty()) {
+                SortText(
+                    text = "No incorrect answers yet",
+                    style = SortTheme.typography.bodyMedium,
+                    color = SortTheme.colorScheme.onSurfaceVariant
+                )
+            } else {
+                weakness.forEach { entry ->
+                    SortInfoRow(
+                        label = entry.key.displayName,
+                        value = "${entry.value} misses"
+                    )
+                }
+            }
+        }
+
+        SortButton(
+            text = "Play Again",
+            onClick = onRetry
+        )
     }
 }
