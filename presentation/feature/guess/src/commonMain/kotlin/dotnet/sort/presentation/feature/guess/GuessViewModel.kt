@@ -151,6 +151,7 @@ class GuessViewModel(
             SortType.QUICK -> GuessHint("O(n log n)", "O(log n)", "ピボットを使用して分割するアルゴリズム")
             SortType.HEAP -> GuessHint("O(n log n)", "O(1)", "ヒープ構造を使用するアルゴリズム")
             SortType.SHELL -> GuessHint("O(n log² n)", "O(1)", "ギャップを使用した改良版挿入ソート")
+            SortType.COUNTING -> GuessHint("O(n + k)", "O(k)", "出現回数を数えて配置する非比較ソート")
             null -> null
         }
 

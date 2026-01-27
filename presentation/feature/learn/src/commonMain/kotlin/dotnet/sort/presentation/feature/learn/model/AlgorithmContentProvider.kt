@@ -47,6 +47,12 @@ object AlgorithmContentProvider {
                 inventor = "J. W. J. Williams",
                 description = "Invented by J. W. J. Williams in 1964. It introduced the heap data structure specifically for this algorithm, providing a worst-case O(n log n) sort."
             )
+            SortType.COUNTING -> AlgorithmHistory(
+                sortType = SortType.COUNTING,
+                originYear = "1954",
+                inventor = "Harold H. Seward",
+                description = "Introduced by Harold H. Seward in 1954. Counting Sort is a non-comparison sorting algorithm that counts the frequency of each value, then reconstructs the array in order."
+            )
         }
     }
 
@@ -142,6 +148,18 @@ object AlgorithmContentProvider {
                     "Repeat steps 2-5 until heap size is 1"
                 )
             )
+            SortType.COUNTING -> AlgorithmConcept(
+                sortType = SortType.COUNTING,
+                howItWorks = "Counting Sort counts how many times each value appears. It then rebuilds the array by writing each value the number of times it appears.",
+                keyIdea = "Use a frequency array (counting array) to place elements directly without comparisons.",
+                steps = listOf(
+                    "Find the minimum and maximum values",
+                    "Create a counting array of size (max - min + 1)",
+                    "Count occurrences of each value",
+                    "Iterate over the counting array in order",
+                    "Write each value back to the original array the counted number of times"
+                )
+            )
         }
     }
 
@@ -216,6 +234,16 @@ object AlgorithmContentProvider {
                 timeComplexityExplanation = "Guaranteed O(n log n). Building the heap takes O(n), and extracting n elements takes O(log n) each.",
                 spaceComplexityExplanation = "In-place sorting (using the array itself as the heap).",
                 intuition = "A heap structure guarantees we can find and remove the max element in logarithmic time, regardless of data order."
+            )
+            SortType.COUNTING -> AlgorithmComplexity(
+                sortType = SortType.COUNTING,
+                timeComplexityBest = "O(n + k)",
+                timeComplexityAverage = "O(n + k)",
+                timeComplexityWorst = "O(n + k)",
+                spaceComplexity = "O(k)",
+                timeComplexityExplanation = "Counting occurrences is O(n). Rebuilding the array by scanning the counting array is O(k), where k is the value range.",
+                spaceComplexityExplanation = "Requires an auxiliary counting array of size k.",
+                intuition = "Instead of comparing elements, we count how many of each value exists, then output them in order."
             )
         }
     }
@@ -340,6 +368,24 @@ object AlgorithmContentProvider {
                     "Linux Kernel (heapsort)",
                     "C++ STL (std::partial_sort)",
                     "Introsort (fallback for QuickSort depth)"
+                )
+            )
+            SortType.COUNTING -> AlgorithmUseCase(
+                sortType = SortType.COUNTING,
+                bestUseCases = listOf(
+                    "Integers with a small, known range",
+                    "Histogram or frequency-based tasks",
+                    "As a stable subroutine in Radix Sort"
+                ),
+                notRecommended = listOf(
+                    "Large value ranges (k is huge)",
+                    "Memory-constrained environments",
+                    "When values are not integers"
+                ),
+                realWorldExamples = listOf(
+                    "Counting grades or scores",
+                    "Bucket-based preprocessing",
+                    "Radix Sort implementations"
                 )
             )
         }
@@ -538,6 +584,33 @@ fun heapify(arr: IntArray, n: Int, i: Int) {
                 """.trimIndent(),
                 description = "Heap Sort implementation."
             )
+            SortType.COUNTING -> AlgorithmImplementation(
+                sortType = SortType.COUNTING,
+                code = """
+fun countingSort(arr: IntArray) {
+    if (arr.isEmpty()) return
+    val min = arr.minOrNull() ?: return
+    val max = arr.maxOrNull() ?: return
+    val range = max - min + 1
+    val count = IntArray(range)
+
+    // Count each value
+    for (v in arr) {
+        count[v - min]++
+    }
+
+    // Rebuild array in order
+    var index = 0
+    for (i in count.indices) {
+        val value = i + min
+        repeat(count[i]) {
+            arr[index++] = value
+        }
+    }
+}
+                """.trimIndent(),
+                description = "Counting Sort using a frequency array (handles negative values via offset)."
+            )
         }
     }
 
@@ -634,6 +707,18 @@ fun heapify(arr: IntArray, n: Int, i: Int) {
                     AlgorithmExampleStep(3, listOf(4, 3, 2, 1, 5), "Heapify root.", emptyList(), StepModificationType.SET),
                     AlgorithmExampleStep(4, listOf(1, 3, 2, 4, 5), "Swap Max(4) with Last(1).", listOf(0, 3), StepModificationType.SWAP),
                     AlgorithmExampleStep(5, listOf(1, 2, 3, 4, 5), "Continue until sorted.", emptyList(), StepModificationType.NONE)
+                )
+            )
+            SortType.COUNTING -> AlgorithmExample(
+                sortType = SortType.COUNTING,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Count frequencies for each value.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(1, 3, 1, 4, 2), "Place 1 at index 0.", listOf(0), StepModificationType.SET),
+                    AlgorithmExampleStep(3, listOf(1, 2, 1, 4, 2), "Place 2 at index 1.", listOf(1), StepModificationType.SET),
+                    AlgorithmExampleStep(4, listOf(1, 2, 3, 4, 2), "Place 3 at index 2.", listOf(2), StepModificationType.SET),
+                    AlgorithmExampleStep(5, listOf(1, 2, 3, 4, 2), "Place 4 at index 3.", listOf(3), StepModificationType.SET),
+                    AlgorithmExampleStep(6, listOf(1, 2, 3, 4, 5), "Place 5 at index 4. Sorted.", listOf(4), StepModificationType.SET)
                 )
             )
         }

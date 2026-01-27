@@ -24,6 +24,7 @@ object SortAlgorithmFactory {
             SortType.MERGE -> MergeSortAlgorithm()
             SortType.QUICK -> QuickSortAlgorithm()
             SortType.HEAP -> HeapSortAlgorithm()
+            SortType.COUNTING -> CountingSortAlgorithm()
         }
     }
 }

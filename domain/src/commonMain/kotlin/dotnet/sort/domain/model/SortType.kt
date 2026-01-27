@@ -19,4 +19,5 @@ enum class SortType(val displayName: String) {
     MERGE("Merge Sort"),
     QUICK("Quick Sort"),
     HEAP("Heap Sort"),
+    COUNTING("Counting Sort"),
 }
