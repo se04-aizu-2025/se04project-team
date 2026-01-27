@@ -3,7 +3,7 @@ package dotnet.sort
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import dotnet.sort.di.DataModule
-import dotnet.sort.di.platformDataModule
+import dotnet.sort.di.dataPlatformModule
 import dotnet.sort.di.DomainModule
 import dotnet.sort.presentation.common.di.CommonModule
 import dotnet.sort.presentation.feature.home.di.HomeFeatureModule
@@ -20,7 +20,7 @@ fun runWebApp() {
     startKoin {
         modules(
             DataModule().module,
-            platformDataModule,
+            dataPlatformModule,
             DomainModule().module,
             CommonModule().module,
             SettingsFeatureModule().module,

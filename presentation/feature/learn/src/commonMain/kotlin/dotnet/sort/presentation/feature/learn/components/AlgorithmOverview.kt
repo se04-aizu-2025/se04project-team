@@ -15,6 +15,9 @@ import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.learn.model.AlgorithmHistory
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * アルゴリズムの歴史・概要を表示するコンポーネント。
@@ -34,27 +37,27 @@ fun AlgorithmOverview(
             .padding(SpacingTokens.M)
     ) {
         // Title Card
-        SortSectionCard(title = "History & Origin") {
+        SortSectionCard(title = stringResource(Res.string.learn_history_origin)) {
             SortText(
-                text = "Discover the origins of ${history.sortType.displayName}",
+                text = stringResource(Res.string.learn_discover_origins, history.sortType.displayName),
                 style = SortTheme.typography.bodyMedium,
                 color = SortTheme.colorScheme.onSurfaceVariant
             )
         }
-        
+
         Spacer(modifier = Modifier.height(SpacingTokens.M))
 
         // Details
-        SortSectionCard(title = "Details") {
-            InfoRow(label = "Inventor", value = history.inventor)
+        SortSectionCard(title = stringResource(Res.string.learn_details)) {
+            InfoRow(label = stringResource(Res.string.learn_label_inventor), value = history.inventor)
             Spacer(modifier = Modifier.height(SpacingTokens.S))
-            InfoRow(label = "Year", value = history.originYear)
+            InfoRow(label = stringResource(Res.string.learn_label_year), value = history.originYear)
         }
-        
+
         Spacer(modifier = Modifier.height(SpacingTokens.M))
-        
+
         // Background
-        SortSectionCard(title = "Background") {
+        SortSectionCard(title = stringResource(Res.string.learn_background)) {
             SortText(
                 text = history.description,
                 style = SortTheme.typography.bodyLarge,

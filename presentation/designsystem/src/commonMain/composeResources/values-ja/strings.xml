@@ -96,6 +96,45 @@
     <string name="learn_desc_quick">ピボットを中心に分割する。</string>
     <string name="learn_desc_heap">ヒープ構造を使って最大/最小を選択する。</string>
 
+    <!-- Learn Detail Tabs -->
+    <string name="learn_tab_overview">概要</string>
+    <string name="learn_tab_analysis">分析</string>
+    <string name="learn_tab_complexity">計算量</string>
+    <string name="learn_tab_usecase">用途</string>
+    <string name="learn_tab_implementation">実装</string>
+
+    <!-- Learn Overview -->
+    <string name="learn_history_origin">歴史と起源</string>
+    <string name="learn_discover_origins">%sの起源を探る</string>
+    <string name="learn_details">詳細</string>
+    <string name="learn_label_inventor">発明者</string>
+    <string name="learn_label_year">年</string>
+    <string name="learn_background">背景</string>
+
+    <!-- Learn Concepts -->
+    <string name="learn_how_it_works">仕組み</string>
+    <string name="learn_key_idea">アイデア</string>
+    <string name="learn_algorithm_steps">アルゴリズムのステップ</string>
+
+    <!-- Learn Complexity -->
+    <string name="learn_time_complexity">時間計算量</string>
+    <string name="learn_space_complexity">空間計算量</string>
+    <string name="learn_intuition">直感</string>
+    <string name="learn_best_case">最良ケース</string>
+    <string name="learn_average_case">平均ケース</string>
+    <string name="learn_worst_case">最悪ケース</string>
+
+    <!-- Learn Use Cases -->
+    <string name="learn_best_use_cases">最適な使用場面</string>
+    <string name="learn_not_recommended">推奨されない場面</string>
+    <string name="learn_real_world_examples">実世界での例</string>
+
+    <!-- Learn Code -->
+    <string name="learn_description">説明</string>
+    <string name="learn_implementation_kotlin">実装 (Kotlin)</string>
+    <string name="learn_language_kotlin">Kotlin</string>
+    <string name="learn_copy_code">コードをコピー</string>
+
     <string name="learn_detail_history">歴史</string>
     <string name="learn_detail_how_it_works">仕組み</string>
     <string name="learn_detail_complexity">計算量</string>

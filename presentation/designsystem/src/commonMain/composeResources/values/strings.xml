@@ -96,6 +96,45 @@
     <string name="learn_desc_quick">Partition around a pivot.</string>
     <string name="learn_desc_heap">Heap-based selection of max/min.</string>
 
+    <!-- Learn Detail Tabs -->
+    <string name="learn_tab_overview">Overview</string>
+    <string name="learn_tab_analysis">Analysis</string>
+    <string name="learn_tab_complexity">Complexity</string>
+    <string name="learn_tab_usecase">Use Case</string>
+    <string name="learn_tab_implementation">Implementation</string>
+
+    <!-- Learn Overview -->
+    <string name="learn_history_origin">History &amp; Origin</string>
+    <string name="learn_discover_origins">Discover the origins of %s</string>
+    <string name="learn_details">Details</string>
+    <string name="learn_label_inventor">Inventor</string>
+    <string name="learn_label_year">Year</string>
+    <string name="learn_background">Background</string>
+
+    <!-- Learn Concepts -->
+    <string name="learn_how_it_works">How It Works</string>
+    <string name="learn_key_idea">Key Idea</string>
+    <string name="learn_algorithm_steps">Algorithm Steps</string>
+
+    <!-- Learn Complexity -->
+    <string name="learn_time_complexity">Time Complexity</string>
+    <string name="learn_space_complexity">Space Complexity</string>
+    <string name="learn_intuition">Intuition</string>
+    <string name="learn_best_case">Best Case</string>
+    <string name="learn_average_case">Average Case</string>
+    <string name="learn_worst_case">Worst Case</string>
+
+    <!-- Learn Use Cases -->
+    <string name="learn_best_use_cases">Best Use Cases</string>
+    <string name="learn_not_recommended">Not Recommended</string>
+    <string name="learn_real_world_examples">Real World Examples</string>
+
+    <!-- Learn Code -->
+    <string name="learn_description">Description</string>
+    <string name="learn_implementation_kotlin">Implementation (Kotlin)</string>
+    <string name="learn_language_kotlin">Kotlin</string>
+    <string name="learn_copy_code">Copy code</string>
+
     <string name="learn_detail_history">History</string>
     <string name="learn_detail_how_it_works">How it works</string>
     <string name="learn_detail_complexity">Complexity</string>

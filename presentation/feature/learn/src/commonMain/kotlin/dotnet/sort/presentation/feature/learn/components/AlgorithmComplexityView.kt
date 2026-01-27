@@ -19,12 +19,20 @@ import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.learn.model.AlgorithmComplexity
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AlgorithmComplexityView(
     complexity: AlgorithmComplexity,
     modifier: Modifier = Modifier
 ) {
+    val bestCaseLabel = stringResource(Res.string.learn_best_case)
+    val averageCaseLabel = stringResource(Res.string.learn_average_case)
+    val worstCaseLabel = stringResource(Res.string.learn_worst_case)
+    val spaceCaseLabel = stringResource(Res.string.learn_space_complexity)
+
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -32,19 +40,19 @@ fun AlgorithmComplexityView(
         verticalArrangement = Arrangement.spacedBy(SpacingTokens.M)
     ) {
         // Time Complexity Section
-        SortSectionCard(title = "Time Complexity") {
+        SortSectionCard(title = stringResource(Res.string.learn_time_complexity)) {
             Column(
                 modifier = Modifier.padding(SpacingTokens.M),
                 verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)
             ) {
-                ComplexityRow("Best Case", complexity.timeComplexityBest)
+                ComplexityRow(bestCaseLabel, complexity.timeComplexityBest)
                 SortDivider()
-                ComplexityRow("Average Case", complexity.timeComplexityAverage)
+                ComplexityRow(averageCaseLabel, complexity.timeComplexityAverage)
                 SortDivider()
-                ComplexityRow("Worst Case", complexity.timeComplexityWorst)
+                ComplexityRow(worstCaseLabel, complexity.timeComplexityWorst)
 
                 Spacer(modifier = Modifier.height(SpacingTokens.S))
-                
+
                 SortText(
                     text = complexity.timeComplexityExplanation,
                     style = SortTheme.typography.bodyMedium,
@@ -54,12 +62,12 @@ fun AlgorithmComplexityView(
         }
 
         // Space Complexity Section
-        SortSectionCard(title = "Space Complexity") {
+        SortSectionCard(title = stringResource(Res.string.learn_space_complexity)) {
             Column(
                 modifier = Modifier.padding(SpacingTokens.M),
                 verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)
             ) {
-                ComplexityRow("Space Complexity", complexity.spaceComplexity)
+                ComplexityRow(spaceCaseLabel, complexity.spaceComplexity)
 
                 Spacer(modifier = Modifier.height(SpacingTokens.S))
 
@@ -72,7 +80,7 @@ fun AlgorithmComplexityView(
         }
 
         // Intuition Section
-        SortSectionCard(title = "Intuition") {
+        SortSectionCard(title = stringResource(Res.string.learn_intuition)) {
             Column(modifier = Modifier.padding(SpacingTokens.M)) {
                 SortText(
                     text = complexity.intuition,

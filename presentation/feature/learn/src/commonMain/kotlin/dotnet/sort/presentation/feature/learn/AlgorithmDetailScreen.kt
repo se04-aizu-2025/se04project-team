@@ -26,6 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * アルゴリズム詳細画面。
@@ -43,7 +46,13 @@ fun AlgorithmDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Overview", "Analysis", "Complexity", "Use Case", "Implementation")
+    val tabs = listOf(
+        stringResource(Res.string.learn_tab_overview),
+        stringResource(Res.string.learn_tab_analysis),
+        stringResource(Res.string.learn_tab_complexity),
+        stringResource(Res.string.learn_tab_usecase),
+        stringResource(Res.string.learn_tab_implementation)
+    )
 
     SortScaffold(
         modifier = modifier.fillMaxSize(),
