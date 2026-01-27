@@ -10,15 +10,9 @@ import androidx.navigation.compose.rememberNavController
 /**
  * アプリケーションのメインナビゲーション。
  */
-import androidx.navigation.NavHostController
-
-/**
- * アプリケーションのメインナビゲーション。
- */
 @Composable
-fun AppNavigation(
-    navController: NavHostController,
-) {
+fun AppNavigation() {
+    val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState().value
     val routeName = backStackEntry?.destination?.route?.substringAfterLast(".")
     val currentScreen =
@@ -26,7 +20,7 @@ fun AppNavigation(
             "Home" -> Screen.Home
             "Sort" -> Screen.Sort
             "Learn" -> Screen.Learn
-
+            "LearnDetail" -> Screen.Learn
             "Compare" -> Screen.Compare
             "Settings" -> Screen.Settings
             "Quiz" -> Screen.Home
@@ -111,19 +105,35 @@ fun AppNavigation(
             onNavigateToLearn = {
                 if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
             },
+            onNavigateToLearnDetail = { sortType ->
+                navController.navigate(Screen.LearnDetail(sortTypeName = sortType.name))
+            },
             onNavigateToCompare = {
                 if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
-            onNavigateToDetail = { sortType ->
-                navController.navigateToAlgorithmDetail(sortType)
-            },
             onBackClick = { navController.popBackStack() },
         )
 
-        algorithmDetailDestination(
+        learnDetailDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
             onBackClick = { navController.popBackStack() },
         )
 

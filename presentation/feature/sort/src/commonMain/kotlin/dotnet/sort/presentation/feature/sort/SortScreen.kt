@@ -1,4 +1,6 @@
 package dotnet.sort.presentation.feature.sort
+
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -21,11 +24,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
-import dotnet.sort.designsystem.generated.resources.Res
-import dotnet.sort.designsystem.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
@@ -74,11 +73,56 @@ fun SortScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // Keyboard Focus Requester
+    val focusRequester = remember { FocusRequester() }
+
+    // Launch effect to request focus when screen is shown
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     SortScaffold(
-        modifier = modifier,
+        modifier =
+            modifier
+                .onKeyEvent { event ->
+                    if (event.type == KeyEventType.KeyDown) {
+                        when (event.key) {
+                            Key.Spacebar -> {
+                                if (state.isPlaying) {
+                                    onIntent(SortIntent.PauseSort)
+                                } else if (state.sortResult != null) {
+                                    onIntent(SortIntent.ResumeSort)
+                                } else {
+                                    onIntent(SortIntent.StartSort)
+                                }
+                                true
+                            }
+                            Key.DirectionRight -> {
+                                if (!state.isPlaying && state.sortResult != null) {
+                                    onIntent(SortIntent.StepForward)
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            Key.DirectionLeft -> {
+                                if (!state.isPlaying && state.sortResult != null) {
+                                    onIntent(SortIntent.StepBackward)
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            else -> false
+                        }
+                    } else {
+                        false
+                    }
+                }.focusRequester(focusRequester)
+                .focusable(),
         topBar = {
             SortTopBar(
-                title = stringResource(Res.string.sort_title),
+                title = "Visualizer",
                 onBackClick = onBackClick,
             )
         },
@@ -88,31 +132,31 @@ fun SortScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = stringResource(Res.string.nav_home),
+                            contentDescription = "Home",
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = stringResource(Res.string.nav_sort),
+                            contentDescription = "Sort",
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = stringResource(Res.string.nav_learn),
+                            contentDescription = "Learn",
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = stringResource(Res.string.nav_compare),
+                            contentDescription = "Compare",
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = stringResource(Res.string.nav_settings),
+                            contentDescription = "Settings",
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),

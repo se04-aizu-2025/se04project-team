@@ -7,7 +7,6 @@ import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.domain.model.Language
 import dotnet.sort.presentation.common.i18n.ProvideAppLanguage
 import dotnet.sort.presentation.common.viewmodel.ThemeViewModel
-import androidx.navigation.compose.rememberNavController
 import dotnet.sort.presentation.navigation.AppNavigation
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
@@ -31,11 +30,10 @@ fun App() {
         val state by themeViewModel.state.collectAsState()
         val settingsRepository = koinInject<SettingsRepository>()
         val language by settingsRepository.language.collectAsState(initial = Language.ENGLISH)
-        val navController = rememberNavController()
 
         ProvideAppLanguage(language = language) {
             SortTheme(darkTheme = state.isDarkTheme, barTheme = state.barTheme) {
-                AppNavigation(navController = navController)
+                AppNavigation()
             }
         }
     }

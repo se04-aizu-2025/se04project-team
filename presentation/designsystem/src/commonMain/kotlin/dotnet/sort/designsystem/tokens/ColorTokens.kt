@@ -46,6 +46,12 @@ object ColorTokens {
     val PrimaryContainer = Color(0xFFEADDFF) // Lighter Purple
     val OnPrimaryContainer = Color(0xFF21005D) // Dark Purple
 
+    // === Code Container Colors ===
+    /** コードコンテナの背景色 */
+    val CodeContainer = Color(0xFFF8F8F8)
+    /** コードコンテナ上のテキスト色 */
+    val OnCodeContainer = Color(0xFF1C1B1F)
+
     // === Semantic Colors (Dark Theme) ===
     val PrimaryDark = Color(0xFFB794F6)
     val PrimaryVariantDark = Color(0xFF9B7FE6)
@@ -63,6 +69,12 @@ object ColorTokens {
     
     val PrimaryContainerDark = Color(0xFF4F378B)
     val OnPrimaryContainerDark = Color(0xFFEADDFF)
+
+    // === Code Container Colors (Dark Theme) ===
+    /** ダークテーマでのコードコンテナの背景色 */
+    val CodeContainerDark = Color(0xFF1E1E1E)
+    /** ダークテーマでのコードコンテナ上のテキスト色 */
+    val OnCodeContainerDark = Color(0xFFE6E1E5)
 
     // === Visualization Colors (ソート可視化用) ===
     /** デフォルトのバー色 - Kotlin Blue 系 */
@@ -108,11 +120,4 @@ object ColorTokens {
 
     /** Kotlinロゴのグラデーション終了色 */
     val GradientEnd = KotlinOrange
-
-    // === Code View Colors ===
-    val CodeContainer = Color(0xFFF5F5F5)
-    val OnCodeContainer = Color(0xFF1C1B1F)
-    
-    val CodeContainerDark = Color(0xFF2B2B2B)
-    val OnCodeContainerDark = Color(0xFFA9B7C6)
 }

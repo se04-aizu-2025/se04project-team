@@ -21,10 +21,6 @@ import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
-import dotnet.sort.designsystem.generated.resources.Res
-import dotnet.sort.designsystem.generated.resources.*
-import dotnet.sort.presentation.feature.quiz.toDisplayName
-import org.jetbrains.compose.resources.stringResource
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
 /**
@@ -51,7 +47,7 @@ fun QuizScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = stringResource(Res.string.nav_quiz),
+                title = "Quiz",
                 onBackClick = onBackClick,
             )
         },
@@ -61,31 +57,31 @@ fun QuizScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = stringResource(Res.string.nav_home),
+                            contentDescription = "Home",
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = stringResource(Res.string.nav_sort),
+                            contentDescription = "Sort",
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = stringResource(Res.string.nav_learn),
+                            contentDescription = "Learn",
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = stringResource(Res.string.nav_compare),
+                            contentDescription = "Compare",
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = stringResource(Res.string.nav_settings),
+                            contentDescription = "Settings",
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),
@@ -102,14 +98,14 @@ fun QuizScreen(
                     .padding(SpacingTokens.M),
             verticalArrangement = Arrangement.spacedBy(SpacingTokens.M),
         ) {
-            SortSectionCard(title = stringResource(Res.string.quiz_mode_label)) {
+            SortSectionCard(title = "Mode") {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S),
                 ) {
                     QuizMode.entries.forEach { mode ->
                         SortButton(
-                            text = stringResource(mode.toDisplayName()),
+                            text = mode.name,
                             onClick = { onIntent(QuizIntent.SelectMode(mode)) },
                             style = if (state.mode == mode) SortButtonStyle.Primary else SortButtonStyle.Outlined,
                             modifier = Modifier.weight(1f),
@@ -118,14 +114,14 @@ fun QuizScreen(
                 }
             }
 
-            SortSectionCard(title = stringResource(Res.string.quiz_difficulty_label)) {
+            SortSectionCard(title = "Difficulty") {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S),
                 ) {
                     QuizDifficulty.entries.forEach { difficulty ->
                         SortButton(
-                            text = stringResource(difficulty.toDisplayName()),
+                            text = difficulty.name,
                             onClick = { onIntent(QuizIntent.SelectDifficulty(difficulty)) },
                             style = if (state.difficulty == difficulty) SortButtonStyle.Primary else SortButtonStyle.Outlined,
                             modifier = Modifier.weight(1f),
@@ -134,39 +130,39 @@ fun QuizScreen(
                 }
             }
 
-            SortSectionCard(title = stringResource(Res.string.quiz_status_label)) {
-                SortText(text = stringResource(Res.string.quiz_time_format, state.timeRemainingMs / 1000.0))
-                SortText(text = stringResource(Res.string.quiz_question_progress_format, state.questionIndex + 1, state.totalQuestions))
+            SortSectionCard(title = "Status") {
+                SortText(text = "Time: ${state.timeRemainingMs / 1000.0}s")
+                SortText(text = "Question: ${state.questionIndex + 1}/${state.totalQuestions}")
             }
 
-            SortSectionCard(title = stringResource(Res.string.quiz_score_section)) {
-                SortText(text = stringResource(Res.string.quiz_score_format, state.score))
-                SortText(text = stringResource(Res.string.quiz_streak_format, state.streak))
-                SortText(text = stringResource(Res.string.quiz_correct_format, state.correctCount, state.totalQuestions))
-                SortText(text = stringResource(Res.string.quiz_longest_streak_format, state.longestStreak))
+            SortSectionCard(title = "Score") {
+                SortText(text = "Score: ${state.score}")
+                SortText(text = "Streak: ${state.streak}")
+                SortText(text = "Correct: ${state.correctCount}/${state.totalQuestions}")
+                SortText(text = "Longest streak: ${state.longestStreak}")
             }
 
-            SortSectionCard(title = stringResource(Res.string.quiz_question_section)) {
-                SortText(text = stringResource(state.question.prompt))
+            SortSectionCard(title = "Question") {
+                SortText(text = state.question.prompt)
                 if (state.mode == QuizMode.GUESS_ALGORITHM && state.question.hint != null) {
                     Spacer(modifier = Modifier.height(SpacingTokens.S))
                     SortButton(
-                        text = if (state.showHint) stringResource(Res.string.quiz_hint_hide) else stringResource(Res.string.quiz_hint_show),
+                        text = if (state.showHint) "Hide Hint" else "Show Hint",
                         onClick = { onIntent(QuizIntent.ToggleHint) },
                         style = SortButtonStyle.Outlined,
                         modifier = Modifier.fillMaxWidth(),
                     )
                     if (state.showHint) {
                         Spacer(modifier = Modifier.height(SpacingTokens.S))
-                        SortText(text = "${stringResource(Res.string.quiz_hint_prefix)}${state.question.hint?.let { stringResource(it) }}")
+                        SortText(text = "Hint: ${state.question.hint}")
                     }
                 }
             }
 
-            SortSectionCard(title = stringResource(Res.string.quiz_options_section)) {
+            SortSectionCard(title = "Options") {
                 state.question.options.forEachIndexed { index, option ->
                     SortButton(
-                        text = stringResource(option),
+                        text = option,
                         onClick = { onIntent(QuizIntent.SelectOption(index)) },
                         style = if (state.selectedIndex == index) SortButtonStyle.Primary else SortButtonStyle.Outlined,
                         modifier = Modifier.fillMaxWidth(),
@@ -176,25 +172,25 @@ fun QuizScreen(
             }
 
             SortButton(
-                text = stringResource(Res.string.quiz_action_start),
+                text = "Start",
                 onClick = { onIntent(QuizIntent.StartQuiz) },
                 style = SortButtonStyle.Primary,
                 modifier = Modifier.fillMaxWidth(),
             )
 
             SortButton(
-                text = stringResource(Res.string.quiz_action_submit),
+                text = "Submit",
                 onClick = { onIntent(QuizIntent.SubmitAnswer) },
                 style = SortButtonStyle.Primary,
                 modifier = Modifier.fillMaxWidth(),
             )
 
             if (state.isCorrect != null) {
-                SortSectionCard(title = stringResource(Res.string.quiz_result_label)) {
-                    SortText(text = if (state.isCorrect) stringResource(Res.string.quiz_result_correct) else stringResource(Res.string.quiz_result_incorrect))
+                SortSectionCard(title = "Result") {
+                    SortText(text = if (state.isCorrect) "Correct!" else "Incorrect.")
                 }
                 SortButton(
-                    text = stringResource(Res.string.quiz_action_next),
+                    text = "Next",
                     onClick = { onIntent(QuizIntent.NextQuestion) },
                     style = SortButtonStyle.Outlined,
                     modifier = Modifier.fillMaxWidth(),
@@ -202,22 +198,22 @@ fun QuizScreen(
             }
 
             if (state.showSummary) {
-                SortSectionCard(title = stringResource(Res.string.quiz_summary_label)) {
-                    SortText(text = "${stringResource(Res.string.quiz_mode_label)}: ${stringResource(state.mode.toDisplayName())}")
-                    SortText(text = "${stringResource(Res.string.quiz_difficulty_label)}: ${stringResource(state.difficulty.toDisplayName())}")
-                    SortText(text = stringResource(Res.string.quiz_score_format, state.score))
-                    SortText(text = stringResource(Res.string.quiz_correct_format, state.correctCount, state.totalQuestions))
-                    SortText(text = stringResource(Res.string.quiz_longest_streak_format, state.longestStreak))
-                    SortButton(text = stringResource(Res.string.quiz_action_play_again), onClick = { onIntent(QuizIntent.StartQuiz) })
+                SortSectionCard(title = "Summary") {
+                    SortText(text = "Mode: ${state.mode}")
+                    SortText(text = "Difficulty: ${state.difficulty}")
+                    SortText(text = "Score: ${state.score}")
+                    SortText(text = "Correct: ${state.correctCount}/${state.totalQuestions}")
+                    SortText(text = "Longest streak: ${state.longestStreak}")
+                    SortButton(text = "Play Again", onClick = { onIntent(QuizIntent.StartQuiz) })
                 }
             }
 
             if (state.leaderboard.isNotEmpty()) {
-                SortSectionCard(title = stringResource(Res.string.quiz_leaderboard_label)) {
+                SortSectionCard(title = "Leaderboard") {
                     state.leaderboard.takeLast(5).reversed().forEach { entry ->
-                        SortText(text = "${stringResource(entry.mode.toDisplayName())} - ${stringResource(entry.difficulty.toDisplayName())}")
-                        SortText(text = stringResource(Res.string.quiz_score_format, entry.score))
-                        SortText(text = stringResource(Res.string.quiz_correct_format, entry.correctCount, entry.totalQuestions))
+                        SortText(text = "${entry.mode} - ${entry.difficulty}")
+                        SortText(text = "Score: ${entry.score}")
+                        SortText(text = "Correct: ${entry.correctCount}/${entry.totalQuestions}")
                     }
                 }
             }

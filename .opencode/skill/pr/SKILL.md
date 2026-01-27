@@ -1,66 +1,30 @@
 ---
-name: pr
-description: Assist with pull request creation and management
-compatibility: opencode
-metadata:
-  audience: developers
-  workflow: github
+description: Create a Pull Request Draft
 ---
 
-## What I do
-- Analyze current branch and changes for PR creation
-- Check if branch follows naming conventions
-- Generate PR title and description based on changes
-- Validate that changes align with project conventions
-- Suggest appropriate reviewers and labels
-- Ensure PR follows project template format
+# Create Pull Request Workflow
 
-## When to use me
-Use this skill when preparing to create a pull request, need help with PR content, or want to validate your changes before submitting.
+This workflow guides you through creating a Pull Request (PR) draft conforming to the project standards.
 
-## Output format
-Return a comprehensive PR preparation summary in the following format:
+## Step 1: Analyze Changes
 
-```markdown
-# Pull Request Preparation
+1. Run `git diff --stat` to see changed files.
+2. Run `git log` to see recent commits on the feature branch.
 
-## Branch Analysis
-- **Current Branch**: [branch name]
-- **Naming Convention**: [compliant/non-compliant]
-- **Base Branch**: [target branch, usually main]
+## Step 2: Read Template
 
-## Changes Summary
-- **Files Changed**: [count and types]
-- **Lines Added/Removed**: [statistics]
-- **Primary Changes**: [main areas affected]
+Read `.github/pull_request_template.md` to understand the required format.
 
-## PR Content Draft
+## Step 3: Generate Content
 
-### Title
-[Generated PR title following conventional format]
+Generate the PR description strictly following the format in `.github/pull_request_template.md`:
+- **Title**: `[Type] Title` (e.g., `feat: Add Sort Algorithm`)
+- **Body**: Fill in the Japanese sections (`## 概要`, `## 変更内容`, etc.) exactly as defined in the template. Do not use English headers.
 
-### Description
-[Generated PR description in Japanese following project template]
+## Step 4: Verify Checklist
 
-## Validation Checks
-- [ ] Branch naming follows convention
-- [ ] Changes align with current development phase
-- [ ] Tests are included/updated
-- [ ] Documentation is updated
-- [ ] Code follows project standards
+Ensure all items in the "PR Checklist" are met (Tests, Lint, Doc).
 
-## Next Steps
-1. [Action items for user]
-2. [Commands to run if needed]
-```
+## Step 5: Output Draft
 
-## Required inputs
-- Current git branch and status
-- Changes to be included in PR
-- Project conventions and templates
-
-## Notes
-- Always validate branch naming convention first
-- Generate content in Japanese as per project standards
-- Include specific file paths for easy reference
-- Suggest reviewers based on changed areas
+Present the generated PR Markdown to the user **inside a markdown code block** so they can easily copy and paste it.

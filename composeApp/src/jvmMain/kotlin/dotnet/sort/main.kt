@@ -12,7 +12,6 @@ import androidx.compose.ui.window.application
 import dotnet.sort.di.DataModule
 import dotnet.sort.di.dataPlatformModule
 import dotnet.sort.di.DomainModule
-import dotnet.sort.di.platformDataModule
 import dotnet.sort.presentation.common.di.CommonModule
 import dotnet.sort.presentation.feature.home.di.HomeFeatureModule
 import dotnet.sort.presentation.feature.learn.di.LearnFeatureModule
@@ -22,10 +21,6 @@ import dotnet.sort.presentation.feature.settings.di.SettingsFeatureModule
 import dotnet.sort.presentation.feature.sort.SortFeatureModule
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
-
-import dotnet.sort.designsystem.generated.resources.Res
-import dotnet.sort.designsystem.generated.resources.app_name
-import org.jetbrains.compose.resources.stringResource
 
 fun main() {
     startKoin {
@@ -40,7 +35,6 @@ fun main() {
             LearnFeatureModule().module,
             CompareFeatureModule().module,
             QuizFeatureModule().module,
-            platformDataModule,
             // TODO: NavigationModule を追加
         )
     }
@@ -48,7 +42,7 @@ fun main() {
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            title = stringResource(Res.string.app_name),
+            title = "DNSort",
         ) {
             App() // Common Entry Point
         }

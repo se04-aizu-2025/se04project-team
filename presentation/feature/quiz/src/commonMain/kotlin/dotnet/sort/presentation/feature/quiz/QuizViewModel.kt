@@ -5,9 +5,6 @@ import dotnet.sort.presentation.common.viewmodel.Intent
 import dotnet.sort.presentation.common.viewmodel.UiState
 import kotlinx.coroutines.delay
 import org.koin.core.annotation.Factory
-import dotnet.sort.designsystem.generated.resources.Res
-import dotnet.sort.designsystem.generated.resources.*
-import org.jetbrains.compose.resources.StringResource
 
 enum class QuizDifficulty {
     EASY,
@@ -21,10 +18,10 @@ enum class QuizMode {
 }
 
 data class QuizQuestion(
-    val prompt: StringResource,
-    val options: List<StringResource>,
+    val prompt: String,
+    val options: List<String>,
     val correctIndex: Int,
-    val hint: StringResource? = null,
+    val hint: String? = null,
 )
 
 data class QuizScoreEntry(
@@ -196,28 +193,28 @@ private fun questionsFor(mode: QuizMode, difficulty: QuizDifficulty): List<QuizQ
     val base = when (mode) {
         QuizMode.SPEED_SWAP -> listOf(
             QuizQuestion(
-                prompt = Res.string.quiz_q_bubble_next_swap,
-                options = listOf(Res.string.quiz_q_check_pair_0_1, Res.string.quiz_q_check_pair_1_2, Res.string.quiz_q_check_pair_2_3),
+                prompt = "Which pair will swap next in Bubble Sort?",
+                options = listOf("(0,1)", "(1,2)", "(2,3)"),
                 correctIndex = 0,
             ),
             QuizQuestion(
-                prompt = Res.string.quiz_q_selection_move_end,
-                options = listOf(Res.string.quiz_opt_min, Res.string.quiz_opt_max, Res.string.quiz_opt_middle),
+                prompt = "Which element moves to the end in Selection Sort?",
+                options = listOf("Minimum", "Maximum", "Middle"),
                 correctIndex = 1,
             ),
         )
         QuizMode.GUESS_ALGORITHM -> listOf(
             QuizQuestion(
-                prompt = Res.string.quiz_q_pivot_partition,
-                options = listOf(Res.string.algo_quick, Res.string.algo_merge, Res.string.algo_heap),
+                prompt = "Uses pivot-based partitioning.",
+                options = listOf("Quick Sort", "Merge Sort", "Heap Sort"),
                 correctIndex = 0,
-                hint = Res.string.quiz_hint_n_log_n_avg,
+                hint = "Average complexity \$O(n \\log n)",
             ),
             QuizQuestion(
-                prompt = Res.string.quiz_q_heap_extract,
-                options = listOf(Res.string.algo_heap, Res.string.algo_shell, Res.string.algo_insertion),
+                prompt = "Repeatedly extracts max/min from a heap.",
+                options = listOf("Heap Sort", "Shell Sort", "Insertion Sort"),
                 correctIndex = 0,
-                hint = Res.string.quiz_hint_binary_heap,
+                hint = "Uses a binary heap structure",
             ),
         )
     }
@@ -225,13 +222,13 @@ private fun questionsFor(mode: QuizMode, difficulty: QuizDifficulty): List<QuizQ
     return when (difficulty) {
         QuizDifficulty.EASY -> base
         QuizDifficulty.MEDIUM -> base + QuizQuestion(
-            prompt = Res.string.quiz_q_divide_merge,
-            options = listOf(Res.string.algo_merge, Res.string.algo_bubble, Res.string.algo_selection),
+            prompt = "Divide and merge halves.",
+            options = listOf("Merge Sort", "Bubble Sort", "Selection Sort"),
             correctIndex = 0,
         )
         QuizDifficulty.HARD -> base + QuizQuestion(
-            prompt = Res.string.quiz_q_gap_insertion,
-            options = listOf(Res.string.algo_shell, Res.string.algo_quick, Res.string.algo_heap),
+            prompt = "Gapped insertion passes.",
+            options = listOf("Shell Sort", "Quick Sort", "Heap Sort"),
             correctIndex = 0,
         )
     }

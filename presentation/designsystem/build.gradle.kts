@@ -7,12 +7,6 @@ plugins {
     id("com.android.library")
 }
 
-compose.resources {
-    publicResClass = true
-    packageOfResClass = "dotnet.sort.designsystem.generated.resources"
-    generateResClass = always
-}
-
 kotlin {
     androidTarget()
     jvmToolchain(21)
@@ -48,6 +42,11 @@ kotlin {
             implementation(compose.desktop.currentOs)
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "dotnet.sort.designsystem.generated.resources"
+    publicResClass = true
 }
 
 android {
