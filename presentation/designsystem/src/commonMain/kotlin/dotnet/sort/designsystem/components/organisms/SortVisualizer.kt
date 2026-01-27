@@ -21,6 +21,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
  * @param array 表示する配列
  * @param highlightIndices ハイライトするインデックス
  * @param description 説明テキスト
+ * @param completionMessage ソート完了時に表示するメッセージ
  * @param modifier Modifier
  */
 @Composable
@@ -28,6 +29,7 @@ fun SortVisualizer(
     array: List<Int>,
     highlightIndices: List<Int>,
     description: String,
+    completionMessage: String? = null,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -66,5 +68,17 @@ fun SortVisualizer(
                 .fillMaxWidth()
                 .padding(horizontal = SpacingTokens.M)
         )
+
+        completionMessage?.let { message ->
+            SortText(
+                text = message,
+                style = SortTheme.typography.titleSmall,
+                color = SortTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = SpacingTokens.S)
+            )
+        }
     }
 }

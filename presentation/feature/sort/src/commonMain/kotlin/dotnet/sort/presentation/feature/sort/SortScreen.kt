@@ -35,6 +35,7 @@ import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
 import dotnet.sort.presentation.feature.sort.components.MetricsDisplay
 import dotnet.sort.presentation.feature.sort.components.SortControlPanel
 import dotnet.sort.designsystem.components.organisms.SortVisualizer
+import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 
 /**
@@ -144,9 +145,27 @@ fun SortContent(
     val soundVolume by settingsRepository.soundVolume.collectAsState(initial = 0.5f)
     val soundPlayer = remember { SoundEffectPlayer() }
     var lastPlayedIndex by remember { mutableStateOf(-1) }
+    var waveIndex by remember { mutableStateOf<Int?>(null) }
+    val totalSteps = state.sortResult?.steps?.size ?: 0
+    val isSortCompleted = totalSteps > 0 &&
+        state.currentStepIndex == totalSteps - 1 &&
+        !state.isPlaying
 
     LaunchedEffect(state.sortResult) {
         lastPlayedIndex = -1
+    }
+
+    LaunchedEffect(isSortCompleted, state.currentNumbers) {
+        if (!isSortCompleted) {
+            waveIndex = null
+            return@LaunchedEffect
+        }
+
+        for (index in state.currentNumbers.indices) {
+            waveIndex = index
+            delay(35)
+        }
+        waveIndex = null
     }
 
     LaunchedEffect(state.currentStepIndex, state.sortResult, isSoundEnabled, soundVolume) {
@@ -212,8 +231,14 @@ fun SortContent(
 
                     SortVisualizer(
                         array = state.currentNumbers,
-                        highlightIndices = state.highlightingIndices,
+                        highlightIndices =
+                            if (isSortCompleted) {
+                                waveIndex?.let { listOf(it) } ?: emptyList()
+                            } else {
+                                state.highlightingIndices
+                            },
                         description = state.stepDescription,
+                        completionMessage = if (isSortCompleted) "Sort completed!" else null,
                         modifier = Modifier.weight(1f),
                     )
                 }
@@ -292,8 +317,14 @@ fun SortContent(
 
                 SortVisualizer(
                     array = state.currentNumbers,
-                    highlightIndices = state.highlightingIndices,
+                    highlightIndices =
+                        if (isSortCompleted) {
+                            waveIndex?.let { listOf(it) } ?: emptyList()
+                        } else {
+                            state.highlightingIndices
+                        },
                     description = state.stepDescription,
+                    completionMessage = if (isSortCompleted) "Sort completed!" else null,
                     modifier = Modifier.heightIn(min = 240.dp, max = 440.dp),
                 )
 
