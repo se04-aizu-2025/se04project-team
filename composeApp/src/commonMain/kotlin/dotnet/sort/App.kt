@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.designsystem.theme.SortVisualizationPalette
+import dotnet.sort.designsystem.theme.SortVisualizationPalettes
+import dotnet.sort.domain.model.VisualizationTheme
 import dotnet.sort.presentation.common.viewmodel.ThemeViewModel
 import dotnet.sort.presentation.navigation.AppNavigation
 import org.koin.compose.KoinContext
@@ -25,8 +28,19 @@ fun App() {
         val themeViewModel = koinViewModel<ThemeViewModel>()
         val state by themeViewModel.state.collectAsState()
 
-        SortTheme(darkTheme = state.isDarkTheme) {
+        SortTheme(
+            darkTheme = state.isDarkTheme,
+            visualizationPalette = state.visualizationTheme.toPalette(),
+        ) {
             AppNavigation()
         }
+    }
+}
+
+private fun VisualizationTheme.toPalette(): SortVisualizationPalette {
+    return when (this) {
+        VisualizationTheme.KOTLIN -> SortVisualizationPalettes.Kotlin
+        VisualizationTheme.OCEAN -> SortVisualizationPalettes.Ocean
+        VisualizationTheme.FOREST -> SortVisualizationPalettes.Forest
     }
 }

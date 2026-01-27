@@ -29,9 +29,18 @@ val LocalSortTypography = staticCompositionLocalOf { DefaultTypography }
 @Composable
 fun SortTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    visualizationPalette: SortVisualizationPalette = SortVisualizationPalettes.Kotlin,
     content: @Composable () -> Unit
 ) {
-    val sortColorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val baseScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val sortColorScheme = baseScheme.copy(
+        barDefault = visualizationPalette.barDefault,
+        barComparing = visualizationPalette.barComparing,
+        barSwapping = visualizationPalette.barSwapping,
+        barSorted = visualizationPalette.barSorted,
+        barPivot = visualizationPalette.barPivot,
+        barSelected = visualizationPalette.barSelected,
+    )
 
     val materialColorScheme = if (darkTheme) {
         darkColorScheme(

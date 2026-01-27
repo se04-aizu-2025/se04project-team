@@ -83,6 +83,22 @@ object ColorTokens {
     /** 選択中の最小/最大要素 */
     val BarSelected = Color(0xFFFFEB3B)
 
+    // === Visualization Palette: Ocean ===
+    val OceanBarDefault = Color(0xFF3B82F6)
+    val OceanBarComparing = Color(0xFF22D3EE)
+    val OceanBarSwapping = Color(0xFF38BDF8)
+    val OceanBarSorted = Color(0xFF10B981)
+    val OceanBarPivot = Color(0xFF1D4ED8)
+    val OceanBarSelected = Color(0xFFA7F3D0)
+
+    // === Visualization Palette: Forest ===
+    val ForestBarDefault = Color(0xFF2F855A)
+    val ForestBarComparing = Color(0xFF68D391)
+    val ForestBarSwapping = Color(0xFFF6AD55)
+    val ForestBarSorted = Color(0xFF38A169)
+    val ForestBarPivot = Color(0xFF22543D)
+    val ForestBarSelected = Color(0xFFECC94B)
+
     // === Gradient Support ===
     /** Kotlinロゴのグラデーション開始色 */
     val GradientStart = KotlinBlue

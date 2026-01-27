@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.components.atoms.SortDropdown
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
@@ -18,6 +19,7 @@ import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.domain.model.VisualizationTheme
 
 /**
  * 設定画面。
@@ -139,6 +141,22 @@ fun SettingsContent(
             description = "Switch between light and dark themes",
             checked = state.isDarkTheme,
             onCheckedChange = { onIntent(SettingsIntent.ToggleTheme(it)) },
+        )
+
+        Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+        SortText(
+            text = "Visualization Theme",
+            style = SortTheme.typography.titleSmall,
+            color = SortTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        SortDropdown(
+            label = "Bar Colors",
+            selectedItem = state.visualizationTheme,
+            items = VisualizationTheme.entries,
+            onItemSelected = { onIntent(SettingsIntent.SelectVisualizationTheme(it)) },
+            itemLabel = { it.displayName },
         )
 
         Spacer(modifier = Modifier.height(SpacingTokens.L))
