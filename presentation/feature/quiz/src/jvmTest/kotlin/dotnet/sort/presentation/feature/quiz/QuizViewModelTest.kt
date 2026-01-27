@@ -36,13 +36,17 @@ class QuizViewModelTest {
         
         // Mock QuizGenerator
         fakeQuizGenerator = object : QuizGenerator {
-            override fun generate(type: SortType, arraySize: Int): QuizQuestion {
+            override fun generate(
+                type: SortType,
+                arraySize: Int,
+                timeLimitSeconds: Int
+            ): QuizQuestion {
                 return QuizQuestion(
                     id = "test_id",
                     algorithmType = type,
                     currentArray = listOf(2, 1, 3),
                     correctIndices = 0 to 1,
-                    timeLimitSeconds = 10
+                    timeLimitSeconds = timeLimitSeconds
                 )
             }
         }
