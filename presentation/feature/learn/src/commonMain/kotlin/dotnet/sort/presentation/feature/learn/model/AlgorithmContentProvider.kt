@@ -65,6 +65,12 @@ object AlgorithmContentProvider {
                 inventor = "Various researchers",
                 description = "Bucket Sort is a distribution-based algorithm that groups elements into buckets by range and sorts each bucket before concatenation."
             )
+            SortType.TIM -> AlgorithmHistory(
+                sortType = SortType.TIM,
+                originYear = "2002",
+                inventor = "Tim Peters",
+                description = "Tim Sort is a hybrid stable sorting algorithm designed by Tim Peters for Python. It combines run detection, insertion sort, and merge operations."
+            )
         }
     }
 
@@ -195,6 +201,17 @@ object AlgorithmContentProvider {
                     "Concatenate buckets in order"
                 )
             )
+            SortType.TIM -> AlgorithmConcept(
+                sortType = SortType.TIM,
+                howItWorks = "Tim Sort identifies already sorted runs, extends them with insertion sort, then merges runs efficiently.",
+                keyIdea = "Exploit existing order in the data and merge runs for stability and speed.",
+                steps = listOf(
+                    "Scan the array to find ascending runs",
+                    "Extend short runs with insertion sort",
+                    "Merge runs while maintaining stability",
+                    "Repeat merges until one run remains"
+                )
+            )
         }
     }
 
@@ -299,6 +316,16 @@ object AlgorithmContentProvider {
                 timeComplexityExplanation = "Distribution is O(n). If buckets are balanced, sorting each bucket is fast; worst case occurs when all elements fall into one bucket.",
                 spaceComplexityExplanation = "Requires additional buckets to store elements and intermediate results.",
                 intuition = "Grouping values reduces the sorting work per bucket when the distribution is uniform."
+            )
+            SortType.TIM -> AlgorithmComplexity(
+                sortType = SortType.TIM,
+                timeComplexityBest = "O(n)",
+                timeComplexityAverage = "O(n log n)",
+                timeComplexityWorst = "O(n log n)",
+                spaceComplexity = "O(n)",
+                timeComplexityExplanation = "Runs reduce work for nearly sorted data. Merging runs dominates to O(n log n) for random data.",
+                spaceComplexityExplanation = "Requires auxiliary storage for merging runs.",
+                intuition = "Tim Sort is fast because it takes advantage of already ordered segments and merges them efficiently."
             )
         }
     }
@@ -477,6 +504,23 @@ object AlgorithmContentProvider {
                     "Histogram bucketing",
                     "Range-based preprocessing",
                     "Sorting scores by ranges"
+                )
+            )
+            SortType.TIM -> AlgorithmUseCase(
+                sortType = SortType.TIM,
+                bestUseCases = listOf(
+                    "Real-world datasets with existing order",
+                    "Stable sorting requirements",
+                    "General-purpose list sorting"
+                ),
+                notRecommended = listOf(
+                    "Very memory-constrained environments",
+                    "When a simpler algorithm is sufficient"
+                ),
+                realWorldExamples = listOf(
+                    "Python list sort",
+                    "Java's Arrays.sort for objects (TimSort variant)",
+                    "Android/Kotlin standard library sorting"
                 )
             )
         }
@@ -767,6 +811,35 @@ fun bucketSort(arr: IntArray) {
                 """.trimIndent(),
                 description = "Bucket Sort using range-based buckets and per-bucket sort."
             )
+            SortType.TIM -> AlgorithmImplementation(
+                sortType = SortType.TIM,
+                code = """
+fun timSort(arr: IntArray) {
+    val n = arr.size
+    val minRun = 32
+
+    var start = 0
+    while (start < n) {
+        val end = kotlin.math.min(start + minRun - 1, n - 1)
+        insertionSortRange(arr, start, end)
+        start += minRun
+    }
+
+    var size = minRun
+    while (size < n) {
+        var left = 0
+        while (left < n) {
+            val mid = left + size - 1
+            val right = kotlin.math.min(left + 2 * size - 1, n - 1)
+            if (mid < right) merge(arr, left, mid, right)
+            left += 2 * size
+        }
+        size *= 2
+    }
+}
+                """.trimIndent(),
+                description = "Simplified Tim Sort using fixed-size runs and merge passes."
+            )
         }
     }
 
@@ -893,6 +966,15 @@ fun bucketSort(arr: IntArray) {
                     AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Distribute elements into buckets.", emptyList(), StepModificationType.NONE),
                     AlgorithmExampleStep(2, listOf(5, 3, 1, 4, 2), "Sort each bucket individually.", emptyList(), StepModificationType.NONE),
                     AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Concatenate buckets. Sorted.", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.TIM -> AlgorithmExample(
+                sortType = SortType.TIM,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Detect runs and sort small runs with insertion sort.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(1, 3, 5, 2, 4), "Merge adjacent runs.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Final merge completes. Sorted.", emptyList(), StepModificationType.SET)
                 )
             )
         }

@@ -27,6 +27,7 @@ object SortAlgorithmFactory {
             SortType.COUNTING -> CountingSortAlgorithm()
             SortType.RADIX -> RadixSortAlgorithm()
             SortType.BUCKET -> BucketSortAlgorithm()
+            SortType.TIM -> TimSortAlgorithm()
         }
     }
 }

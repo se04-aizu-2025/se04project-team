@@ -22,4 +22,5 @@ enum class SortType(val displayName: String) {
     COUNTING("Counting Sort"),
     RADIX("Radix Sort"),
     BUCKET("Bucket Sort"),
+    TIM("Tim Sort"),
 }
