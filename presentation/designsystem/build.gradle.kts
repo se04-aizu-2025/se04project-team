@@ -32,6 +32,7 @@ kotlin {
             implementation(libs.components.resources)
             implementation(libs.ui.tooling.preview)
             implementation(compose.materialIconsExtended)
+            implementation(projects.domain)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

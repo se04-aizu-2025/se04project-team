@@ -49,6 +49,7 @@ private data class HomeOption(
  * @param onNavigateToSort Sort画面への遷移コールバック
  * @param onNavigateToLearn Learn画面への遷移コールバック
  * @param onNavigateToCompare Compare画面への遷移コールバック
+ * @param onNavigateToQuiz Quiz画面への遷移コールバック
  * @param onNavigateToSettings Settings画面への遷移コールバック
  * @param modifier Modifier
  */
@@ -63,6 +64,7 @@ fun HomeScreen(
     onNavigateToSort: () -> Unit,
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onNavigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -85,6 +87,12 @@ fun HomeScreen(
                 description = "Compare performance of algorithms.",
                 icon = "⚖️",
                 onClick = onNavigateToCompare,
+            ),
+            HomeOption(
+                title = "Quiz",
+                description = "Test your algorithm knowledge.",
+                icon = "🧠",
+                onClick = onNavigateToQuiz,
             ),
             HomeOption(
                 title = "Settings",

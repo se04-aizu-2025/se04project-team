@@ -12,6 +12,7 @@ import dotnet.sort.presentation.feature.home.HomeScreen
  * @param onNavigateToSort Sort画面への遷移コールバック
  * @param onNavigateToLearn Learn画面への遷移コールバック
  * @param onNavigateToCompare Compare画面への遷移コールバック
+ * @param onNavigateToQuiz Quiz画面への遷移コールバック
  * @param onNavigateToSettings Settings画面への遷移コールバック
  */
 fun NavGraphBuilder.homeDestination(
@@ -20,6 +21,7 @@ fun NavGraphBuilder.homeDestination(
     onNavigateToSort: () -> Unit,
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onNavigateToSettings: () -> Unit,
 ) {
     composable<Screen.Home> {
@@ -33,6 +35,7 @@ fun NavGraphBuilder.homeDestination(
             onNavigateToSort = onNavigateToSort,
             onNavigateToLearn = onNavigateToLearn,
             onNavigateToCompare = onNavigateToCompare,
+            onNavigateToQuiz = onNavigateToQuiz,
             onNavigateToSettings = onNavigateToSettings,
         )
     }

@@ -1,21 +1,21 @@
 package dotnet.sort.presentation.feature.learn
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortIcons
-import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
+import dotnet.sort.designsystem.components.molecules.SortCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
-import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
 /**
@@ -44,8 +44,11 @@ fun LearnScreen(
     onNavigateToHome: () -> Unit,
     onNavigateToSort: () -> Unit,
     onNavigateToLearn: () -> Unit,
+    onNavigateToLearnDetail: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    state: LearnState,
+    onIntent: (LearnIntent) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -95,24 +98,40 @@ fun LearnScreen(
             )
         },
     ) { padding ->
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Spacer(modifier = Modifier.height(SpacingTokens.FloatingTopBarInset))
-                SortText(
-                    text = "Coming Soon",
-                    style = SortTheme.typography.headlineMedium,
-                    color = SortTheme.colorScheme.primary,
-                )
-                Spacer(modifier = Modifier.height(SpacingTokens.M))
-                SortText(
-                    text = "Learn about sorting algorithms here.",
-                    style = SortTheme.typography.bodyMedium,
-                )
-                Spacer(modifier = Modifier.height(SpacingTokens.FloatingBottomBarInset))
-            }
+        LearnContent(
+            state = state,
+            onIntent = onIntent,
+            onNavigateToLearnDetail = onNavigateToLearnDetail,
+            modifier = Modifier.fillMaxSize().padding(padding),
+        )
+    }
+}
+
+@Composable
+private fun LearnContent(
+    state: LearnState,
+    onIntent: (LearnIntent) -> Unit,
+    onNavigateToLearnDetail: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier.padding(SpacingTokens.M),
+        verticalArrangement = Arrangement.spacedBy(SpacingTokens.M),
+    ) {
+        items(state.algorithms, key = { it.type.name }) { item ->
+            SortCard(
+                title = item.title,
+                description = item.description,
+                icon = item.icon,
+                onClick = {
+                    onIntent(LearnIntent.SelectAlgorithm(item.type))
+                    onNavigateToLearnDetail()
+                },
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(SpacingTokens.FloatingBottomBarInset))
         }
     }
 }

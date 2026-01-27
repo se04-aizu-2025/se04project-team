@@ -32,7 +32,7 @@ fun App() {
         val language by settingsRepository.language.collectAsState(initial = Language.ENGLISH)
 
         ProvideAppLanguage(language = language) {
-            SortTheme(darkTheme = state.isDarkTheme) {
+            SortTheme(darkTheme = state.isDarkTheme, barTheme = state.barTheme) {
                 AppNavigation()
             }
         }

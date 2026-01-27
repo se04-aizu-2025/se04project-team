@@ -10,6 +10,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortIcons
+import dotnet.sort.designsystem.components.atoms.SortDropdown
+import dotnet.sort.designsystem.components.atoms.SortSlider
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
@@ -18,6 +20,7 @@ import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.domain.model.BarColorTheme
 
 /**
  * 設定画面。
@@ -133,7 +136,6 @@ fun SettingsContent(
                     bottom = SpacingTokens.FloatingBottomBarInset,
                 ),
     ) {
-        // Theme Setting
         SortSettingsRow(
             title = "Dark Mode",
             description = "Switch between light and dark themes",
@@ -143,7 +145,46 @@ fun SettingsContent(
 
         Spacer(modifier = Modifier.height(SpacingTokens.L))
 
-        // App Info
+        SortText(
+            text = "Visualization",
+            style = SortTheme.typography.titleSmall,
+            color = SortTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        SortDropdown(
+            label = "Bar Theme",
+            selectedItem = state.barTheme,
+            items = BarColorTheme.entries.toList(),
+            onItemSelected = { onIntent(SettingsIntent.SelectBarTheme(it)) },
+            itemLabel = { it.displayName },
+        )
+
+        Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+        SortText(
+            text = "Sound",
+            style = SortTheme.typography.titleSmall,
+            color = SortTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        SortSettingsRow(
+            title = "Sound Effects",
+            description = "Enable compare/swap sounds",
+            checked = state.isSoundEnabled,
+            onCheckedChange = { onIntent(SettingsIntent.ToggleSound(it)) },
+        )
+        SortSlider(
+            label = "Volume",
+            valueLabel = "${(state.soundVolume * 100).toInt()}%",
+            value = state.soundVolume,
+            onValueChange = { onIntent(SettingsIntent.SetSoundVolume(it)) },
+            valueRange = 0f..1f,
+            steps = 0,
+            enabled = state.isSoundEnabled,
+        )
+
+        Spacer(modifier = Modifier.height(SpacingTokens.L))
+
         SortText(
             text = "App Info",
             style = SortTheme.typography.titleSmall,

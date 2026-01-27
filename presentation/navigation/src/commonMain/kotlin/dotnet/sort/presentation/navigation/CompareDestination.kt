@@ -1,9 +1,13 @@
 package dotnet.sort.presentation.navigation
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import dotnet.sort.presentation.feature.compare.CompareViewModel
 import dotnet.sort.presentation.feature.compare.CompareScreen
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * Compare 機能のナビゲーションを NavGraph に登録する。
@@ -20,6 +24,8 @@ fun NavGraphBuilder.compareDestination(
     onBackClick: () -> Unit,
 ) {
     composable<Screen.Compare> {
+        val viewModel: CompareViewModel = koinViewModel()
+        val state by viewModel.state.collectAsState()
         CompareScreen(
             isHomeSelected = currentScreen is Screen.Home,
             isSortSelected = currentScreen is Screen.Sort,
@@ -31,6 +37,8 @@ fun NavGraphBuilder.compareDestination(
             onNavigateToLearn = onNavigateToLearn,
             onNavigateToCompare = onNavigateToCompare,
             onNavigateToSettings = onNavigateToSettings,
+            state = state,
+            onIntent = viewModel::send,
             onBackClick = onBackClick,
         )
     }

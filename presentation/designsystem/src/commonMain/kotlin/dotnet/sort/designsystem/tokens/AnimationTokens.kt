@@ -45,16 +45,16 @@ object AnimationTokens {
 
     // === Speed Multipliers ===
     /** 最低速度 (0.25x) */
-    const val SpeedMinMultiplier: Float = 0.25f
+    const val SpeedMinMultiplier: Float = 0.1f
 
     /** 通常速度 (1.0x) */
     const val SpeedNormalMultiplier: Float = 1.0f
 
-    /** 最高速度 (4.0x) */
-    const val SpeedMaxMultiplier: Float = 4.0f
+    /** 最高速度 (100.0x) */
+    const val SpeedMaxMultiplier: Float = 100.0f
 
     /** 速度ステップ (0.25ずつ) */
-    const val SpeedStep: Float = 0.25f
+    const val SpeedStep: Float = 0.1f
 
     // === Easing Names (for documentation/reference) ===
     /** 

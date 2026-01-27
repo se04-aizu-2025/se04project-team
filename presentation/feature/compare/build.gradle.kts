@@ -41,6 +41,7 @@ kotlin {
             implementation(projects.domain)
             implementation(projects.presentation.common)
             implementation(projects.presentation.designsystem)
+            implementation(projects.presentation.feature.sort)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

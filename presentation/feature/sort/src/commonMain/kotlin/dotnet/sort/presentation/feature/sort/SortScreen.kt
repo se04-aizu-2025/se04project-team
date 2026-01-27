@@ -215,6 +215,7 @@ fun SortContent(
                     SortVisualizer(
                         array = state.currentNumbers,
                         highlightIndices = state.highlightingIndices,
+                        sortedIndices = state.sortedIndices,
                         description = state.stepDescription,
                         modifier = Modifier.weight(1f),
                     )
@@ -295,6 +296,7 @@ fun SortContent(
                 SortVisualizer(
                     array = state.currentNumbers,
                     highlightIndices = state.highlightingIndices,
+                    sortedIndices = state.sortedIndices,
                     description = state.stepDescription,
                     modifier = Modifier.heightIn(min = 240.dp, max = 440.dp),
                 )
