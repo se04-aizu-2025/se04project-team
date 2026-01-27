@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.SortBar
 import dotnet.sort.designsystem.components.atoms.SortButton
+import dotnet.sort.designsystem.components.atoms.SortButtonStyle
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.atoms.BarState
@@ -150,6 +151,8 @@ private fun QuizContent(
                 QuizSummary(
                     state = state,
                     onRetry = { onIntent(QuizIntent.StartGame) },
+                    onDifficultySelected = { onIntent(QuizIntent.SelectDifficulty(it)) },
+                    onResetRanking = { onIntent(QuizIntent.ResetRanking) },
                     modifier = Modifier.fillMaxWidth()
                 )
             } else {
@@ -168,6 +171,11 @@ private fun QuizContent(
                     style = SortTheme.typography.bodyMedium,
                     color = SortTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = SpacingTokens.M),
+                )
+                QuizDifficultySelector(
+                    selectedDifficulty = state.difficulty,
+                    onDifficultySelected = { onIntent(QuizIntent.SelectDifficulty(it)) },
+                    modifier = Modifier.fillMaxWidth()
                 )
                 SortButton(
                     text = "Start Game",
@@ -345,6 +353,8 @@ private fun QuizContent(
 private fun QuizSummary(
     state: QuizState,
     onRetry: () -> Unit,
+    onDifficultySelected: (QuizDifficulty) -> Unit,
+    onResetRanking: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val total = state.totalAnsweredQuestions
@@ -352,6 +362,7 @@ private fun QuizSummary(
     val weakness = state.incorrectCounts.entries
         .sortedByDescending { it.value }
         .take(3)
+    val rankingList = state.rankings[state.difficulty].orEmpty()
 
     Column(
         modifier = modifier,
@@ -368,6 +379,38 @@ private fun QuizSummary(
             SortInfoRow(label = "Accuracy", value = "$accuracy%")
             SortInfoRow(label = "Total Score", value = state.score.toString())
             SortInfoRow(label = "Longest Streak", value = state.longestCorrectStreak.toString())
+        }
+
+        SortSectionCard(title = "Difficulty") {
+            QuizDifficultySelector(
+                selectedDifficulty = state.difficulty,
+                onDifficultySelected = onDifficultySelected,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        SortSectionCard(title = "Ranking") {
+            if (rankingList.isEmpty()) {
+                SortText(
+                    text = "No ranking data yet",
+                    style = SortTheme.typography.bodyMedium,
+                    color = SortTheme.colorScheme.onSurfaceVariant
+                )
+            } else {
+                rankingList.forEachIndexed { index, entry ->
+                    SortInfoRow(
+                        label = "#${index + 1}",
+                        value = "${entry.score} pts • ${entry.accuracy}%"
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(SpacingTokens.S))
+            SortButton(
+                text = "Reset Ranking",
+                onClick = onResetRanking,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
         SortSectionCard(title = "Weak Algorithms") {
@@ -390,6 +433,42 @@ private fun QuizSummary(
         SortButton(
             text = "Play Again",
             onClick = onRetry
+        )
+    }
+}
+
+@Composable
+private fun QuizDifficultySelector(
+    selectedDifficulty: QuizDifficulty,
+    onDifficultySelected: (QuizDifficulty) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(top = SpacingTokens.M),
+        verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)
+    ) {
+        SortText(
+            text = "Difficulty",
+            style = SortTheme.typography.titleSmall
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S)
+        ) {
+            QuizDifficulty.entries.forEach { difficulty ->
+                val isSelected = selectedDifficulty == difficulty
+                SortButton(
+                    text = difficulty.displayName,
+                    onClick = { onDifficultySelected(difficulty) },
+                    style = if (isSelected) SortButtonStyle.Primary else SortButtonStyle.Outlined,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        SortText(
+            text = "Array ${selectedDifficulty.arraySize} • ${selectedDifficulty.timeLimitSeconds}s",
+            style = SortTheme.typography.bodySmall,
+            color = SortTheme.colorScheme.onSurfaceVariant
         )
     }
 }

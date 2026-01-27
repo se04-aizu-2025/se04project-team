@@ -16,7 +16,11 @@ class QuizGeneratorImpl(
     
     private var questionIdCounter = 0
 
-    override fun generate(type: SortType, arraySize: Int): QuizQuestion {
+    override fun generate(
+        type: SortType,
+        arraySize: Int,
+        timeLimitSeconds: Int
+    ): QuizQuestion {
         // 1. Generate a random array
         val array = arrayGenerator.generate(arraySize, ArrayGeneratorType.RANDOM)
         
@@ -71,7 +75,7 @@ class QuizGeneratorImpl(
             algorithmType = type,
             currentArray = currentArrayState,
             correctIndices = if (answer.first < answer.second) answer else answer.second to answer.first, // Normalize order
-            timeLimitSeconds = 10
+            timeLimitSeconds = timeLimitSeconds
         )
     }
 }

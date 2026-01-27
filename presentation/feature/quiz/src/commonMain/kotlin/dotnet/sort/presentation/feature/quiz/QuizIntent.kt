@@ -31,4 +31,14 @@ sealed interface QuizIntent : Intent {
      * ゲームを終了する
      */
     data object EndGame : QuizIntent
+
+    /**
+     * 難易度を選択する
+     */
+    data class SelectDifficulty(val difficulty: QuizDifficulty) : QuizIntent
+
+    /**
+     * ランキングをリセットする
+     */
+    data object ResetRanking : QuizIntent
 }

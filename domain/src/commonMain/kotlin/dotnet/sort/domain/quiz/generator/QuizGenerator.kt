@@ -12,7 +12,12 @@ interface QuizGenerator {
      *
      * @param type アルゴリズムの種類
      * @param arraySize 配列のサイズ
+     * @param timeLimitSeconds 制限時間（秒）
      * @return 生成されたクイズ問題
      */
-    fun generate(type: SortType, arraySize: Int = 10): QuizQuestion
+    fun generate(
+        type: SortType,
+        arraySize: Int = 10,
+        timeLimitSeconds: Int = 10
+    ): QuizQuestion
 }

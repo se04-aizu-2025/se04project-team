@@ -18,8 +18,15 @@ class GenerateQuizQuestionUseCase(
      * @param type アルゴリズムの種類
      * @return 生成された問題
      */
-    operator fun invoke(type: SortType): QuizQuestion {
-        // 難易度調整などをここで行うことも可能
-        return quizGenerator.generate(type)
+    operator fun invoke(
+        type: SortType,
+        arraySize: Int = 10,
+        timeLimitSeconds: Int = 10
+    ): QuizQuestion {
+        return quizGenerator.generate(
+            type = type,
+            arraySize = arraySize,
+            timeLimitSeconds = timeLimitSeconds
+        )
     }
 }

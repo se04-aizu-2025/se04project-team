@@ -32,6 +32,8 @@ class QuizViewModel(
             is QuizIntent.NextQuestion -> nextQuestion()
             is QuizIntent.Tick -> tick()
             is QuizIntent.EndGame -> endGame()
+            is QuizIntent.SelectDifficulty -> selectDifficulty(intent.difficulty)
+            is QuizIntent.ResetRanking -> resetRanking()
         }
     }
     
@@ -55,9 +57,14 @@ class QuizViewModel(
     private fun nextQuestion() {
         // ランダムにアルゴリズムを選択
         val randomAlgorithm = SortType.entries.random()
+        val difficulty = state.value.difficulty
         
         execute {
-            val question = generateQuizQuestionUseCase(randomAlgorithm)
+            val question = generateQuizQuestionUseCase(
+                type = randomAlgorithm,
+                arraySize = difficulty.arraySize,
+                timeLimitSeconds = difficulty.timeLimitSeconds
+            )
             updateState {
                 copy(
                     currentQuestion = question,
@@ -145,14 +152,37 @@ class QuizViewModel(
     
     private fun endGame() {
         stopTimer()
+        val summaryEntry = buildRankingEntry()
+        val difficulty = state.value.difficulty
         updateState {
             copy(
                 isGameActive = false,
                 currentQuestion = null,
                 feedback = null,
-                showSummary = true
+                showSummary = true,
+                rankings = rankings.addEntry(difficulty, summaryEntry)
             )
         }
+    }
+
+    private fun selectDifficulty(difficulty: QuizDifficulty) {
+        if (state.value.isGameActive) return
+        updateState { copy(difficulty = difficulty) }
+    }
+
+    private fun resetRanking() {
+        val difficulty = state.value.difficulty
+        updateState { copy(rankings = rankings.reset(difficulty)) }
+    }
+
+    private fun buildRankingEntry(): QuizRankingEntry {
+        val total = state.value.totalAnsweredQuestions
+        val accuracy = if (total == 0) 0 else (state.value.correctAnswers * 100) / total
+        return QuizRankingEntry(
+            score = state.value.score,
+            accuracy = accuracy,
+            longestStreak = state.value.longestCorrectStreak
+        )
     }
     
     override fun onCleared() {
@@ -164,4 +194,23 @@ class QuizViewModel(
 private fun Map<SortType, Int>.increment(type: SortType): Map<SortType, Int> {
     val current = this[type] ?: 0
     return this + (type to (current + 1))
+}
+
+private fun Map<QuizDifficulty, List<QuizRankingEntry>>.addEntry(
+    difficulty: QuizDifficulty,
+    entry: QuizRankingEntry
+): Map<QuizDifficulty, List<QuizRankingEntry>> {
+    val list = (this[difficulty] ?: emptyList()) + entry
+    val sorted = list.sortedWith(
+        compareByDescending<QuizRankingEntry> { it.score }
+            .thenByDescending { it.accuracy }
+            .thenByDescending { it.longestStreak }
+    ).take(10)
+    return this + (difficulty to sorted)
+}
+
+private fun Map<QuizDifficulty, List<QuizRankingEntry>>.reset(
+    difficulty: QuizDifficulty
+): Map<QuizDifficulty, List<QuizRankingEntry>> {
+    return this + (difficulty to emptyList())
 }
