@@ -6,6 +6,8 @@ import dotnet.sort.designsystem.generated.resources.quiz_diff_hard
 import dotnet.sort.designsystem.generated.resources.quiz_diff_medium
 import dotnet.sort.designsystem.generated.resources.quiz_mode_guess_algo
 import dotnet.sort.designsystem.generated.resources.quiz_mode_speed_swap
+import dotnet.sort.model.QuizDifficulty
+import dotnet.sort.model.QuizMode
 import org.jetbrains.compose.resources.StringResource
 
 fun QuizMode.toDisplayName(): StringResource {

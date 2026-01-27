@@ -1,5 +1,6 @@
 package dotnet.sort.presentation.feature.quiz
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.dp
+import dotnet.sort.model.QuizDifficulty
+import dotnet.sort.model.QuizMode
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortButtonStyle
 import dotnet.sort.designsystem.components.atoms.SortIcons
@@ -208,6 +217,26 @@ fun QuizScreen(
                 }
             }
 
+            if (state.scoreHistory.isNotEmpty()) {
+                val bestScore = state.scoreHistory.maxOf { it.score }
+                val averageScore = state.scoreHistory.map { it.score }.average().toInt()
+                val latestScore = state.scoreHistory.first().score
+                SortSectionCard(title = "Score Trend") {
+                    ScoreTrendChart(
+                        scores = state.scoreHistory,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(140.dp),
+                    )
+
+                    Spacer(modifier = Modifier.height(SpacingTokens.S))
+
+                    SortText(text = "Latest: $latestScore")
+                    SortText(text = "Best: $bestScore")
+                    SortText(text = "Average: $averageScore")
+                }
+            }
+
             if (state.leaderboard.isNotEmpty()) {
                 SortSectionCard(title = "Leaderboard") {
                     state.leaderboard.takeLast(5).reversed().forEach { entry ->
@@ -220,5 +249,47 @@ fun QuizScreen(
 
             Spacer(modifier = Modifier.height(SpacingTokens.FloatingBottomBarInset))
         }
+    }
+}
+
+@Composable
+private fun ScoreTrendChart(
+    scores: List<QuizScoreEntry>,
+    modifier: Modifier = Modifier,
+) {
+    val sortedScores = scores.sortedBy { it.createdAtMillis }.takeLast(10)
+    if (sortedScores.size < 2) {
+        SortText(text = "Not enough data for trend")
+        return
+    }
+
+    Canvas(modifier = modifier) {
+        val maxScore = sortedScores.maxOf { it.score }.coerceAtLeast(1)
+        val minScore = sortedScores.minOf { it.score }
+        val xStep = size.width / (sortedScores.size - 1).coerceAtLeast(1)
+        val scoreRange = (maxScore - minScore).coerceAtLeast(1)
+
+        val path = Path()
+        sortedScores.forEachIndexed { index, entry ->
+            val x = xStep * index
+            val normalized = (entry.score - minScore).toFloat() / scoreRange.toFloat()
+            val y = size.height - (size.height * normalized)
+            if (index == 0) {
+                path.moveTo(x, y)
+            } else {
+                path.lineTo(x, y)
+            }
+            drawCircle(
+                color = androidx.compose.ui.graphics.Color(0xFF7F52FF),
+                radius = 4f,
+                center = Offset(x, y),
+            )
+        }
+
+        drawPath(
+            path = path,
+            color = androidx.compose.ui.graphics.Color(0xFF7F52FF),
+            style = Stroke(width = 4f, cap = StrokeCap.Round, join = StrokeJoin.Round),
+        )
     }
 }

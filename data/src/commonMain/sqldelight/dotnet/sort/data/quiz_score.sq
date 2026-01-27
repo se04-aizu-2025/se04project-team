@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS quiz_score (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    correct_count INTEGER NOT NULL,
+    incorrect_count INTEGER NOT NULL,
+    longest_streak INTEGER NOT NULL,
+    score INTEGER NOT NULL,
+    duration_millis INTEGER NOT NULL,
+    difficulty TEXT NOT NULL,
+    mode TEXT NOT NULL,
+    algorithm_type TEXT,
+    quiz_version TEXT NOT NULL,
+    created_at_millis INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS quiz_score_created_at ON quiz_score(created_at_millis);
+
+insertQuizScore:
+INSERT INTO quiz_score(
+    correct_count,
+    incorrect_count,
+    longest_streak,
+    score,
+    duration_millis,
+    difficulty,
+    mode,
+    algorithm_type,
+    quiz_version,
+    created_at_millis
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectQuizScores:
+SELECT id,
+       correct_count,
+       incorrect_count,
+       longest_streak,
+       score,
+       duration_millis,
+       difficulty,
+       mode,
+       algorithm_type,
+       quiz_version,
+       created_at_millis
+FROM quiz_score
+ORDER BY created_at_millis DESC
+LIMIT ?;

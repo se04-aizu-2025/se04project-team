@@ -36,6 +36,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.model.SortType
 import dotnet.sort.usecase.LearningStatistics
 import dotnet.sort.usecase.ProficiencyLevel
+import dotnet.sort.usecase.QuizScoreSummary
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -198,6 +199,7 @@ fun HomeScreen(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 LearningProgressDashboard(
                     statistics = state.learningStatistics,
+                    quizSummary = state.quizSummary,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -221,6 +223,7 @@ fun HomeScreen(
 @Composable
 private fun LearningProgressDashboard(
     statistics: LearningStatistics?,
+    quizSummary: QuizScoreSummary?,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -240,13 +243,15 @@ private fun LearningProgressDashboard(
                 color = SortTheme.colorScheme.primary,
             )
 
-            if (statistics == null) {
+            if (statistics == null && quizSummary == null) {
                 SortText(
                     text = "Loading learning statistics...",
                     style = SortTheme.typography.bodyMedium,
                     color = SortTheme.colorScheme.onSurfaceVariant,
                 )
-            } else {
+            }
+
+            if (statistics != null) {
                 // 総学習時間
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -296,6 +301,56 @@ private fun LearningProgressDashboard(
                         algorithm = algorithm,
                         proficiency = proficiency,
                     )
+                }
+            }
+
+            if (quizSummary != null) {
+                Spacer(modifier = Modifier.height(SpacingTokens.M))
+
+                SortText(
+                    text = "Quiz Summary",
+                    style = SortTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = SpacingTokens.S),
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SortText(text = "Attempts", style = SortTheme.typography.bodyLarge)
+                    SortText(text = "${quizSummary.totalAttempts}", style = SortTheme.typography.bodyLarge)
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SortText(text = "Best Score", style = SortTheme.typography.bodyLarge)
+                    SortText(
+                        text = "${quizSummary.bestScore}",
+                        style = SortTheme.typography.bodyLarge,
+                        color = SortTheme.colorScheme.primary,
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SortText(text = "Average Score", style = SortTheme.typography.bodyLarge)
+                    SortText(text = "${quizSummary.averageScore}", style = SortTheme.typography.bodyLarge)
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SortText(text = "Latest", style = SortTheme.typography.bodyLarge)
+                    SortText(text = "${quizSummary.latestScore}", style = SortTheme.typography.bodyLarge)
                 }
             }
         }
