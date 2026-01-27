@@ -108,4 +108,11 @@ object ColorTokens {
 
     /** Kotlinロゴのグラデーション終了色 */
     val GradientEnd = KotlinOrange
+
+    // === Code View Colors ===
+    val CodeContainer = Color(0xFFF5F5F5)
+    val OnCodeContainer = Color(0xFF1C1B1F)
+    
+    val CodeContainerDark = Color(0xFF2B2B2B)
+    val OnCodeContainerDark = Color(0xFFA9B7C6)
 }

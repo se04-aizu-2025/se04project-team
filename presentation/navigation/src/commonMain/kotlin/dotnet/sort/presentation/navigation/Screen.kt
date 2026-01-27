@@ -26,5 +26,9 @@ sealed interface Screen {
     data object Compare : Screen
 
     @Serializable
+    @Serializable
     data object Quiz : Screen
+
+    @Serializable
+    data class AlgorithmDetail(val sortTypeString: String) : Screen
 }

@@ -115,3 +115,29 @@ private fun SortHeadlinePreview() {
     }
 }
 
+/**
+ * SortText for AnnotatedString.
+ */
+@Composable
+fun SortText(
+    text: androidx.compose.ui.text.AnnotatedString,
+    modifier: Modifier = Modifier,
+    style: TextStyle = SortTheme.typography.bodyMedium,
+    color: Color = SortTheme.colorScheme.onSurface,
+    fontWeight: FontWeight? = null,
+    textAlign: TextAlign? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = style,
+        color = color,
+        fontWeight = fontWeight,
+        textAlign = textAlign,
+        maxLines = maxLines,
+        overflow = overflow
+    )
+}
+
