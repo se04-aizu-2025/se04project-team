@@ -49,8 +49,8 @@ actual class SoundEffectPlayer actual constructor() {
             val now = ctx.currentTime
             oscillator.start(now)
             oscillator.stop(now + durationMs / 1000.0)
-        } catch (_: dynamic) {
-            // Ignore audio failures on unsupported environments.
+        } catch (error: dynamic) {
+            println("SoundEffectPlayer: failed to play tone: $error")
         }
     }
 
