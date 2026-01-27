@@ -28,7 +28,7 @@ fun NavGraphBuilder.learnDestination(
     onNavigateToHome: () -> Unit,
     onNavigateToSort: () -> Unit,
     onNavigateToLearn: () -> Unit,
-    onNavigateToLearnDetail: () -> Unit,
+
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToDetail: (SortType) -> Unit,

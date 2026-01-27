@@ -10,9 +10,15 @@ import androidx.navigation.compose.rememberNavController
 /**
  * アプリケーションのメインナビゲーション。
  */
+import androidx.navigation.NavHostController
+
+/**
+ * アプリケーションのメインナビゲーション。
+ */
 @Composable
-fun AppNavigation() {
-    val navController = rememberNavController()
+fun AppNavigation(
+    navController: NavHostController,
+) {
     val backStackEntry = navController.currentBackStackEntryAsState().value
     val routeName = backStackEntry?.destination?.route?.substringAfterLast(".")
     val currentScreen =
@@ -20,7 +26,7 @@ fun AppNavigation() {
             "Home" -> Screen.Home
             "Sort" -> Screen.Sort
             "Learn" -> Screen.Learn
-            "LearnDetail" -> Screen.Learn
+
             "Compare" -> Screen.Compare
             "Settings" -> Screen.Settings
             "Quiz" -> Screen.Home
@@ -95,29 +101,6 @@ fun AppNavigation() {
         )
 
         learnDestination(
-            currentScreen = currentScreen,
-            onNavigateToHome = {
-                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
-            },
-            onNavigateToSort = {
-                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
-            },
-            onNavigateToLearn = {
-                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
-            },
-            onNavigateToLearnDetail = {
-                navController.navigate(Screen.LearnDetail)
-            },
-            onNavigateToCompare = {
-                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
-            },
-            onNavigateToSettings = {
-                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
-            },
-            onBackClick = { navController.popBackStack() },
-        )
-
-        learnDetailDestination(
             currentScreen = currentScreen,
             onNavigateToHome = {
                 if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)

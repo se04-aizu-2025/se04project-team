@@ -19,13 +19,11 @@ sealed interface Screen {
     @Serializable
     data object Learn : Screen
 
-    @Serializable
-    data object LearnDetail : Screen
+
 
     @Serializable
     data object Compare : Screen
 
-    @Serializable
     @Serializable
     data object Quiz : Screen
 
