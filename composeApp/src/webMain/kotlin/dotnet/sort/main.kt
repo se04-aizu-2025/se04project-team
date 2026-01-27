@@ -24,7 +24,7 @@ fun main() {
         modules(
             DataModule().module,
             DomainModule().module,
-            CommonModule,
+            CommonModule().module,
             SettingsFeatureModule().module,
             SortFeatureModule().module,
             HomeFeatureModule().module,

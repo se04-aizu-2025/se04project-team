@@ -1,8 +1,8 @@
 package dotnet.sort.presentation.common.di
 
-import dotnet.sort.presentation.common.viewmodel.ThemeViewModel
-import org.koin.dsl.module
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
 
-val CommonModule = module {
-    factory { ThemeViewModel(get()) }
-}
+@Module
+@ComponentScan("dotnet.sort.presentation.common")
+class CommonModule

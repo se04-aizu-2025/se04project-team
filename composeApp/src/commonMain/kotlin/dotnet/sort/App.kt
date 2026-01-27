@@ -4,9 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.domain.model.Language
+import dotnet.sort.presentation.common.i18n.ProvideAppLanguage
 import dotnet.sort.presentation.common.viewmodel.ThemeViewModel
 import dotnet.sort.presentation.navigation.AppNavigation
 import org.koin.compose.KoinContext
+import org.koin.compose.koinInject
+import dotnet.sort.repository.SettingsRepository
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -24,9 +28,13 @@ fun App() {
     KoinContext {
         val themeViewModel = koinViewModel<ThemeViewModel>()
         val state by themeViewModel.state.collectAsState()
+        val settingsRepository = koinInject<SettingsRepository>()
+        val language by settingsRepository.language.collectAsState(initial = Language.ENGLISH)
 
-        SortTheme(darkTheme = state.isDarkTheme) {
-            AppNavigation()
+        ProvideAppLanguage(language = language) {
+            SortTheme(darkTheme = state.isDarkTheme) {
+                AppNavigation()
+            }
         }
     }
 }
