@@ -155,6 +155,12 @@ class GuessViewModel(
             SortType.RADIX -> GuessHint("O(nk)", "O(n + k)", "桁ごとに安定ソートを行う非比較ソート")
             SortType.BUCKET -> GuessHint("O(n + k)", "O(n + k)", "値の分布に応じてバケットに分けて整列するソート")
             SortType.TIM -> GuessHint("O(n log n)", "O(n)", "ランを検出して挿入ソートとマージを組み合わせるソート")
+            SortType.COMB -> GuessHint("O(n²/2^p)", "O(1)", "ギャップを縮めながら比較するバブルソートの改良版")
+            SortType.COCKTAIL -> GuessHint("O(n²)", "O(1)", "左右に往復して隣接要素を交換するソート")
+            SortType.GNOME -> GuessHint("O(n²)", "O(1)", "小人が前後に移動しながら整列するシンプルなソート")
+            SortType.ODD_EVEN -> GuessHint("O(n²)", "O(1)", "奇数・偶数インデックスを交互に比較するソート")
+            SortType.BOGO -> GuessHint("O((n+1)!)", "O(1)", "ランダムシャッフルを繰り返す教育向けソート")
+            SortType.BITONIC -> GuessHint("O(n log² n)", "O(n)", "ビトニック列を作ってマージする並列向けソート")
             null -> null
         }
 

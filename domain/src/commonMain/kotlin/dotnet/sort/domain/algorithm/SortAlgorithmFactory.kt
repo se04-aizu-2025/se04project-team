@@ -28,6 +28,12 @@ object SortAlgorithmFactory {
             SortType.RADIX -> RadixSortAlgorithm()
             SortType.BUCKET -> BucketSortAlgorithm()
             SortType.TIM -> TimSortAlgorithm()
+            SortType.COMB -> CombSortAlgorithm()
+            SortType.COCKTAIL -> CocktailSortAlgorithm()
+            SortType.GNOME -> GnomeSortAlgorithm()
+            SortType.ODD_EVEN -> OddEvenSortAlgorithm()
+            SortType.BOGO -> BogoSortAlgorithm()
+            SortType.BITONIC -> BitonicSortAlgorithm()
         }
     }
 }

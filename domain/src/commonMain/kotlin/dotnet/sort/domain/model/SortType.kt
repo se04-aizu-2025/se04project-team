@@ -23,4 +23,10 @@ enum class SortType(val displayName: String) {
     RADIX("Radix Sort"),
     BUCKET("Bucket Sort"),
     TIM("Tim Sort"),
+    COMB("Comb Sort"),
+    COCKTAIL("Cocktail Sort"),
+    GNOME("Gnome Sort"),
+    ODD_EVEN("Odd-Even Sort"),
+    BOGO("Bogo Sort"),
+    BITONIC("Bitonic Sort"),
 }

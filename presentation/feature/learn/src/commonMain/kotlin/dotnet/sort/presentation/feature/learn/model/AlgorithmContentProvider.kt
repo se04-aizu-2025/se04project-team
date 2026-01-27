@@ -71,6 +71,42 @@ object AlgorithmContentProvider {
                 inventor = "Tim Peters",
                 description = "Tim Sort is a hybrid stable sorting algorithm designed by Tim Peters for Python. It combines run detection, insertion sort, and merge operations."
             )
+            SortType.COMB -> AlgorithmHistory(
+                sortType = SortType.COMB,
+                originYear = "1980",
+                inventor = "Włodzimierz Dobosiewicz",
+                description = "Comb Sort improves Bubble Sort by comparing elements farther apart and shrinking the gap over time."
+            )
+            SortType.COCKTAIL -> AlgorithmHistory(
+                sortType = SortType.COCKTAIL,
+                originYear = "1950s",
+                inventor = "Unknown",
+                description = "Cocktail Sort is a bidirectional Bubble Sort variant that moves large elements to the end and small elements to the start in each pass."
+            )
+            SortType.GNOME -> AlgorithmHistory(
+                sortType = SortType.GNOME,
+                originYear = "2000",
+                inventor = "Hamid Sarbazi-Azad",
+                description = "Gnome Sort is a simple comparison sort that moves backward to fix local inversions, similar to insertion sort with swaps."
+            )
+            SortType.ODD_EVEN -> AlgorithmHistory(
+                sortType = SortType.ODD_EVEN,
+                originYear = "1962",
+                inventor = "Kenneth E. Batcher",
+                description = "Odd-Even (Brick) Sort compares odd-even indexed pairs alternately and is suitable for parallel execution."
+            )
+            SortType.BOGO -> AlgorithmHistory(
+                sortType = SortType.BOGO,
+                originYear = "1960s",
+                inventor = "Unknown",
+                description = "Bogo Sort is a humorous algorithm that repeatedly shuffles until the array becomes sorted."
+            )
+            SortType.BITONIC -> AlgorithmHistory(
+                sortType = SortType.BITONIC,
+                originYear = "1968",
+                inventor = "Kenneth E. Batcher",
+                description = "Bitonic Sort builds bitonic sequences and merges them, making it practical for parallel sorting networks."
+            )
         }
     }
 
@@ -212,6 +248,71 @@ object AlgorithmContentProvider {
                     "Repeat merges until one run remains"
                 )
             )
+            SortType.COMB -> AlgorithmConcept(
+                sortType = SortType.COMB,
+                howItWorks = "Comb Sort compares elements with a shrinking gap, reducing turtles (small elements near the end).",
+                keyIdea = "Start with a large gap and shrink it until it becomes 1.",
+                steps = listOf(
+                    "Set initial gap to array size",
+                    "Compare elements gap apart",
+                    "Swap out-of-order pairs",
+                    "Shrink the gap by a factor",
+                    "Continue until gap is 1 and no swaps occur"
+                )
+            )
+            SortType.COCKTAIL -> AlgorithmConcept(
+                sortType = SortType.COCKTAIL,
+                howItWorks = "Cocktail Sort sweeps left-to-right and right-to-left in alternating passes.",
+                keyIdea = "Move large values to the end and small values to the start each cycle.",
+                steps = listOf(
+                    "Forward pass: swap adjacent out-of-order pairs",
+                    "Backward pass: swap adjacent out-of-order pairs",
+                    "Shrink the unsorted range",
+                    "Repeat until no swaps occur"
+                )
+            )
+            SortType.GNOME -> AlgorithmConcept(
+                sortType = SortType.GNOME,
+                howItWorks = "Gnome Sort moves forward when in order and steps back when it finds an inversion.",
+                keyIdea = "Fix local inversions by swapping and stepping back.",
+                steps = listOf(
+                    "Start at index 0",
+                    "If elements are in order, move forward",
+                    "If out of order, swap and step back",
+                    "Continue until reaching the end"
+                )
+            )
+            SortType.ODD_EVEN -> AlgorithmConcept(
+                sortType = SortType.ODD_EVEN,
+                howItWorks = "Odd-Even Sort alternates between comparing odd/even indexed pairs.",
+                keyIdea = "Two-phase passes mimic parallel bubble sort.",
+                steps = listOf(
+                    "Odd phase: compare (1,2), (3,4), ...",
+                    "Even phase: compare (0,1), (2,3), ...",
+                    "Repeat until no swaps occur"
+                )
+            )
+            SortType.BOGO -> AlgorithmConcept(
+                sortType = SortType.BOGO,
+                howItWorks = "Bogo Sort keeps shuffling the array until it becomes sorted.",
+                keyIdea = "Randomness eventually yields a sorted order.",
+                steps = listOf(
+                    "Check if the array is sorted",
+                    "If not sorted, shuffle randomly",
+                    "Repeat until sorted"
+                )
+            )
+            SortType.BITONIC -> AlgorithmConcept(
+                sortType = SortType.BITONIC,
+                howItWorks = "Bitonic Sort builds bitonic sequences and merges them into sorted order.",
+                keyIdea = "Recursive compare-and-swap operations create sorted sequences.",
+                steps = listOf(
+                    "Split into two halves",
+                    "Sort one half ascending and the other descending",
+                    "Merge the bitonic sequence",
+                    "Repeat recursively"
+                )
+            )
         }
     }
 
@@ -326,6 +427,66 @@ object AlgorithmContentProvider {
                 timeComplexityExplanation = "Runs reduce work for nearly sorted data. Merging runs dominates to O(n log n) for random data.",
                 spaceComplexityExplanation = "Requires auxiliary storage for merging runs.",
                 intuition = "Tim Sort is fast because it takes advantage of already ordered segments and merges them efficiently."
+            )
+            SortType.COMB -> AlgorithmComplexity(
+                sortType = SortType.COMB,
+                timeComplexityBest = "O(n log n)",
+                timeComplexityAverage = "O(n²/2^p)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Large gaps reduce inversions quickly; worst case still quadratic when gap becomes 1.",
+                spaceComplexityExplanation = "In-place with constant extra memory.",
+                intuition = "Shrinking the gap helps move small values forward faster than bubble sort."
+            )
+            SortType.COCKTAIL -> AlgorithmComplexity(
+                sortType = SortType.COCKTAIL,
+                timeComplexityBest = "O(n)",
+                timeComplexityAverage = "O(n²)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Each pass scans the array; reverse pass helps but still quadratic.",
+                spaceComplexityExplanation = "In-place with constant extra memory.",
+                intuition = "Bidirectional passes move both large and small items toward their ends."
+            )
+            SortType.GNOME -> AlgorithmComplexity(
+                sortType = SortType.GNOME,
+                timeComplexityBest = "O(n)",
+                timeComplexityAverage = "O(n²)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Swapping backward for each inversion yields quadratic behavior in worst cases.",
+                spaceComplexityExplanation = "In-place and uses constant extra space.",
+                intuition = "Like insertion sort with swaps instead of shifts."
+            )
+            SortType.ODD_EVEN -> AlgorithmComplexity(
+                sortType = SortType.ODD_EVEN,
+                timeComplexityBest = "O(n)",
+                timeComplexityAverage = "O(n²)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Alternating passes behave like bubble sort; parallelism is the main benefit.",
+                spaceComplexityExplanation = "In-place with constant extra memory.",
+                intuition = "Sorting progresses by alternating odd and even index comparisons."
+            )
+            SortType.BOGO -> AlgorithmComplexity(
+                sortType = SortType.BOGO,
+                timeComplexityBest = "O(n)",
+                timeComplexityAverage = "O((n+1)!)",
+                timeComplexityWorst = "Unbounded",
+                spaceComplexity = "O(1)",
+                timeComplexityExplanation = "Random shuffles may take factorial time on average.",
+                spaceComplexityExplanation = "Uses only constant extra space.",
+                intuition = "Randomness makes it extremely inefficient for real use."
+            )
+            SortType.BITONIC -> AlgorithmComplexity(
+                sortType = SortType.BITONIC,
+                timeComplexityBest = "O(n log² n)",
+                timeComplexityAverage = "O(n log² n)",
+                timeComplexityWorst = "O(n log² n)",
+                spaceComplexity = "O(n)",
+                timeComplexityExplanation = "Bitonic merges require log² n compare-swap layers.",
+                spaceComplexityExplanation = "This implementation pads to power-of-two, using extra space.",
+                intuition = "Well-suited for parallel hardware due to regular compare-swap structure."
             )
         }
     }
@@ -521,6 +682,101 @@ object AlgorithmContentProvider {
                     "Python list sort",
                     "Java's Arrays.sort for objects (TimSort variant)",
                     "Android/Kotlin standard library sorting"
+                )
+            )
+            SortType.COMB -> AlgorithmUseCase(
+                sortType = SortType.COMB,
+                bestUseCases = listOf(
+                    "Medium-sized arrays",
+                    "Educational comparison with Bubble Sort",
+                    "When simple improvements are needed"
+                ),
+                notRecommended = listOf(
+                    "Large datasets",
+                    "Stability requirements"
+                ),
+                realWorldExamples = listOf(
+                    "Teaching gap-based improvements",
+                    "Legacy utility implementations"
+                )
+            )
+            SortType.COCKTAIL -> AlgorithmUseCase(
+                sortType = SortType.COCKTAIL,
+                bestUseCases = listOf(
+                    "Nearly sorted data",
+                    "Small datasets",
+                    "Educational visualizations"
+                ),
+                notRecommended = listOf(
+                    "Large datasets",
+                    "Performance-critical systems"
+                ),
+                realWorldExamples = listOf(
+                    "Teaching bidirectional bubble sort",
+                    "Simple visualization demos"
+                )
+            )
+            SortType.GNOME -> AlgorithmUseCase(
+                sortType = SortType.GNOME,
+                bestUseCases = listOf(
+                    "Small arrays",
+                    "Educational purposes",
+                    "When simplicity matters"
+                ),
+                notRecommended = listOf(
+                    "Large datasets",
+                    "Performance-sensitive workloads"
+                ),
+                realWorldExamples = listOf(
+                    "Introductory algorithm classes",
+                    "Step-by-step visualization"
+                )
+            )
+            SortType.ODD_EVEN -> AlgorithmUseCase(
+                sortType = SortType.ODD_EVEN,
+                bestUseCases = listOf(
+                    "Parallel or GPU-friendly environments",
+                    "Educational demonstrations",
+                    "Small arrays"
+                ),
+                notRecommended = listOf(
+                    "Large sequential workloads",
+                    "When stability is required"
+                ),
+                realWorldExamples = listOf(
+                    "Sorting networks",
+                    "Parallel sorting demos"
+                )
+            )
+            SortType.BOGO -> AlgorithmUseCase(
+                sortType = SortType.BOGO,
+                bestUseCases = listOf(
+                    "Educational humor",
+                    "Very small arrays"
+                ),
+                notRecommended = listOf(
+                    "Any practical sorting task",
+                    "Large datasets"
+                ),
+                realWorldExamples = listOf(
+                    "Algorithm jokes",
+                    "Teaching randomized algorithms"
+                )
+            )
+            SortType.BITONIC -> AlgorithmUseCase(
+                sortType = SortType.BITONIC,
+                bestUseCases = listOf(
+                    "Parallel hardware",
+                    "Sorting networks",
+                    "Fixed-size data batches"
+                ),
+                notRecommended = listOf(
+                    "Memory-constrained environments",
+                    "Small arrays on CPU"
+                ),
+                realWorldExamples = listOf(
+                    "GPU sorting kernels",
+                    "Hardware sorting networks"
                 )
             )
         }
@@ -840,6 +1096,134 @@ fun timSort(arr: IntArray) {
                 """.trimIndent(),
                 description = "Simplified Tim Sort using fixed-size runs and merge passes."
             )
+            SortType.COMB -> AlgorithmImplementation(
+                sortType = SortType.COMB,
+                code = """
+fun combSort(arr: IntArray) {
+    val shrink = 1.3
+    var gap = arr.size
+    var swapped = true
+
+    while (gap > 1 || swapped) {
+        gap = (gap / shrink).toInt().coerceAtLeast(1)
+        swapped = false
+        for (i in 0 until arr.size - gap) {
+            val j = i + gap
+            if (arr[i] > arr[j]) {
+                val tmp = arr[i]
+                arr[i] = arr[j]
+                arr[j] = tmp
+                swapped = true
+            }
+        }
+    }
+}
+                """.trimIndent(),
+                description = "Comb Sort shrinks the gap and swaps out-of-order pairs."
+            )
+            SortType.COCKTAIL -> AlgorithmImplementation(
+                sortType = SortType.COCKTAIL,
+                code = """
+fun cocktailSort(arr: IntArray) {
+    var start = 0
+    var end = arr.size - 1
+    var swapped = true
+
+    while (swapped) {
+        swapped = false
+        for (i in start until end) {
+            if (arr[i] > arr[i + 1]) {
+                val tmp = arr[i]
+                arr[i] = arr[i + 1]
+                arr[i + 1] = tmp
+                swapped = true
+            }
+        }
+        if (!swapped) break
+        swapped = false
+        end--
+        for (i in end downTo start + 1) {
+            if (arr[i - 1] > arr[i]) {
+                val tmp = arr[i - 1]
+                arr[i - 1] = arr[i]
+                arr[i] = tmp
+                swapped = true
+            }
+        }
+        start++
+    }
+}
+                """.trimIndent(),
+                description = "Cocktail Sort performs forward and backward bubble passes."
+            )
+            SortType.GNOME -> AlgorithmImplementation(
+                sortType = SortType.GNOME,
+                code = """
+fun gnomeSort(arr: IntArray) {
+    var index = 0
+    while (index < arr.size) {
+        if (index == 0 || arr[index - 1] <= arr[index]) {
+            index++
+        } else {
+            val tmp = arr[index]
+            arr[index] = arr[index - 1]
+            arr[index - 1] = tmp
+            index--
+        }
+    }
+}
+                """.trimIndent(),
+                description = "Gnome Sort steps backward on inversions and swaps adjacent items."
+            )
+            SortType.ODD_EVEN -> AlgorithmImplementation(
+                sortType = SortType.ODD_EVEN,
+                code = """
+fun oddEvenSort(arr: IntArray) {
+    var sorted = false
+    while (!sorted) {
+        sorted = true
+        for (i in 1 until arr.size - 1 step 2) {
+            if (arr[i] > arr[i + 1]) {
+                val tmp = arr[i]
+                arr[i] = arr[i + 1]
+                arr[i + 1] = tmp
+                sorted = false
+            }
+        }
+        for (i in 0 until arr.size - 1 step 2) {
+            if (arr[i] > arr[i + 1]) {
+                val tmp = arr[i]
+                arr[i] = arr[i + 1]
+                arr[i + 1] = tmp
+                sorted = false
+            }
+        }
+    }
+}
+                """.trimIndent(),
+                description = "Odd-Even Sort alternates odd and even indexed passes."
+            )
+            SortType.BOGO -> AlgorithmImplementation(
+                sortType = SortType.BOGO,
+                code = """
+fun bogoSort(arr: IntArray) {
+    while (!isSorted(arr)) {
+        arr.shuffle()
+    }
+}
+                """.trimIndent(),
+                description = "Bogo Sort shuffles randomly until the array is sorted."
+            )
+            SortType.BITONIC -> AlgorithmImplementation(
+                sortType = SortType.BITONIC,
+                code = """
+fun bitonicSort(arr: IntArray) {
+    // Works best with power-of-two sizes
+    bitonicSortRecursive(arr, 0, arr.size, true)
+}
+                """.trimIndent(),
+                description = "Bitonic Sort builds bitonic sequences and merges them."
+            )
         }
     }
 
@@ -974,6 +1358,60 @@ fun timSort(arr: IntArray) {
                 steps = listOf(
                     AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Detect runs and sort small runs with insertion sort.", emptyList(), StepModificationType.NONE),
                     AlgorithmExampleStep(2, listOf(1, 3, 5, 2, 4), "Merge adjacent runs.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Final merge completes. Sorted.", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.COMB -> AlgorithmExample(
+                sortType = SortType.COMB,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Gap = 3, compare 5 and 4.", listOf(0, 3), StepModificationType.COMPARE),
+                    AlgorithmExampleStep(2, listOf(4, 3, 1, 5, 2), "Swap 5 and 4.", listOf(0, 3), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Gap shrinks to 1. Finish with bubble pass.", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.COCKTAIL -> AlgorithmExample(
+                sortType = SortType.COCKTAIL,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(3, 1, 4, 2, 5), "Forward pass moves 5 to the end.", listOf(3, 4), StepModificationType.SWAP),
+                    AlgorithmExampleStep(2, listOf(1, 3, 2, 4, 5), "Backward pass moves 1 to the start.", listOf(0, 1), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Continue until sorted.", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.GNOME -> AlgorithmExample(
+                sortType = SortType.GNOME,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Swap 5 and 3, step back.", listOf(0, 1), StepModificationType.SWAP),
+                    AlgorithmExampleStep(2, listOf(3, 5, 1, 4, 2), "Swap 5 and 1, step back.", listOf(1, 2), StepModificationType.SWAP),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Repeat until sorted.", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.ODD_EVEN -> AlgorithmExample(
+                sortType = SortType.ODD_EVEN,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Odd phase compares (1,2) and (3,4).", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(3, 5, 1, 2, 4), "Even phase compares (0,1) and (2,3).", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Repeat phases until sorted.", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.BOGO -> AlgorithmExample(
+                sortType = SortType.BOGO,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Shuffle the array randomly.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(3, 2, 5, 1, 4), "Shuffle again...", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Eventually becomes sorted.", emptyList(), StepModificationType.SET)
+                )
+            )
+            SortType.BITONIC -> AlgorithmExample(
+                sortType = SortType.BITONIC,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Form bitonic sequences.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(3, 5, 1, 2, 4), "Bitonic merge with compare-and-swap.", emptyList(), StepModificationType.NONE),
                     AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Final merge completes. Sorted.", emptyList(), StepModificationType.SET)
                 )
             )
