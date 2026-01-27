@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortDropdown
 import dotnet.sort.designsystem.components.atoms.SortIcons
+import dotnet.sort.designsystem.components.atoms.SortSlider
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
@@ -157,6 +158,30 @@ fun SettingsContent(
             items = VisualizationTheme.entries,
             onItemSelected = { onIntent(SettingsIntent.SelectVisualizationTheme(it)) },
             itemLabel = { it.displayName },
+        )
+
+        Spacer(modifier = Modifier.height(SpacingTokens.L))
+
+        SortText(
+            text = "Sound Effects",
+            style = SortTheme.typography.titleSmall,
+            color = SortTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.height(SpacingTokens.S))
+        SortSettingsRow(
+            title = "Sound",
+            description = "Play sounds on compare and swap",
+            checked = state.isSoundEnabled,
+            onCheckedChange = { onIntent(SettingsIntent.ToggleSound(it)) },
+        )
+        SortSlider(
+            label = "Volume",
+            valueLabel = "${(state.soundVolume * 100).toInt()}%",
+            value = state.soundVolume,
+            onValueChange = { onIntent(SettingsIntent.SetSoundVolume(it)) },
+            valueRange = 0f..1f,
+            steps = 9,
+            enabled = state.isSoundEnabled,
         )
 
         Spacer(modifier = Modifier.height(SpacingTokens.L))

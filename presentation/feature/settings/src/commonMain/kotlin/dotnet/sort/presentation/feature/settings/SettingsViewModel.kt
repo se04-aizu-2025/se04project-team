@@ -12,12 +12,16 @@ import org.koin.core.annotation.Factory
 data class SettingsState(
     val isDarkTheme: Boolean = false,
     val visualizationTheme: VisualizationTheme = VisualizationTheme.KOTLIN,
+    val isSoundEnabled: Boolean = true,
+    val soundVolume: Float = 0.5f,
     val appVersion: String = "1.0.0"
 ) : UiState
 
 sealed class SettingsIntent : Intent {
     data class ToggleTheme(val isDark: Boolean) : SettingsIntent()
     data class SelectVisualizationTheme(val theme: VisualizationTheme) : SettingsIntent()
+    data class ToggleSound(val isEnabled: Boolean) : SettingsIntent()
+    data class SetSoundVolume(val volume: Float) : SettingsIntent()
 }
 
 @Factory
@@ -36,6 +40,16 @@ class SettingsViewModel(
                 updateState { copy(visualizationTheme = theme) }
             }
         }
+        viewModelScope.launch {
+            repository.isSoundEnabled.collect { isEnabled ->
+                updateState { copy(isSoundEnabled = isEnabled) }
+            }
+        }
+        viewModelScope.launch {
+            repository.soundVolume.collect { volume ->
+                updateState { copy(soundVolume = volume) }
+            }
+        }
     }
 
     override fun send(intent: SettingsIntent) {
@@ -48,6 +62,16 @@ class SettingsViewModel(
             is SettingsIntent.SelectVisualizationTheme -> {
                 viewModelScope.launch {
                     repository.setVisualizationTheme(intent.theme)
+                }
+            }
+            is SettingsIntent.ToggleSound -> {
+                viewModelScope.launch {
+                    repository.setSoundEnabled(intent.isEnabled)
+                }
+            }
+            is SettingsIntent.SetSoundVolume -> {
+                viewModelScope.launch {
+                    repository.setSoundVolume(intent.volume)
                 }
             }
         }

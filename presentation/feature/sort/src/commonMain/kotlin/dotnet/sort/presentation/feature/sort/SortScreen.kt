@@ -12,7 +12,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.SortIcons
@@ -22,11 +28,14 @@ import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.domain.repository.SettingsRepository
+import dotnet.sort.presentation.common.sound.SoundEffectPlayer
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
 import dotnet.sort.presentation.feature.sort.components.MetricsDisplay
 import dotnet.sort.presentation.feature.sort.components.SortControlPanel
 import dotnet.sort.designsystem.components.organisms.SortVisualizer
+import org.koin.compose.koinInject
 
 /**
  * ソート可視化画面。
@@ -130,6 +139,50 @@ fun SortContent(
     onIntent: (SortIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val settingsRepository: SettingsRepository = koinInject()
+    val isSoundEnabled by settingsRepository.isSoundEnabled.collectAsState(initial = true)
+    val soundVolume by settingsRepository.soundVolume.collectAsState(initial = 0.5f)
+    val soundPlayer = remember { SoundEffectPlayer() }
+    var lastPlayedIndex by remember { mutableStateOf(-1) }
+
+    LaunchedEffect(state.sortResult) {
+        lastPlayedIndex = -1
+    }
+
+    LaunchedEffect(state.currentStepIndex, state.sortResult, isSoundEnabled, soundVolume) {
+        if (!isSoundEnabled || soundVolume <= 0f) return@LaunchedEffect
+        val steps = state.sortResult?.steps ?: return@LaunchedEffect
+        val currentIndex = state.currentStepIndex
+        if (currentIndex !in steps.indices) return@LaunchedEffect
+        if (currentIndex == lastPlayedIndex) return@LaunchedEffect
+
+        lastPlayedIndex = currentIndex
+        val snapshot = steps[currentIndex]
+        val highlightIndices = snapshot.highlightingIndices
+        if (highlightIndices.isEmpty()) return@LaunchedEffect
+
+        val previousSnapshot = steps.getOrNull(currentIndex - 1)
+        val isSwap = previousSnapshot?.let { prev ->
+            highlightIndices.any { idx ->
+                prev.arrayState.getOrNull(idx) != snapshot.arrayState.getOrNull(idx)
+            }
+        } ?: false
+
+        val value = highlightIndices.firstOrNull()?.let { idx ->
+            snapshot.arrayState.getOrNull(idx)
+        } ?: return@LaunchedEffect
+
+        if (isSwap) {
+            soundPlayer.playSwap(value, soundVolume)
+        } else {
+            soundPlayer.playCompare(value, soundVolume)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose { soundPlayer.dispose() }
+    }
+
     BoxWithConstraints(modifier = modifier) {
         val isLandscape = maxWidth > 600.dp
 
