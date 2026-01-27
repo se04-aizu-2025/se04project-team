@@ -25,6 +25,7 @@ object SortAlgorithmFactory {
             SortType.QUICK -> QuickSortAlgorithm()
             SortType.HEAP -> HeapSortAlgorithm()
             SortType.COUNTING -> CountingSortAlgorithm()
+            SortType.RADIX -> RadixSortAlgorithm()
         }
     }
 }

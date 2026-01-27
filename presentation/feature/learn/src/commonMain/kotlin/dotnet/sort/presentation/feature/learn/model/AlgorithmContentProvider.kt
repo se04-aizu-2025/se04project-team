@@ -53,6 +53,12 @@ object AlgorithmContentProvider {
                 inventor = "Harold H. Seward",
                 description = "Introduced by Harold H. Seward in 1954. Counting Sort is a non-comparison sorting algorithm that counts the frequency of each value, then reconstructs the array in order."
             )
+            SortType.RADIX -> AlgorithmHistory(
+                sortType = SortType.RADIX,
+                originYear = "1950s",
+                inventor = "Harold H. Seward",
+                description = "Radix Sort processes numbers digit by digit, typically using a stable counting sort as a subroutine. It is efficient for fixed-length integer keys."
+            )
         }
     }
 
@@ -160,6 +166,17 @@ object AlgorithmContentProvider {
                     "Write each value back to the original array the counted number of times"
                 )
             )
+            SortType.RADIX -> AlgorithmConcept(
+                sortType = SortType.RADIX,
+                howItWorks = "Radix Sort sorts numbers by individual digits, starting from the least significant digit (LSD) and moving to the most significant digit.",
+                keyIdea = "Apply a stable sort to each digit so the ordering of previous digits is preserved.",
+                steps = listOf(
+                    "Find the maximum number to know the number of digits",
+                    "For each digit from LSD to MSD",
+                    "Perform a stable counting sort based on that digit",
+                    "Repeat until all digits are processed"
+                )
+            )
         }
     }
 
@@ -244,6 +261,16 @@ object AlgorithmContentProvider {
                 timeComplexityExplanation = "Counting occurrences is O(n). Rebuilding the array by scanning the counting array is O(k), where k is the value range.",
                 spaceComplexityExplanation = "Requires an auxiliary counting array of size k.",
                 intuition = "Instead of comparing elements, we count how many of each value exists, then output them in order."
+            )
+            SortType.RADIX -> AlgorithmComplexity(
+                sortType = SortType.RADIX,
+                timeComplexityBest = "O(nk)",
+                timeComplexityAverage = "O(nk)",
+                timeComplexityWorst = "O(nk)",
+                spaceComplexity = "O(n + k)",
+                timeComplexityExplanation = "Each digit pass is O(n + k) with counting sort, repeated for k digits.",
+                spaceComplexityExplanation = "Requires output and counting arrays for each digit pass.",
+                intuition = "Sorting digit by digit avoids comparisons while maintaining order through stable passes."
             )
         }
     }
@@ -386,6 +413,24 @@ object AlgorithmContentProvider {
                     "Counting grades or scores",
                     "Bucket-based preprocessing",
                     "Radix Sort implementations"
+                )
+            )
+            SortType.RADIX -> AlgorithmUseCase(
+                sortType = SortType.RADIX,
+                bestUseCases = listOf(
+                    "Fixed-length integers (IDs, timestamps)",
+                    "Large datasets with uniform key length",
+                    "Stable sorting requirements"
+                ),
+                notRecommended = listOf(
+                    "Variable-length or non-integer keys",
+                    "Very small datasets",
+                    "When memory is extremely constrained"
+                ),
+                realWorldExamples = listOf(
+                    "Sorting large numeric IDs",
+                    "Database indexing pipelines",
+                    "String sorting with fixed-length keys"
                 )
             )
         }
@@ -611,6 +656,42 @@ fun countingSort(arr: IntArray) {
                 """.trimIndent(),
                 description = "Counting Sort using a frequency array (handles negative values via offset)."
             )
+            SortType.RADIX -> AlgorithmImplementation(
+                sortType = SortType.RADIX,
+                code = """
+fun radixSort(arr: IntArray) {
+    if (arr.isEmpty()) return
+    val max = arr.maxOrNull() ?: return
+    var exp = 1
+    while (max / exp > 0) {
+        countingSortByDigit(arr, exp)
+        exp *= 10
+    }
+}
+
+fun countingSortByDigit(arr: IntArray, exp: Int) {
+    val output = IntArray(arr.size)
+    val count = IntArray(10)
+
+    for (v in arr) {
+        val digit = (v / exp) % 10
+        count[digit]++
+    }
+
+    for (i in 1 until 10) count[i] += count[i - 1]
+
+    for (i in arr.size - 1 downTo 0) {
+        val v = arr[i]
+        val digit = (v / exp) % 10
+        output[count[digit] - 1] = v
+        count[digit]--
+    }
+
+    for (i in arr.indices) arr[i] = output[i]
+}
+                """.trimIndent(),
+                description = "Radix Sort (LSD) with stable counting sort for each digit."
+            )
         }
     }
 
@@ -719,6 +800,15 @@ fun countingSort(arr: IntArray) {
                     AlgorithmExampleStep(4, listOf(1, 2, 3, 4, 2), "Place 3 at index 2.", listOf(2), StepModificationType.SET),
                     AlgorithmExampleStep(5, listOf(1, 2, 3, 4, 2), "Place 4 at index 3.", listOf(3), StepModificationType.SET),
                     AlgorithmExampleStep(6, listOf(1, 2, 3, 4, 5), "Place 5 at index 4. Sorted.", listOf(4), StepModificationType.SET)
+                )
+            )
+            SortType.RADIX -> AlgorithmExample(
+                sortType = SortType.RADIX,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Sort by ones digit (LSD).", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(1, 2, 3, 4, 5), "Ones digit pass completes.", emptyList(), StepModificationType.SET),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "No more digits. Sorted.", emptyList(), StepModificationType.NONE)
                 )
             )
         }

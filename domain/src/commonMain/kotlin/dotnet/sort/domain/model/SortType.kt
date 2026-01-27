@@ -20,4 +20,5 @@ enum class SortType(val displayName: String) {
     QUICK("Quick Sort"),
     HEAP("Heap Sort"),
     COUNTING("Counting Sort"),
+    RADIX("Radix Sort"),
 }
