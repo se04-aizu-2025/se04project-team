@@ -67,7 +67,7 @@ sealed class SortIntent : Intent {
 
     /**
      * 再生速度を設定する。
-     * @param speedMultiplier 速度倍率（0.25x ~ 4.0x）
+     * @param speedMultiplier 速度倍率（0.1x ~ 10.0x）
      */
     data class SetSpeed(val speedMultiplier: Float) : SortIntent()
 

@@ -72,7 +72,8 @@ class SortViewModel(
             SortIntent.StepForward -> stepForward()
             SortIntent.StepBackward -> stepBackward()
             is SortIntent.SetSpeed -> {
-                updateState { copy(playbackSpeed = intent.speedMultiplier) }
+                val clampedSpeed = intent.speedMultiplier.coerceIn(0.1f, 10.0f)
+                updateState { copy(playbackSpeed = clampedSpeed) }
             }
             is SortIntent.SeekTo -> {
                 updateVisualizerState(intent.stepIndex)
