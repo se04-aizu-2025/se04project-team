@@ -153,6 +153,7 @@ class GuessViewModel(
             SortType.SHELL -> GuessHint("O(n log² n)", "O(1)", "ギャップを使用した改良版挿入ソート")
             SortType.COUNTING -> GuessHint("O(n + k)", "O(k)", "出現回数を数えて配置する非比較ソート")
             SortType.RADIX -> GuessHint("O(nk)", "O(n + k)", "桁ごとに安定ソートを行う非比較ソート")
+            SortType.BUCKET -> GuessHint("O(n + k)", "O(n + k)", "値の分布に応じてバケットに分けて整列するソート")
             null -> null
         }
 

@@ -59,6 +59,12 @@ object AlgorithmContentProvider {
                 inventor = "Harold H. Seward",
                 description = "Radix Sort processes numbers digit by digit, typically using a stable counting sort as a subroutine. It is efficient for fixed-length integer keys."
             )
+            SortType.BUCKET -> AlgorithmHistory(
+                sortType = SortType.BUCKET,
+                originYear = "1950s",
+                inventor = "Various researchers",
+                description = "Bucket Sort is a distribution-based algorithm that groups elements into buckets by range and sorts each bucket before concatenation."
+            )
         }
     }
 
@@ -177,6 +183,18 @@ object AlgorithmContentProvider {
                     "Repeat until all digits are processed"
                 )
             )
+            SortType.BUCKET -> AlgorithmConcept(
+                sortType = SortType.BUCKET,
+                howItWorks = "Bucket Sort distributes elements into buckets based on their value range, sorts each bucket individually, and then concatenates them.",
+                keyIdea = "Uniform distribution keeps buckets small, making local sorts fast.",
+                steps = listOf(
+                    "Find the minimum and maximum values",
+                    "Choose the number of buckets",
+                    "Distribute elements into buckets by range",
+                    "Sort each bucket independently",
+                    "Concatenate buckets in order"
+                )
+            )
         }
     }
 
@@ -271,6 +289,16 @@ object AlgorithmContentProvider {
                 timeComplexityExplanation = "Each digit pass is O(n + k) with counting sort, repeated for k digits.",
                 spaceComplexityExplanation = "Requires output and counting arrays for each digit pass.",
                 intuition = "Sorting digit by digit avoids comparisons while maintaining order through stable passes."
+            )
+            SortType.BUCKET -> AlgorithmComplexity(
+                sortType = SortType.BUCKET,
+                timeComplexityBest = "O(n + k)",
+                timeComplexityAverage = "O(n + k)",
+                timeComplexityWorst = "O(n²)",
+                spaceComplexity = "O(n + k)",
+                timeComplexityExplanation = "Distribution is O(n). If buckets are balanced, sorting each bucket is fast; worst case occurs when all elements fall into one bucket.",
+                spaceComplexityExplanation = "Requires additional buckets to store elements and intermediate results.",
+                intuition = "Grouping values reduces the sorting work per bucket when the distribution is uniform."
             )
         }
     }
@@ -431,6 +459,24 @@ object AlgorithmContentProvider {
                     "Sorting large numeric IDs",
                     "Database indexing pipelines",
                     "String sorting with fixed-length keys"
+                )
+            )
+            SortType.BUCKET -> AlgorithmUseCase(
+                sortType = SortType.BUCKET,
+                bestUseCases = listOf(
+                    "Uniformly distributed values",
+                    "Known numeric ranges",
+                    "Floating point values in a bounded interval"
+                ),
+                notRecommended = listOf(
+                    "Highly skewed distributions",
+                    "Very small datasets",
+                    "Memory-constrained environments"
+                ),
+                realWorldExamples = listOf(
+                    "Histogram bucketing",
+                    "Range-based preprocessing",
+                    "Sorting scores by ranges"
                 )
             )
         }
@@ -692,6 +738,35 @@ fun countingSortByDigit(arr: IntArray, exp: Int) {
                 """.trimIndent(),
                 description = "Radix Sort (LSD) with stable counting sort for each digit."
             )
+            SortType.BUCKET -> AlgorithmImplementation(
+                sortType = SortType.BUCKET,
+                code = """
+fun bucketSort(arr: IntArray) {
+    if (arr.isEmpty()) return
+    val min = arr.minOrNull() ?: return
+    val max = arr.maxOrNull() ?: return
+    if (min == max) return
+
+    val range = max - min + 1
+    val bucketCount = kotlin.math.sqrt(arr.size.toDouble()).toInt().coerceAtLeast(1)
+    val buckets = List(bucketCount) { mutableListOf<Int>() }
+
+    for (v in arr) {
+        val index = ((v - min) * bucketCount) / range
+        buckets[index].add(v)
+    }
+
+    var idx = 0
+    for (bucket in buckets) {
+        bucket.sort()
+        for (v in bucket) {
+            arr[idx++] = v
+        }
+    }
+}
+                """.trimIndent(),
+                description = "Bucket Sort using range-based buckets and per-bucket sort."
+            )
         }
     }
 
@@ -809,6 +884,15 @@ fun countingSortByDigit(arr: IntArray, exp: Int) {
                     AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Sort by ones digit (LSD).", emptyList(), StepModificationType.NONE),
                     AlgorithmExampleStep(2, listOf(1, 2, 3, 4, 5), "Ones digit pass completes.", emptyList(), StepModificationType.SET),
                     AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "No more digits. Sorted.", emptyList(), StepModificationType.NONE)
+                )
+            )
+            SortType.BUCKET -> AlgorithmExample(
+                sortType = SortType.BUCKET,
+                initialArray = initialArray,
+                steps = listOf(
+                    AlgorithmExampleStep(1, listOf(5, 3, 1, 4, 2), "Distribute elements into buckets.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(2, listOf(5, 3, 1, 4, 2), "Sort each bucket individually.", emptyList(), StepModificationType.NONE),
+                    AlgorithmExampleStep(3, listOf(1, 2, 3, 4, 5), "Concatenate buckets. Sorted.", emptyList(), StepModificationType.SET)
                 )
             )
         }
