@@ -37,3 +37,16 @@ kotlin {
         }
     }
 }
+
+dependencies {
+    add("kspCommonMainMetadata", libs.koin.kspCompiler)
+    add("kspJvm", libs.koin.kspCompiler)
+    add("kspJs", libs.koin.kspCompiler)
+    add("kspWasmJs", libs.koin.kspCompiler)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
