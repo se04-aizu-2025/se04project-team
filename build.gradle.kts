@@ -38,7 +38,7 @@ subprojects {
     }
 
     // Kotlinコンパイラオプションを全サブプロジェクトに適用
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
         compilerOptions {
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
