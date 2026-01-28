@@ -3,6 +3,7 @@ package dotnet.sort.storage
 /**
  * Simple key-value storage for user settings.
  */
+@OptIn(ExperimentalMultiplatform::class)
 expect class SettingsStorage() {
     fun getBoolean(key: String, default: Boolean): Boolean
     fun putBoolean(key: String, value: Boolean)

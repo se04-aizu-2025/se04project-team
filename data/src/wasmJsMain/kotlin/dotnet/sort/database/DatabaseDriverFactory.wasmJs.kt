@@ -11,7 +11,9 @@ private fun sqlJsWorkerUrl(): String =
     )
 
 @Single
+@OptIn(ExperimentalMultiplatform::class)
 actual class DatabaseDriverFactory {
+    @OptIn(ExperimentalWasmJsInterop::class)
     actual fun createDriver(): SqlDriver {
         val worker = Worker(sqlJsWorkerUrl())
         return WebWorkerDriver(worker)
