@@ -8,7 +8,7 @@ import dotnet.sort.presentation.feature.quiz.QuizIntent
 import dotnet.sort.presentation.feature.quiz.QuizViewModel
 import dotnet.sort.repository.QuizScoreRepository
 import dotnet.sort.usecase.ObserveQuizScoresByPeriodUseCase
-import dotnet.sort.usecase.ObserveQuizScoresUseCase
+
 import dotnet.sort.usecase.RecordQuizScoreUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,9 +41,8 @@ class QuizFeatureIntegrationTest {
         Dispatchers.setMain(StandardTestDispatcher())
         fakeRepository = FakeQuizScoreRepository()
         val recordUseCase = RecordQuizScoreUseCase(fakeRepository)
-        val observeUseCase = ObserveQuizScoresUseCase(fakeRepository)
         val observeByPeriodUseCase = ObserveQuizScoresByPeriodUseCase(fakeRepository)
-        viewModel = QuizViewModel(recordUseCase, observeUseCase, observeByPeriodUseCase)
+        viewModel = QuizViewModel(recordUseCase, observeByPeriodUseCase)
     }
 
     @After
