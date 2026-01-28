@@ -1,9 +1,7 @@
 package dotnet.sort.presentation.common.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import dotnet.sort.domain.model.BarColorTheme
 import dotnet.sort.repository.SettingsRepository
-import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 
 data class ThemeState(
@@ -21,12 +19,12 @@ class ThemeViewModel(
 ) : BaseViewModel<ThemeState, ThemeIntent>(ThemeState()) {
 
     init {
-        viewModelScope.launch {
+        execute {
             repository.isDarkTheme.collect { isDark ->
                 updateState { copy(isDarkTheme = isDark) }
             }
         }
-        viewModelScope.launch {
+        execute {
             repository.barTheme.collect { theme ->
                 updateState { copy(barTheme = theme) }
             }
@@ -36,7 +34,7 @@ class ThemeViewModel(
     override fun send(intent: ThemeIntent) {
         when (intent) {
             is ThemeIntent.SetDarkTheme -> {
-                viewModelScope.launch {
+                execute {
                     repository.setDarkTheme(intent.isDark)
                 }
             }

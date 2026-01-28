@@ -71,6 +71,9 @@ fun AppNavigation() {
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
+            onNavigateToQuiz = {
+                if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
+            },
             onBackClick = { navController.popBackStack() },
         )
 
@@ -90,6 +93,9 @@ fun AppNavigation() {
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onNavigateToQuiz = {
+                if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
             },
             onBackClick = { navController.popBackStack() },
         )
@@ -113,6 +119,9 @@ fun AppNavigation() {
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onNavigateToQuiz = {
+                if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
             },
             onBackClick = { navController.popBackStack() },
         )
@@ -153,6 +162,9 @@ fun AppNavigation() {
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
+            onNavigateToQuiz = {
+                if (currentScreen !is Screen.Quiz) navController.navigate(Screen.Quiz)
             },
             onBackClick = { navController.popBackStack() },
         )

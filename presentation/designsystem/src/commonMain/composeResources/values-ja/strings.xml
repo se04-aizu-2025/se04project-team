@@ -24,6 +24,24 @@
     <string name="home_card_quiz_desc">アルゴリズムの知識をテストします。</string>
     <string name="home_card_settings_title">設定</string>
     <string name="home_card_settings_desc">アプリの設定やテーマを変更します。</string>
+    <string name="home_subtitle">アルゴリズム可視化ツール</string>
+
+    <!-- Home Dashboard -->
+    <string name="dashboard_title">📊 学習の進捗</string>
+    <string name="dashboard_loading">学習統計を読み込み中...</string>
+    <string name="dashboard_total_time">総学習時間</string>
+    <string name="dashboard_total_sessions">総セッション数</string>
+    <string name="dashboard_algo_proficiency">アルゴリズム習熟度</string>
+    <string name="dashboard_quiz_summary">クイズサマリー</string>
+    <string name="dashboard_attempts">試行回数</string>
+    <string name="dashboard_best_score">最高スコア</string>
+    <string name="dashboard_avg_score">平均スコア</string>
+    <string name="dashboard_latest_score">最新</string>
+    
+    <string name="prof_none">未学習</string>
+    <string name="prof_beginner">初級</string>
+    <string name="prof_intermediate">中級</string>
+    <string name="prof_expert">上級</string>
 
     <!-- Sort Screen -->
     <string name="sort_title">可視化</string>
@@ -34,6 +52,9 @@
     <string name="sort_controls_shuffle">シャッフル</string>
     <string name="sort_label_size">サイズ</string>
     <string name="sort_label_speed">速度</string>
+    <string name="sort_speed_1x">1x</string>
+    <string name="sort_speed_2x">2x</string>
+    <string name="sort_speed_4x">4x</string>
     <string name="sort_metrics_comparisons">比較回数</string>
     <string name="sort_metrics_swaps">交換回数</string>
     <string name="sort_metrics_title">パフォーマンス指標</string>
@@ -147,30 +168,53 @@
     <string name="learn_detail_select_prompt">一覧からアルゴリズムを選択してください。</string>
 
     <!-- Quiz UI -->
+    <string name="quiz_title">クイズ</string>
+    <string name="quiz_settings">クイズ設定</string>
     <string name="quiz_mode_label">モード</string>
     <string name="quiz_difficulty_label">難易度</string>
     <string name="quiz_status_label">ステータス</string>
-    <string name="quiz_time_format">時間: %.1f秒</string>
+    <string name="quiz_time_format">時間: %.1fs</string>
     <string name="quiz_question_progress_format">問題: %d/%d</string>
     <string name="quiz_score_section">スコア</string>
     <string name="quiz_score_format">スコア: %d</string>
+    <string name="quiz_score_trend">スコア推移</string>
     <string name="quiz_streak_format">連続正解: %d</string>
     <string name="quiz_correct_format">正解数: %d/%d</string>
     <string name="quiz_longest_streak_format">最大連続正解: %d</string>
     <string name="quiz_question_section">問題</string>
-    <string name="quiz_hint_show">ヒントを表示</string>
-    <string name="quiz_hint_hide">ヒントを隠す</string>
+    <string name="quiz_hint_show">ヒント表示</string>
+    <string name="quiz_hint_hide">ヒント非表示</string>
     <string name="quiz_hint_prefix">ヒント: </string>
     <string name="quiz_options_section">選択肢</string>
-    <string name="quiz_action_start">スタート</string>
-    <string name="quiz_action_submit">回答する</string>
-    <string name="quiz_action_next">次へ</string>
+    <string name="quiz_start">開始</string>
+    <string name="quiz_submit">回答する</string>
+    <string name="quiz_next_question">次へ</string>
+    <string name="quiz_result">結果</string>
     <string name="quiz_result_label">結果</string>
-    <string name="quiz_result_correct">正解！</string>
-    <string name="quiz_result_incorrect">不正解。</string>
-    <string name="quiz_summary_label">結果サマリー</string>
-    <string name="quiz_action_play_again">もう一度プレイ</string>
+    <string name="quiz_correct">正解!</string>
+    <string name="quiz_incorrect">不正解...</string>
+    <string name="quiz_summary">サマリー</string>
+    <string name="quiz_summary_label">サマリー</string>
+    <string name="quiz_points">ポイント</string>
+    <string name="quiz_play_again">もう一度プレイ</string>
     <string name="quiz_leaderboard_label">ランキング</string>
+    <string name="quiz_correct_label">正解数</string>
+    <string name="quiz_longest_streak_label">最大連続正解</string>
+    <string name="quiz_comparison">比較</string>
+    <string name="quiz_new_best_score">自己ベスト更新!</string>
+    <string name="quiz_best_score">自己ベスト</string>
+    <string name="quiz_average_score">平均スコア</string>
+    <string name="quiz_done">完了</string>
+    <string name="quiz_not_enough_data">データ不足</string>
+    <string name="quiz_no_scores">スコアなし</string>
+
+    <string name="quiz_latest_format">最新: %d</string>
+    <string name="quiz_best_format">ベスト: %d</string>
+    <string name="quiz_average_format">平均: %d</string>
+
+    <string name="quiz_period_daily">今日</string>
+    <string name="quiz_period_weekly">今週</string>
+    <string name="quiz_period_all">全期間</string>
 
     <!-- Quiz Modes/Difficulty -->
     <string name="quiz_mode_speed_swap">スピードスワップ</string>
@@ -180,25 +224,52 @@
     <string name="quiz_diff_hard">上級</string>
 
     <!-- Quiz Questions -->
-    <string name="quiz_q_bubble_next_swap">バブルソートで次に交換されるペアは？</string>
-    <string name="quiz_q_check_pair_0_1">(0,1)</string>
-    <string name="quiz_q_check_pair_1_2">(1,2)</string>
-    <string name="quiz_q_check_pair_2_3">(2,3)</string>
+    <string name="quiz_q_bubble_first_compare">バブルソートで通常最初に比較されるペアは？</string>
+    <string name="quiz_opt_pair_0_1">(0,1)</string>
+    <string name="quiz_opt_pair_1_2">(1,2)</string>
+    <string name="quiz_opt_pair_2_3">(2,3)</string>
     
-    <string name="quiz_q_selection_move_end">選択ソートで最後に移動する要素は？</string>
+    <string name="quiz_q_selection_first_place">選択ソートで最初に見つけて配置される要素は？</string>
     <string name="quiz_opt_min">最小値</string>
     <string name="quiz_opt_max">最大値</string>
     <string name="quiz_opt_middle">中央値</string>
 
-    <string name="quiz_q_pivot_partition">ピボットに基づく分割を使用する。</string>
-    <string name="quiz_hint_n_log_n_avg">平均計算量 $O(n \log n)$</string>
+    <string name="quiz_q_quick_pivot">ピボットベースの分割を使用するアルゴリズムは？</string>
+    <string name="quiz_hint_quick">平均計算量 O(n log n)、ピボットを中心に分割</string>
     
-    <string name="quiz_q_heap_extract">ヒープから最大/最小を繰り返し取り出す。</string>
-    <string name="quiz_hint_binary_heap">バイナリヒープ構造を使用</string>
+    <string name="quiz_q_heap_extract">ヒープから要素を繰り返し抽出するアルゴリズムは？</string>
+    <string name="quiz_hint_heap">バイナリヒープ構造を使用</string>
     
-    <string name="quiz_q_divide_merge">半分に分割してマージする。</string>
-    <string name="quiz_q_gap_insertion">ギャップを用いた挿入パス。</string>
+    <string name="quiz_q_merge_divide">配列を半分に分割してマージするアルゴリズムは？</string>
+    
+    <string name="quiz_q_shell_gap">挿入パスにギャップシーケンスを使用するアルゴリズムは？</string>
+    <string name="quiz_hint_shell">挿入ソートの改良版</string>
 
+    <!-- Common UI strings -->
+    <string name="common_done">完了</string>
+    <string name="common_winner">勝者</string>
+    <string name="common_comparison">比較</string>
+    <string name="common_comparison_controls">比較設定</string>
+    <string name="common_metrics_comparison">メトリクス比較</string>
+    <string name="common_swaps">交換回数</string>
+    <string name="common_tie">引き分け</string>
+    <string name="common_best_score">最高スコア</string>
+    <string name="common_average_score">平均スコア</string>
+    <string name="common_settings">設定</string>
+    <string name="common_controls">コントロール</string>
+    <string name="common_running">実行中</string>
+    <string name="common_start">開始</string>
+    <string name="common_swap">入替</string>
+
+    <string name="compare_algorithms">アルゴリズム</string>
+    <string name="compare_left">左</string>
+    <string name="compare_right">右</string>
+    <string name="compare_input_pattern">入力パターン</string>
+    <string name="compare_pattern">パターン</string>
+    <string name="compare_time_ns">時間 (ns)</string>
+    <string name="compare_winner_format">勝者: %s</string>
+    
+    <string name="sort_controls_settings">操作と設定</string>
     
     <string name="language_english">English</string>
     <string name="language_japanese">日本語</string>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +35,7 @@ abstract class BaseViewModel<S : UiState, I : Intent>(
      *
      * @param block 実行するコルーチンのコードブロック。
      */
-    protected fun execute(block: suspend CoroutineScope.() -> Unit): kotlinx.coroutines.Job {
+    protected fun execute(block: suspend CoroutineScope.() -> Unit): Job {
         return viewModelScope.launch(exceptionHandler) {
             block()
         }

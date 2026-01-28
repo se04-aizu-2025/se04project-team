@@ -11,6 +11,11 @@ import org.koin.core.annotation.Single
 class RecordQuizScoreUseCase(
     private val quizScoreRepository: QuizScoreRepository,
 ) {
+    /**
+     * クイズ成績を保存する。
+     *
+     * @param score 保存するクイズ成績
+     */
     suspend operator fun invoke(score: QuizScore) {
         quizScoreRepository.recordScore(score)
     }

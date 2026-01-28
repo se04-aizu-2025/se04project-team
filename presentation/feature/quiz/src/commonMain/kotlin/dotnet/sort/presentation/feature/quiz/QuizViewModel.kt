@@ -1,84 +1,50 @@
 package dotnet.sort.presentation.feature.quiz
 
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.algo_bubble
+import dotnet.sort.designsystem.generated.resources.algo_heap
+import dotnet.sort.designsystem.generated.resources.algo_insertion
+import dotnet.sort.designsystem.generated.resources.algo_merge
+import dotnet.sort.designsystem.generated.resources.algo_quick
+import dotnet.sort.designsystem.generated.resources.algo_selection
+import dotnet.sort.designsystem.generated.resources.algo_shell
+import dotnet.sort.designsystem.generated.resources.quiz_hint_heap
+import dotnet.sort.designsystem.generated.resources.quiz_hint_quick
+import dotnet.sort.designsystem.generated.resources.quiz_hint_shell
+import dotnet.sort.designsystem.generated.resources.quiz_opt_max
+import dotnet.sort.designsystem.generated.resources.quiz_opt_middle
+import dotnet.sort.designsystem.generated.resources.quiz_opt_min
+import dotnet.sort.designsystem.generated.resources.quiz_opt_pair_0_1
+import dotnet.sort.designsystem.generated.resources.quiz_opt_pair_1_2
+import dotnet.sort.designsystem.generated.resources.quiz_opt_pair_2_3
+import dotnet.sort.designsystem.generated.resources.quiz_q_bubble_first_compare
+import dotnet.sort.designsystem.generated.resources.quiz_q_heap_extract
+import dotnet.sort.designsystem.generated.resources.quiz_q_merge_divide
+import dotnet.sort.designsystem.generated.resources.quiz_q_quick_pivot
+import dotnet.sort.designsystem.generated.resources.quiz_q_selection_first_place
+import dotnet.sort.designsystem.generated.resources.quiz_q_shell_gap
 import dotnet.sort.model.QuizDifficulty
 import dotnet.sort.model.QuizMode
 import dotnet.sort.model.QuizScore
+import dotnet.sort.model.QuizScoreEntry
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
-import dotnet.sort.presentation.common.viewmodel.Intent
-import dotnet.sort.presentation.common.viewmodel.UiState
-import dotnet.sort.usecase.ObserveQuizScoresUseCase
-import dotnet.sort.usecase.RecordQuizScoreUseCase
-import dotnet.sort.model.ScorePeriod
+import dotnet.sort.presentation.feature.quiz.model.QuizUiQuestion
 import dotnet.sort.usecase.ObserveQuizScoresByPeriodUseCase
+import dotnet.sort.usecase.RecordQuizScoreUseCase
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.annotation.Factory
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-data class QuizQuestion(
-    val prompt: String,
-    val options: List<String>,
-    val correctIndex: Int,
-    val algorithmType: SortType? = null,
-    val hint: String? = null,
-)
-
-data class QuizScoreEntry(
-    val difficulty: QuizDifficulty,
-    val mode: QuizMode,
-    val score: Int,
-    val correctCount: Int,
-    val totalQuestions: Int,
-    val createdAtMillis: Long,
-)
-
-private val defaultQuestions = questionsFor(QuizMode.SPEED_SWAP, QuizDifficulty.EASY)
-
-data class QuizState(
-    val difficulty: QuizDifficulty = QuizDifficulty.EASY,
-    val mode: QuizMode = QuizMode.SPEED_SWAP,
-    val questionIndex: Int = 0,
-    val score: Int = 0,
-    val streak: Int = 0,
-    val correctCount: Int = 0,
-    val totalQuestions: Int = defaultQuestions.size,
-    val longestStreak: Int = 0,
-    val isRunning: Boolean = false,
-    val timeLimitMs: Long = 10_000,
-    val timeRemainingMs: Long = 10_000,
-    val questionSet: List<QuizQuestion> = defaultQuestions,
-    val question: QuizQuestion = defaultQuestions.first(),
-    val selectedIndex: Int? = null,
-    val isCorrect: Boolean? = null,
-    val showHint: Boolean = false,
-    val showSummary: Boolean = false,
-    val quizStartMillis: Long? = null,
-    val leaderboard: List<QuizScoreEntry> = emptyList(),
-    val scoreHistory: List<QuizScoreEntry> = emptyList(),
-    val scorePeriod: ScorePeriod = ScorePeriod.ALL,
-) : UiState
-
-sealed class QuizIntent : Intent {
-    data class SelectMode(val mode: QuizMode) : QuizIntent()
-    data class SelectDifficulty(val difficulty: QuizDifficulty) : QuizIntent()
-    data class SelectOption(val index: Int) : QuizIntent()
-    data object StartQuiz : QuizIntent()
-    data object SubmitAnswer : QuizIntent()
-    data object NextQuestion : QuizIntent()
-    data object ToggleHint : QuizIntent()
-    data class SelectScorePeriod(val period: ScorePeriod) : QuizIntent()
-}
-
 @OptIn(ExperimentalTime::class)
 @Factory
 class QuizViewModel(
     private val recordQuizScoreUseCase: RecordQuizScoreUseCase,
     private val observeQuizScoresByPeriodUseCase: ObserveQuizScoresByPeriodUseCase,
-) : BaseViewModel<QuizState, QuizIntent>(QuizState()) {
+) : BaseViewModel<QuizState, QuizIntent>(createInitialState()) {
 
     private var scoreObservationJob: Job? = null
 
@@ -95,7 +61,7 @@ class QuizViewModel(
                         mode = intent.mode,
                         questionIndex = 0,
                         questionSet = questions,
-                        question = questions.first(),
+                        question = questions.firstOrNull(),
                         totalQuestions = questions.size,
                         showSummary = false,
                         showHint = false,
@@ -113,7 +79,7 @@ class QuizViewModel(
                         correctCount = 0,
                         longestStreak = 0,
                         questionSet = questions,
-                        question = questions.first(),
+                        question = questions.firstOrNull(),
                         totalQuestions = questions.size,
                         selectedIndex = null,
                         isCorrect = null,
@@ -124,12 +90,8 @@ class QuizViewModel(
             }
             is QuizIntent.SelectOption -> updateState { copy(selectedIndex = intent.index) }
             QuizIntent.StartQuiz -> startQuiz()
-            QuizIntent.SubmitAnswer -> {
-                submitAnswer()
-            }
-            QuizIntent.NextQuestion -> {
-                moveToNextQuestion()
-            }
+            QuizIntent.SubmitAnswer -> submitAnswer()
+            QuizIntent.NextQuestion -> moveToNextQuestion()
             QuizIntent.ToggleHint -> updateState { copy(showHint = !showHint) }
             is QuizIntent.SelectScorePeriod -> {
                 updateState { copy(scorePeriod = intent.period) }
@@ -147,7 +109,7 @@ class QuizViewModel(
                 showSummary = false,
                 questionIndex = 0,
                 questionSet = questions,
-                question = questions.first(),
+                question = questions.firstOrNull(),
                 timeRemainingMs = timeLimitForDifficulty(state.value.difficulty),
                 timeLimitMs = timeLimitForDifficulty(state.value.difficulty),
                 totalQuestions = questions.size,
@@ -176,11 +138,12 @@ class QuizViewModel(
 
     private fun submitAnswer() {
         val selected = state.value.selectedIndex
-        val isCorrect = selected == state.value.question.correctIndex
+        val currentQuestion = state.value.question ?: return
+        val isCorrect = selected == currentQuestion.correctIndex
         val newStreak = if (isCorrect) state.value.streak + 1 else 0
         val newScore = if (isCorrect) {
-            val timeBonus = (state.value.timeRemainingMs / 200).toInt()
-            state.value.score + 10 + newStreak + timeBonus
+            val timeBonus = (state.value.timeRemainingMs / SCORE_TIME_BONUS_DIVISOR).toInt()
+            state.value.score + SCORE_BASE_POINTS + newStreak + timeBonus
         } else {
             state.value.score
         }
@@ -201,6 +164,8 @@ class QuizViewModel(
 
     private fun moveToNextQuestion() {
         val questions = state.value.questionSet
+        if (questions.isEmpty()) return
+        
         val nextIndex = state.value.questionIndex + 1
         if (nextIndex >= state.value.totalQuestions) {
             recordQuizScore()
@@ -214,15 +179,17 @@ class QuizViewModel(
         }
 
         val question = questions[nextIndex % questions.size]
+        // Set isRunning=true first, then clear isCorrect in same update
+        // This ensures smooth transition from RESULT to PLAYING
         updateState {
             copy(
+                isRunning = true,
+                isCorrect = null,
                 questionIndex = nextIndex,
                 question = question,
                 selectedIndex = null,
-                isCorrect = null,
                 timeRemainingMs = timeLimitForDifficulty(difficulty),
                 timeLimitMs = timeLimitForDifficulty(difficulty),
-                isRunning = true,
                 showHint = false,
             )
         }
@@ -279,65 +246,119 @@ class QuizViewModel(
             recordQuizScoreUseCase(score)
         }
     }
-}
 
-private fun questionsFor(mode: QuizMode, difficulty: QuizDifficulty): List<QuizQuestion> {
-    val base = when (mode) {
-        QuizMode.SPEED_SWAP -> listOf(
-            QuizQuestion(
-                prompt = "Which pair will swap next in Bubble Sort?",
-                options = listOf("(0,1)", "(1,2)", "(2,3)"),
-                correctIndex = 0,
-                algorithmType = SortType.BUBBLE,
-            ),
-            QuizQuestion(
-                prompt = "Which element moves to the end in Selection Sort?",
-                options = listOf("Minimum", "Maximum", "Middle"),
-                correctIndex = 1,
-                algorithmType = SortType.SELECTION,
-            ),
-        )
-        QuizMode.GUESS_ALGORITHM -> listOf(
-            QuizQuestion(
-                prompt = "Uses pivot-based partitioning.",
-                options = listOf("Quick Sort", "Merge Sort", "Heap Sort"),
-                correctIndex = 0,
-                algorithmType = SortType.QUICK,
-                hint = "Average complexity \$O(n \\log n)",
-            ),
-            QuizQuestion(
-                prompt = "Repeatedly extracts max/min from a heap.",
-                options = listOf("Heap Sort", "Shell Sort", "Insertion Sort"),
-                correctIndex = 0,
-                algorithmType = SortType.HEAP,
-                hint = "Uses a binary heap structure",
-            ),
-        )
-    }
+    companion object {
+        private const val QUIZ_VERSION = "v2"
+        private const val SCORE_BASE_POINTS = 10
+        private const val SCORE_TIME_BONUS_DIVISOR = 200
 
-    return when (difficulty) {
-        QuizDifficulty.EASY -> base
-        QuizDifficulty.MEDIUM -> base + QuizQuestion(
-            prompt = "Divide and merge halves.",
-            options = listOf("Merge Sort", "Bubble Sort", "Selection Sort"),
-            correctIndex = 0,
-            algorithmType = SortType.MERGE,
-        )
-        QuizDifficulty.HARD -> base + QuizQuestion(
-            prompt = "Gapped insertion passes.",
-            options = listOf("Shell Sort", "Quick Sort", "Heap Sort"),
-            correctIndex = 0,
-            algorithmType = SortType.SHELL,
-        )
-    }
-}
+        private const val TIME_LIMIT_EASY = 12_000L
+        private const val TIME_LIMIT_MEDIUM = 9_000L
+        private const val TIME_LIMIT_HARD = 6_000L
 
-private const val QUIZ_VERSION = "v2"
+        private fun createInitialState(): QuizState {
+            val defaultQuestions = questionsFor(QuizMode.SPEED_SWAP, QuizDifficulty.EASY)
+            return QuizState(
+                questionSet = defaultQuestions,
+                question = defaultQuestions.firstOrNull(),
+                totalQuestions = defaultQuestions.size
+            )
+        }
 
-private fun timeLimitForDifficulty(difficulty: QuizDifficulty): Long {
-    return when (difficulty) {
-        QuizDifficulty.EASY -> 12_000
-        QuizDifficulty.MEDIUM -> 9_000
-        QuizDifficulty.HARD -> 6_000
+        private fun questionsFor(mode: QuizMode, difficulty: QuizDifficulty): List<QuizUiQuestion> {
+            val base = when (mode) {
+                QuizMode.SPEED_SWAP -> listOf(
+                    QuizUiQuestion(
+                        prompt = Res.string.quiz_q_bubble_first_compare,
+                        options = listOf(
+                            Res.string.quiz_opt_pair_0_1,
+                            Res.string.quiz_opt_pair_1_2,
+                            Res.string.quiz_opt_pair_2_3
+                        ),
+                        correctIndex = 0,
+                        algorithmType = SortType.BUBBLE,
+                    ),
+                    QuizUiQuestion(
+                        prompt = Res.string.quiz_q_selection_first_place,
+                        options = listOf(
+                            Res.string.quiz_opt_min,
+                            Res.string.quiz_opt_max,
+                            Res.string.quiz_opt_middle
+                        ),
+                        correctIndex = 0,
+                        algorithmType = SortType.SELECTION,
+                    ),
+                )
+                QuizMode.GUESS_ALGORITHM -> listOf(
+                    QuizUiQuestion(
+                        prompt = Res.string.quiz_q_quick_pivot,
+                        options = listOf(
+                            Res.string.algo_quick,
+                            Res.string.algo_merge,
+                            Res.string.algo_heap
+                        ),
+                        correctIndex = 0,
+                        algorithmType = SortType.QUICK,
+                        hint = Res.string.quiz_hint_quick,
+                    ),
+                    QuizUiQuestion(
+                        prompt = Res.string.quiz_q_heap_extract,
+                        options = listOf(
+                            Res.string.algo_heap,
+                            Res.string.algo_shell,
+                            Res.string.algo_insertion
+                        ),
+                        correctIndex = 0,
+                        algorithmType = SortType.HEAP,
+                        hint = Res.string.quiz_hint_heap,
+                    ),
+                )
+            }
+
+            return when (difficulty) {
+                QuizDifficulty.EASY -> base
+                QuizDifficulty.MEDIUM -> base + QuizUiQuestion(
+                    prompt = Res.string.quiz_q_merge_divide,
+                    options = listOf(
+                        Res.string.algo_merge,
+                        Res.string.algo_bubble,
+                        Res.string.algo_selection
+                    ),
+                    correctIndex = 0,
+                    algorithmType = SortType.MERGE,
+                )
+                QuizDifficulty.HARD -> base + listOf(
+                    QuizUiQuestion(
+                        prompt = Res.string.quiz_q_merge_divide,
+                        options = listOf(
+                            Res.string.algo_merge,
+                            Res.string.algo_bubble,
+                            Res.string.algo_selection
+                        ),
+                        correctIndex = 0,
+                        algorithmType = SortType.MERGE,
+                    ),
+                    QuizUiQuestion(
+                        prompt = Res.string.quiz_q_shell_gap,
+                        options = listOf(
+                            Res.string.algo_shell,
+                            Res.string.algo_quick,
+                            Res.string.algo_heap
+                        ),
+                        correctIndex = 0,
+                        algorithmType = SortType.SHELL,
+                        hint = Res.string.quiz_hint_shell
+                    ),
+                )
+            }
+        }
+
+        private fun timeLimitForDifficulty(difficulty: QuizDifficulty): Long {
+            return when (difficulty) {
+                QuizDifficulty.EASY -> TIME_LIMIT_EASY
+                QuizDifficulty.MEDIUM -> TIME_LIMIT_MEDIUM
+                QuizDifficulty.HARD -> TIME_LIMIT_HARD
+            }
+        }
     }
 }

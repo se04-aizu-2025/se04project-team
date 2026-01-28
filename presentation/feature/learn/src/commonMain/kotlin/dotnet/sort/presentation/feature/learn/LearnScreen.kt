@@ -16,8 +16,16 @@ import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.nav_compare
+import dotnet.sort.designsystem.generated.resources.nav_home
+import dotnet.sort.designsystem.generated.resources.nav_learn
+import dotnet.sort.designsystem.generated.resources.nav_quiz
+import dotnet.sort.designsystem.generated.resources.nav_settings
+import dotnet.sort.designsystem.generated.resources.nav_sort
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.model.SortType
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Learn 画面。
@@ -48,6 +56,7 @@ fun LearnScreen(
     onNavigateToLearnDetail: (SortType) -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     state: LearnState,
     onIntent: (LearnIntent) -> Unit,
     onBackClick: () -> Unit,
@@ -57,7 +66,7 @@ fun LearnScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = "Learn",
+                title = stringResource(Res.string.nav_learn),
                 onBackClick = onBackClick,
             )
         },
@@ -67,31 +76,37 @@ fun LearnScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = "Home",
+                            contentDescription = stringResource(Res.string.nav_home),
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = "Sort",
+                            contentDescription = stringResource(Res.string.nav_sort),
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = "Learn",
+                            contentDescription = stringResource(Res.string.nav_learn),
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = "Compare",
+                            contentDescription = stringResource(Res.string.nav_compare),
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
+                            icon = SortIcons.Quiz,
+                            contentDescription = stringResource(Res.string.nav_quiz),
+                            selected = false,
+                            onClick = onNavigateToQuiz,
+                        ),
+                        SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(Res.string.nav_settings),
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),
@@ -121,8 +136,8 @@ private fun LearnContent(
     ) {
         items(state.algorithms, key = { it.type.name }) { item ->
             SortCard(
-                title = item.title,
-                description = item.description,
+                title = stringResource(item.title),
+                description = stringResource(item.description),
                 icon = item.icon,
                 onClick = {
                     onIntent(LearnIntent.SelectAlgorithm(item.type))

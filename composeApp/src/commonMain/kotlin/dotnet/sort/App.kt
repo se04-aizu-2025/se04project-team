@@ -29,6 +29,9 @@ fun App(modifier: Modifier = Modifier, viewModel: ThemeViewModel = koinViewModel
     val state by viewModel.state.collectAsStateWithLifecycle()
     val settingsRepository = koinInject<SettingsRepository>()
     val language by settingsRepository.language.collectAsState(initial = Language.ENGLISH)
+    
+    // Apply locale change
+    dotnet.sort.presentation.common.i18n.LocaleManager.setLocale(language)
 
     ProvideAppLanguage(language = language) {
         SortTheme(darkTheme = state.isDarkTheme, barTheme = state.barTheme) {

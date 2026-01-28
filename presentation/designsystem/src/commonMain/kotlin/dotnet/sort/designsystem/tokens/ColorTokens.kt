@@ -31,11 +31,13 @@ object ColorTokens {
     val Secondary = KotlinOrange
     val SecondaryVariant = Color(0xFFE57300)
 
-    val Background = Color(0xFFFAFAFA)
+    val Background = Color(0xFFFDF7FF) // Tinted with Purple (High lightness)
     val Surface = Color(0xFFFFFFFF)
     val SurfaceVariant = Color(0xFFF5F5F5)
 
     val Error = Color(0xFFB00020)
+    val Success = Color(0xFF4CAF50)
+    val Warning = Color(0xFFFF9800)
     val OnPrimary = Color(0xFFFFFFFF)
     val OnSecondary = Color(0xFFFFFFFF)
     val OnBackground = Color(0xFF1C1B1F)
@@ -57,7 +59,7 @@ object ColorTokens {
     val PrimaryVariantDark = Color(0xFF9B7FE6)
     val SecondaryDark = Color(0xFFFFB347)
 
-    val BackgroundDark = Color(0xFF1C1B1F)
+    val BackgroundDark = Color(0xFF141218) // Slightly tinted dark
     val SurfaceDark = Color(0xFF2D2D30)
     val SurfaceVariantDark = Color(0xFF3C3C3F)
 
@@ -102,6 +104,26 @@ object ColorTokens {
     val OceanSorted = Color(0xFF66BB6A)
     val OceanPivot = Color(0xFF3949AB)
     val OceanSelected = Color(0xFFFFF176)
+    
+    // Ocean Theme - Full Color Scheme
+    val OceanPrimary = Color(0xFF0288D1)
+    val OceanPrimaryVariant = Color(0xFF0277BD)
+    val OceanSecondary = Color(0xFF00BCD4)
+    val OceanSecondaryVariant = Color(0xFF0097A7)
+    val OceanBackground = Color(0xFFF5FAFF)
+    val OceanSurface = Color(0xFFFFFFFF)
+    val OceanSurfaceVariant = Color(0xFFE3F2FD)
+    val OceanPrimaryContainer = Color(0xFFB3E5FC)
+    val OceanOnPrimaryContainer = Color(0xFF01579B)
+    // Ocean Dark Theme
+    val OceanPrimaryDark = Color(0xFF4FC3F7)
+    val OceanPrimaryVariantDark = Color(0xFF29B6F6)
+    val OceanSecondaryDark = Color(0xFF4DD0E1)
+    val OceanBackgroundDark = Color(0xFF0D1B2A)
+    val OceanSurfaceDark = Color(0xFF1B3A4B)
+    val OceanSurfaceVariantDark = Color(0xFF274156)
+    val OceanPrimaryContainerDark = Color(0xFF004D73)
+    val OceanOnPrimaryContainerDark = Color(0xFFB3E5FC)
 
     // === Visualization Presets (Forest) ===
     val ForestDefault = Color(0xFF2E7D32)
@@ -110,6 +132,26 @@ object ColorTokens {
     val ForestSorted = Color(0xFF66BB6A)
     val ForestPivot = Color(0xFF6D4C41)
     val ForestSelected = Color(0xFFFFF176)
+    
+    // Forest Theme - Full Color Scheme
+    val ForestPrimary = Color(0xFF388E3C)
+    val ForestPrimaryVariant = Color(0xFF2E7D32)
+    val ForestSecondary = Color(0xFF8BC34A)
+    val ForestSecondaryVariant = Color(0xFF689F38)
+    val ForestBackground = Color(0xFFF5FFF5)
+    val ForestSurface = Color(0xFFFFFFFF)
+    val ForestSurfaceVariant = Color(0xFFE8F5E9)
+    val ForestPrimaryContainer = Color(0xFFC8E6C9)
+    val ForestOnPrimaryContainer = Color(0xFF1B5E20)
+    // Forest Dark Theme
+    val ForestPrimaryDark = Color(0xFF81C784)
+    val ForestPrimaryVariantDark = Color(0xFF66BB6A)
+    val ForestSecondaryDark = Color(0xFFAED581)
+    val ForestBackgroundDark = Color(0xFF0D1A0D)
+    val ForestSurfaceDark = Color(0xFF1B3A1B)
+    val ForestSurfaceVariantDark = Color(0xFF274127)
+    val ForestPrimaryContainerDark = Color(0xFF1B5E20)
+    val ForestOnPrimaryContainerDark = Color(0xFFC8E6C9)
 
     // === Gradient Support ===
     /** Kotlinロゴのグラデーション開始色 */

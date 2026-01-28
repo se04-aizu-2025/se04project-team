@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
@@ -36,7 +37,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
 fun SortCard(
     title: String,
     description: String,
-    icon: String,
+    icon: ImageVector,
     onClick: () -> Unit,
     enabled: Boolean = true,
     modifier: Modifier = Modifier
@@ -64,10 +65,11 @@ fun SortCard(
             Column(
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
-                SortText(
-                    text = icon,
-                    style = SortTheme.typography.displayMedium,
-                    color = if (enabled) colorScheme.primary else colorScheme.onSurface.copy(alpha = 0.3f)
+                dotnet.sort.designsystem.components.atoms.SortIcon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    modifier = Modifier.padding(bottom = SpacingTokens.S),
+                    tint = if (enabled) colorScheme.primary else colorScheme.onSurface.copy(alpha = 0.3f)
                 )
                 Spacer(modifier = Modifier.height(SpacingTokens.S))
                 SortText(
@@ -93,7 +95,7 @@ private fun SortCardPreview() {
         SortCard(
             title = "Bubble Sort",
             description = "Simple but slow",
-            icon = "🫧",
+            icon = dotnet.sort.designsystem.components.atoms.SortIcons.Sort,
             onClick = {}
         )
     }

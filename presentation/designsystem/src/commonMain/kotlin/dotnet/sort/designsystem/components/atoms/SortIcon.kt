@@ -4,8 +4,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.Sort
-
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Settings
 
 import androidx.compose.material.icons.filled.Tune
@@ -68,7 +72,16 @@ private fun SortIconSettingsPreview() {
 object SortIcons {
     val Home: ImageVector = Icons.Default.Home
     val Sort: ImageVector = Icons.AutoMirrored.Filled.Sort
+    val Visualizer: ImageVector = Icons.AutoMirrored.Filled.Sort
     val Learn: ImageVector = Icons.AutoMirrored.Filled.MenuBook
     val Compare: ImageVector = Icons.Default.Tune
+    val Quiz: ImageVector = Icons.Default.Psychology
     val Settings: ImageVector = Icons.Default.Settings
+    val Analysis: ImageVector = Icons.Default.Tune
+    
+    // Result icons
+    val Check: ImageVector = Icons.Default.Check
+    val Close: ImageVector = Icons.Default.Close
+    val Trophy: ImageVector = Icons.Default.EmojiEvents
+    val Fire: ImageVector = Icons.Default.LocalFireDepartment
 }

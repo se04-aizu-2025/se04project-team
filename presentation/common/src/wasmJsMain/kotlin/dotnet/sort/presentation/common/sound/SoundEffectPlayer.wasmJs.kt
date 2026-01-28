@@ -18,9 +18,9 @@ actual class SoundEffectPlayer {
     actual fun playWithValue(value: Int, maxValue: Int, volume: Float, duration: Int) {
         if (volume <= 0f || maxValue <= 0) return
         try {
-            // 値を200Hz〜2000Hzの範囲にマッピング
+            // 値を200Hz〜800Hzの範囲にマッピング (高音が怖くないように調整)
             val minFreq = 200
-            val maxFreq = 2000
+            val maxFreq = 800
             val frequency = minFreq + ((maxFreq - minFreq) * value / maxValue)
             playBeep(frequency.toDouble(), duration.toDouble(), volume.toDouble())
         } catch (_: Throwable) {

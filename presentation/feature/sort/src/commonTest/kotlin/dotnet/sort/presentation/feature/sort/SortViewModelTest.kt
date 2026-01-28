@@ -3,7 +3,10 @@ package dotnet.sort.presentation.feature.sort
 import app.cash.turbine.test
 import dotnet.sort.generator.ArrayGenerator
 import dotnet.sort.generator.ArrayGeneratorType
+import dotnet.sort.model.AlgorithmHistoryEntry
+import dotnet.sort.model.HistoryEventType
 import dotnet.sort.model.SortType
+import dotnet.sort.repository.AlgorithmHistoryRepository
 import dotnet.sort.repository.SettingsRepository
 import dotnet.sort.usecase.ExecuteSortUseCase
 import dotnet.sort.usecase.GenerateArrayUseCase
@@ -13,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -54,16 +58,16 @@ class SortViewModelTest {
         generateArrayUseCase = GenerateArrayUseCase(fakeArrayGenerator)
         recordHistoryEventUseCase =
             RecordHistoryEventUseCase(
-                object : dotnet.sort.repository.AlgorithmHistoryRepository {
+                object : AlgorithmHistoryRepository {
                     override suspend fun recordEvent(
                         algorithmType: SortType?,
-                        eventType: dotnet.sort.model.HistoryEventType,
+                        eventType: HistoryEventType,
                         metadata: String?,
                     ) = Unit
 
                     override fun observeRecentEvents(limit: Int) =
-                        kotlinx.coroutines.flow.flow {
-                            emit(emptyList<dotnet.sort.model.AlgorithmHistoryEntry>())
+                        flow {
+                            emit(emptyList<AlgorithmHistoryEntry>())
                         }
                 },
             )

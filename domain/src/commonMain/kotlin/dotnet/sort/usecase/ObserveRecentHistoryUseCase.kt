@@ -12,5 +12,11 @@ import org.koin.core.annotation.Single
 class ObserveRecentHistoryUseCase(
     private val historyRepository: AlgorithmHistoryRepository,
 ) {
+    /**
+     * 最新の履歴イベントを購読する。
+     *
+     * @param limit 取得する最大件数
+     * @return 履歴イベントのFlow
+     */
     operator fun invoke(limit: Int): Flow<List<AlgorithmHistoryEntry>> = historyRepository.observeRecentEvents(limit)
 }

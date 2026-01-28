@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -24,16 +25,44 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.Arrangement
+import dotnet.sort.designsystem.components.atoms.SortIcon
+import dotnet.sort.designsystem.components.atoms.SortIconButton
 import dotnet.sort.designsystem.components.atoms.SortIcons
+import dotnet.sort.designsystem.components.atoms.SortText
+import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.designsystem.components.molecules.SortSectionCard
+import dotnet.sort.designsystem.components.atoms.SortDropdown
+import dotnet.sort.designsystem.components.atoms.SortButton
+import dotnet.sort.designsystem.components.atoms.SortButtonStyle
+import dotnet.sort.generator.ArrayGeneratorType
+import dotnet.sort.model.SortType
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortTopBar
+import dotnet.sort.designsystem.components.organisms.SortBottomSheet
 import dotnet.sort.designsystem.components.organisms.SortScaffold
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.common_done
+import dotnet.sort.designsystem.generated.resources.common_settings
+import dotnet.sort.designsystem.generated.resources.nav_compare
+import dotnet.sort.designsystem.generated.resources.nav_home
+import dotnet.sort.designsystem.generated.resources.nav_learn
+import dotnet.sort.designsystem.generated.resources.nav_quiz
+import dotnet.sort.designsystem.generated.resources.nav_settings
+import dotnet.sort.designsystem.generated.resources.nav_sort
+import dotnet.sort.designsystem.generated.resources.sort_controls_settings
+import dotnet.sort.designsystem.generated.resources.sort_title
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import org.jetbrains.compose.resources.stringResource
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
 import dotnet.sort.presentation.feature.sort.components.MetricsDisplay
 import dotnet.sort.presentation.feature.sort.components.SortControlPanel
+import dotnet.sort.presentation.feature.sort.components.SortSettingsPanel
 import dotnet.sort.presentation.feature.sort.components.SortVisualizer
 
 /**
@@ -54,6 +83,7 @@ import dotnet.sort.presentation.feature.sort.components.SortVisualizer
  * @param onBackClick 戻るボタン押下時のコールバック
  * @param modifier Modifier
  */
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun SortScreen(
     isHomeSelected: Boolean,
@@ -66,17 +96,64 @@ fun SortScreen(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     state: SortState,
     onIntent: (SortIntent) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // Keyboard Focus Requester
     val focusRequester = remember { FocusRequester() }
-
-    // Launch effect to request focus when screen is shown
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+    }
+
+    var showSettingsSheet by remember { mutableStateOf(false) }
+
+    if (showSettingsSheet) {
+        SortBottomSheet(
+            onDismissRequest = { showSettingsSheet = false },
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = SpacingTokens.M)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(SpacingTokens.M),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SortText(
+                        text = stringResource(Res.string.sort_controls_settings),
+                        style = SortTheme.typography.titleLarge,
+                        color = SortTheme.colorScheme.onSurface,
+                    )
+                    SortButton(
+                        text = stringResource(Res.string.common_done),
+                        onClick = { showSettingsSheet = false },
+                        style = SortButtonStyle.Text,
+                    )
+                }
+
+                AlgorithmSelector(
+                    selectedAlgorithm = state.algorithm,
+                    onAlgorithmSelected = { onIntent(SortIntent.SelectAlgorithm(it)) },
+                    enabled = !state.isLoading && !state.isPlaying,
+                )
+
+                SortSettingsPanel(
+                    arraySize = state.arraySize,
+                    onArraySizeChange = { onIntent(SortIntent.SetArraySize(it)) },
+                    playbackSpeed = state.playbackSpeed,
+                    onSpeedChange = { onIntent(SortIntent.SetSpeed(it)) },
+                    enabled = !state.isLoading,
+                )
+                
+                Spacer(modifier = Modifier.height(SpacingTokens.FloatingBottomBarInset))
+            }
+        }
     }
 
     SortScaffold(
@@ -120,8 +197,16 @@ fun SortScreen(
                 .focusable(),
         topBar = {
             SortTopBar(
-                title = "Visualizer",
+                title = stringResource(Res.string.sort_title),
                 onBackClick = onBackClick,
+                endAction = {
+                    SortIconButton(
+                        onClick = { showSettingsSheet = true },
+                        icon = SortIcons.Compare,
+                        contentDescription = stringResource(Res.string.common_settings),
+                        tint = SortTheme.colorScheme.onPrimary,
+                    )
+                }
             )
         },
         bottomBar = {
@@ -130,31 +215,37 @@ fun SortScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = "Home",
+                            contentDescription = stringResource(Res.string.nav_home),
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = "Sort",
+                            contentDescription = stringResource(Res.string.nav_sort),
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = "Learn",
+                            contentDescription = stringResource(Res.string.nav_learn),
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = "Compare",
+                            contentDescription = stringResource(Res.string.nav_compare),
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
+                            icon = SortIcons.Quiz,
+                            contentDescription = stringResource(Res.string.nav_quiz),
+                            selected = false,
+                            onClick = onNavigateToQuiz,
+                        ),
+                        SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(Res.string.nav_settings),
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),
@@ -170,13 +261,8 @@ fun SortScreen(
     }
 }
 
-/**
- * ソート画面のコンテンツ。ステートレスでPreview可能。
- *
- * @param state 画面の状態
- * @param onIntent ユーザーアクションのコールバック
- * @param modifier Modifier
- */
+// ... SortContent updates below ...
+
 @Composable
 fun SortContent(
     state: SortState,
@@ -185,158 +271,63 @@ fun SortContent(
 ) {
     BoxWithConstraints(modifier = modifier) {
         val isLandscape = maxWidth > SpacingTokens.LandscapeBreakpoint
-
-        if (isLandscape) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(
-                            start = SpacingTokens.M,
-                            end = SpacingTokens.M,
-                            top = SpacingTokens.FloatingTopBarInset,
-                            bottom = SpacingTokens.FloatingBottomBarInset,
-                        ),
-            ) {
-                // Left: Visualizer (Main Content)
-                Column(
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .padding(end = SpacingTokens.M),
-                ) {
-                    DescriptionDisplay(
-                        description = state.stepDescription,
-                        modifier = Modifier.fillMaxWidth().padding(bottom = SpacingTokens.M),
-                    )
-
-                    SortVisualizer(
-                        array = state.currentNumbers,
-                        highlightIndices = state.highlightingIndices,
-                        sortedIndices = state.sortedIndices,
-                        description = state.stepDescription,
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-
-                // Right: Controls (scrollable)
-                Column(
-                    modifier =
-                        Modifier
-                            .width(SpacingTokens.SidePanelWidth)
-                            .verticalScroll(rememberScrollState())
-                            .padding(start = SpacingTokens.M),
-                ) {
-                    AlgorithmSelector(
-                        selectedAlgorithm = state.algorithm,
-                        onAlgorithmSelected = { onIntent(SortIntent.SelectAlgorithm(it)) },
-                        enabled = !state.isLoading && !state.isPlaying,
-                    )
-
-                    Spacer(modifier = Modifier.height(SpacingTokens.M))
-
-                    MetricsDisplay(
-                        metrics = state.sortResult?.complexityMetrics,
-                    )
-
-                    Spacer(modifier = Modifier.height(SpacingTokens.M))
-
-                    SortControlPanel(
-                        isPlaying = state.isPlaying,
-                        onPlayPauseClick = {
-                            if (state.isPlaying) {
-                                onIntent(SortIntent.PauseSort)
-                            } else {
-                                if (state.sortResult == null) {
-                                    onIntent(SortIntent.StartSort)
-                                } else {
-                                    onIntent(SortIntent.ResumeSort)
-                                }
-                            }
-                        },
-                        onResetClick = { onIntent(SortIntent.ResetSort) },
-                        onShuffleClick = { onIntent(SortIntent.ShuffleArray) },
-                        onStepForwardClick = { onIntent(SortIntent.StepForward) },
-                        onStepBackwardClick = { onIntent(SortIntent.StepBackward) },
-                        arraySize = state.arraySize,
-                        onArraySizeChange = { onIntent(SortIntent.SetArraySize(it)) },
-                        playbackSpeed = state.playbackSpeed,
-                        onSpeedChange = { onIntent(SortIntent.SetSpeed(it)) },
-                        currentStep = state.currentStepIndex,
-                        totalSteps = state.sortResult?.steps?.size ?: 0,
-                        onSeek = { onIntent(SortIntent.SeekTo(it)) },
-                        enabled = !state.isLoading,
-                    )
-                }
-            }
-        } else {
-            // Portrait Layout (scrollable)
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(
-                            start = SpacingTokens.M,
-                            end = SpacingTokens.M,
-                            top = SpacingTokens.FloatingTopBarInset,
-                            bottom = SpacingTokens.FloatingBottomBarInset,
-                        ),
-            ) {
-                AlgorithmSelector(
-                    selectedAlgorithm = state.algorithm,
-                    onAlgorithmSelected = { onIntent(SortIntent.SelectAlgorithm(it)) },
-                    enabled = !state.isLoading && !state.isPlaying,
+        
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = SpacingTokens.M)
+                .padding(
+                     top = SpacingTokens.FloatingTopBarInset,
+                     bottom = SpacingTokens.FloatingBottomBarInset,
                 )
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(SpacingTokens.M),
+        ) {
+            // Visualizer with fixed height (main feature)
+            SortVisualizer(
+                array = state.currentNumbers,
+                highlightIndices = state.highlightingIndices,
+                sortedIndices = state.sortedIndices,
+                description = state.stepDescription,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(SpacingTokens.VisualizerHeight),
+            )
 
-                Spacer(modifier = Modifier.height(SpacingTokens.L))
-
-                SortVisualizer(
-                    array = state.currentNumbers,
-                    highlightIndices = state.highlightingIndices,
-                    sortedIndices = state.sortedIndices,
-                    description = state.stepDescription,
-                    modifier = Modifier.heightIn(
-                        min = SpacingTokens.VisualizerMinHeight,
-                        max = SpacingTokens.VisualizerMaxHeight,
-                    ),
-                )
-
-                Spacer(modifier = Modifier.height(SpacingTokens.L))
-
-                MetricsDisplay(
-                    metrics = state.sortResult?.complexityMetrics,
-                )
-
-                Spacer(modifier = Modifier.height(SpacingTokens.L))
-
-                SortControlPanel(
-                    isPlaying = state.isPlaying,
-                    onPlayPauseClick = {
-                        if (state.isPlaying) {
-                            onIntent(SortIntent.PauseSort)
+            // Control Panel
+            SortControlPanel(
+                isPlaying = state.isPlaying,
+                onPlayPauseClick = {
+                    if (state.isPlaying) {
+                        onIntent(SortIntent.PauseSort)
+                    } else {
+                        if (state.sortResult == null) {
+                            onIntent(SortIntent.StartSort)
                         } else {
-                            if (state.sortResult == null) {
-                                onIntent(SortIntent.StartSort)
-                            } else {
-                                onIntent(SortIntent.ResumeSort)
-                            }
+                            onIntent(SortIntent.ResumeSort)
                         }
-                    },
-                    onResetClick = { onIntent(SortIntent.ResetSort) },
-                    onShuffleClick = { onIntent(SortIntent.ShuffleArray) },
-                    onStepForwardClick = { onIntent(SortIntent.StepForward) },
-                    onStepBackwardClick = { onIntent(SortIntent.StepBackward) },
-                    arraySize = state.arraySize,
-                    onArraySizeChange = { onIntent(SortIntent.SetArraySize(it)) },
-                    playbackSpeed = state.playbackSpeed,
-                    onSpeedChange = { onIntent(SortIntent.SetSpeed(it)) },
-                    currentStep = state.currentStepIndex,
-                    totalSteps = state.sortResult?.steps?.size ?: 0,
-                    onSeek = { onIntent(SortIntent.SeekTo(it)) },
-                    enabled = !state.isLoading,
-                )
-            }
+                    }
+                },
+                onResetClick = { onIntent(SortIntent.ResetSort) },
+                onShuffleClick = { onIntent(SortIntent.ShuffleArray) },
+                onStepForwardClick = { onIntent(SortIntent.StepForward) },
+                onStepBackwardClick = { onIntent(SortIntent.StepBackward) },
+                currentStep = state.currentStepIndex,
+                totalSteps = state.sortResult?.steps?.size ?: 0,
+                onSeek = { onIntent(SortIntent.SeekTo(it)) },
+                enabled = !state.isLoading,
+            )
+
+            // Step Description
+            DescriptionDisplay(
+                description = state.stepDescription,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            // Metrics Display
+            MetricsDisplay(
+                 metrics = state.sortResult?.complexityMetrics,
+            )
         }
     }
 }

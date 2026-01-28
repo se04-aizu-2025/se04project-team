@@ -24,6 +24,7 @@ fun NavGraphBuilder.settingsDestination(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     composable<Screen.Settings> {
@@ -41,6 +42,7 @@ fun NavGraphBuilder.settingsDestination(
             onNavigateToLearn = onNavigateToLearn,
             onNavigateToCompare = onNavigateToCompare,
             onNavigateToSettings = onNavigateToSettings,
+            onNavigateToQuiz = onNavigateToQuiz,
             state = state,
             onIntent = viewModel::send,
             onBackClick = onBackClick,

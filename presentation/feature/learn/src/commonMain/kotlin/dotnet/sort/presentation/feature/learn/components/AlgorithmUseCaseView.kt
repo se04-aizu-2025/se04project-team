@@ -2,6 +2,7 @@ package dotnet.sort.presentation.feature.learn.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -85,7 +86,7 @@ private fun UseCaseItem(
     isPositive: Boolean = true,
     isExample: Boolean = false
 ) {
-    androidx.compose.foundation.layout.Row(
+    Row(
         horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S)
     ) {
         SortIcon(

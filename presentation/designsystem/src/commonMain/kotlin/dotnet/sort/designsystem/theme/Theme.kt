@@ -25,6 +25,7 @@ val LocalSortTypography = staticCompositionLocalOf { DefaultTypography }
  * Material Theme 3をベースに、Kotlinブランドカラーを適用したカスタムテーマを提供します。
  *
  * @param darkTheme ダークテーマを使用するかどうか
+ * @param barTheme 使用するカラーテーマプリセット (Kotlin/Ocean/Forest)
  * @param content テーマを適用するコンテンツ
  */
 @Composable
@@ -33,7 +34,9 @@ fun SortTheme(
     barTheme: BarColorTheme = BarColorTheme.KOTLIN,
     content: @Composable () -> Unit
 ) {
-    val sortColorScheme = (if (darkTheme) DarkColorScheme else LightColorScheme).withBarTheme(barTheme)
+    // Apply full theme (primary, background, bar colors, etc.) based on the selected preset
+    val baseColorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val sortColorScheme = baseColorScheme.withFullTheme(barTheme, darkTheme)
 
     val materialColorScheme = if (darkTheme) {
         darkColorScheme(
@@ -71,9 +74,11 @@ fun SortTheme(
         )
     }
 
+    val typography = getTypography()
+
     CompositionLocalProvider(
         LocalSortColorScheme provides sortColorScheme,
-        LocalSortTypography provides DefaultTypography,
+        LocalSortTypography provides typography,
     ) {
         MaterialTheme(
             colorScheme = materialColorScheme,

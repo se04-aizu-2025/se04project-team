@@ -24,6 +24,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import dotnet.sort.designsystem.components.atoms.SortIconButton
 import dotnet.sort.designsystem.components.atoms.SortText
@@ -113,7 +114,7 @@ fun AlgorithmCodeView(
                                         lineHeight = SortTheme.typography.bodyMedium.lineHeight * 1.2
                                     ),
                                     color = SortTheme.colorScheme.onCodeContainer.copy(alpha = 0.5f),
-                                    textAlign = androidx.compose.ui.text.style.TextAlign.End,
+                                    textAlign = TextAlign.End,
                                     modifier = Modifier.padding(end = SpacingTokens.M)
                                 )
 

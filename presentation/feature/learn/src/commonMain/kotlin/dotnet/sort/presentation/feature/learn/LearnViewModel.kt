@@ -1,5 +1,15 @@
 package dotnet.sort.presentation.feature.learn
 
+import dotnet.sort.designsystem.components.atoms.SortIcons
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.learn_desc_bubble
+import dotnet.sort.designsystem.generated.resources.learn_desc_heap
+import dotnet.sort.designsystem.generated.resources.learn_desc_insertion
+import dotnet.sort.designsystem.generated.resources.learn_desc_merge
+import dotnet.sort.designsystem.generated.resources.learn_desc_quick
+import dotnet.sort.designsystem.generated.resources.learn_desc_selection
+import dotnet.sort.designsystem.generated.resources.learn_desc_shell
+import dotnet.sort.designsystem.utils.toDisplayName
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import org.koin.core.annotation.Factory
@@ -24,29 +34,32 @@ class LearnViewModel : BaseViewModel<LearnState, LearnIntent>(
 
 private fun buildAlgorithmItems(): List<LearnAlgorithmItem> {
     val descriptions = mapOf(
-        SortType.BUBBLE to "Adjacent swaps, simple but slow.",
-        SortType.SELECTION to "Find min and place it.",
-        SortType.INSERTION to "Build sorted prefix gradually.",
-        SortType.SHELL to "Gap-based insertion optimization.",
-        SortType.MERGE to "Divide and merge efficiently.",
-        SortType.QUICK to "Partition around a pivot.",
-        SortType.HEAP to "Heap-based selection of max/min.",
+        SortType.BUBBLE to Res.string.learn_desc_bubble,
+        SortType.SELECTION to Res.string.learn_desc_selection,
+        SortType.INSERTION to Res.string.learn_desc_insertion,
+        SortType.SHELL to Res.string.learn_desc_shell,
+        SortType.MERGE to Res.string.learn_desc_merge,
+        SortType.QUICK to Res.string.learn_desc_quick,
+        SortType.HEAP to Res.string.learn_desc_heap,
     )
     val icons = mapOf(
-        SortType.BUBBLE to "🫧",
-        SortType.SELECTION to "🎯",
-        SortType.INSERTION to "🧩",
-        SortType.SHELL to "🐚",
-        SortType.MERGE to "🔀",
-        SortType.QUICK to "⚡",
-        SortType.HEAP to "⛰️",
+        SortType.BUBBLE to SortIcons.Sort,
+        SortType.SELECTION to SortIcons.Sort,
+        SortType.INSERTION to SortIcons.Sort,
+        SortType.SHELL to SortIcons.Sort,
+        SortType.MERGE to SortIcons.Sort,
+        SortType.QUICK to SortIcons.Visualizer,
+        SortType.HEAP to SortIcons.Sort,
     )
-    return SortType.entries.map { type ->
+    // Filter to only supported algorithms in Learn
+    val supportedTypes = descriptions.keys
+    
+    return supportedTypes.map { type ->
         LearnAlgorithmItem(
             type = type,
-            title = type.displayName,
-            description = descriptions[type] ?: "",
-            icon = icons[type] ?: "📘",
+            title = type.toDisplayName(),
+            description = descriptions[type] ?: Res.string.learn_desc_bubble,
+            icon = icons[type] ?: SortIcons.Learn,
         )
     }
 }

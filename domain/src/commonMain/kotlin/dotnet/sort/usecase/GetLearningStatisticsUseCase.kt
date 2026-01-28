@@ -15,6 +15,11 @@ import org.koin.core.annotation.Single
 class GetLearningStatisticsUseCase(
     private val historyRepository: AlgorithmHistoryRepository,
 ) {
+    /**
+     * 学習統計を購読する。
+     *
+     * @return 学習統計のFlow
+     */
     operator fun invoke(): Flow<LearningStatistics> =
         historyRepository.observeRecentEvents(1000).map { entries ->
             val totalLearningTimeMs = calculateTotalLearningTime(entries)

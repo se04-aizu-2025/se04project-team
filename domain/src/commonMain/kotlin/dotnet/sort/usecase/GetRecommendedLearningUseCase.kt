@@ -8,6 +8,12 @@ import org.koin.core.annotation.Single
  */
 @Single
 class GetRecommendedLearningUseCase {
+    /**
+     * 習熟度マップから推奨学習内容を取得する。
+     *
+     * @param proficiencyMap アルゴリズムと習熟度のマッピング
+     * @return 推奨学習内容のリスト（最大3件）
+     */
     operator fun invoke(proficiencyMap: Map<SortType, ProficiencyLevel>): List<RecommendedLearning> {
         val recommendations = mutableListOf<RecommendedLearning>()
 

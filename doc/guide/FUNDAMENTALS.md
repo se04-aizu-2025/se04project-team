@@ -100,6 +100,7 @@ fun execute(type: SortType, input: List<Int>): SortResult
 | `var` in data class | 不変性違反 | `val` を使う |
 | `MutableList` in State | 不変性違反 | `List` を使う |
 | ハードコード色/サイズ | 保守性低下 | Design Token を使う |
+| **ハードコード文字列** | **多言語化困難** | **XML Resources (`strings.xml`) を使う** |
 | Screen に NavController | テスト困難 | コールバックで抽象化 |
 | ViewModel メソッド直接呼び出し | MVI 違反 | `send(Intent)` を使う |
 | GlobalScope | ライフサイクル無視 | `viewModelScope` を使う |

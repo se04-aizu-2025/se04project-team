@@ -24,6 +24,7 @@ fun NavGraphBuilder.sortDestination(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     composable<Screen.Sort> {
@@ -41,6 +42,7 @@ fun NavGraphBuilder.sortDestination(
             onNavigateToLearn = onNavigateToLearn,
             onNavigateToCompare = onNavigateToCompare,
             onNavigateToSettings = onNavigateToSettings,
+            onNavigateToQuiz = onNavigateToQuiz,
             state = state,
             onIntent = viewModel::send,
             onBackClick = onBackClick,

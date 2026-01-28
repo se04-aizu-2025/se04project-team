@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -23,6 +24,8 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
 @Composable
 internal fun SortBarBase(
     modifier: Modifier = Modifier,
+    containerColor: Color = SortTheme.colorScheme.primaryContainer,
+    contentColor: Color = SortTheme.colorScheme.onPrimaryContainer,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Surface(
@@ -30,9 +33,9 @@ internal fun SortBarBase(
             modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(SpacingTokens.L)),
-        color = SortTheme.colorScheme.primaryContainer,
+        color = containerColor,
         shadowElevation = SpacingTokens.S,
-        contentColor = SortTheme.colorScheme.onPrimaryContainer,
+        contentColor = contentColor,
     ) {
         Box(
             modifier = Modifier.padding(SpacingTokens.S),

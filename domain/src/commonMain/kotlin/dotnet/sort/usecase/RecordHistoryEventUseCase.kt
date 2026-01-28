@@ -12,6 +12,13 @@ import org.koin.core.annotation.Single
 class RecordHistoryEventUseCase(
     private val historyRepository: AlgorithmHistoryRepository,
 ) {
+    /**
+     * 履歴イベントを記録する。
+     *
+     * @param algorithmType アルゴリズムの種類（null可）
+     * @param eventType イベントの種類
+     * @param metadata 追加のメタデータ（null可）
+     */
     suspend operator fun invoke(
         algorithmType: SortType?,
         eventType: HistoryEventType,

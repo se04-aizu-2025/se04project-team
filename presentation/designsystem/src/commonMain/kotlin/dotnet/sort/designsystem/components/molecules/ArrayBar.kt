@@ -59,7 +59,7 @@ fun ArrayBar(
             .semantics {
                 contentDescription = accessibilityLabel ?: defaultAccessibilityLabel
             },
-        horizontalArrangement = Arrangement.SpaceEvenly,
+        horizontalArrangement = Arrangement.spacedBy(SpacingTokens.BarGap),
         verticalAlignment = Alignment.Bottom,
     ) {
         array.forEachIndexed { index, value ->
@@ -76,9 +76,7 @@ fun ArrayBar(
                 value = value,
                 maxValue = maxValue,
                 state = state,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = SpacingTokens.BarGap),
+                modifier = Modifier.weight(1f),
             )
         }
     }

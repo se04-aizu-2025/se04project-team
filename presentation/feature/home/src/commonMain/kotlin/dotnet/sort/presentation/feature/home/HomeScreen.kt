@@ -13,11 +13,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import dotnet.sort.designsystem.components.atoms.SortIcons
+import dotnet.sort.designsystem.components.atoms.SortProgressIndicator
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
@@ -28,19 +30,55 @@ import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.ColorTokens
 import dotnet.sort.designsystem.tokens.SpacingTokens
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.app_name
+import dotnet.sort.designsystem.generated.resources.dashboard_algo_proficiency
+import dotnet.sort.designsystem.generated.resources.dashboard_attempts
+import dotnet.sort.designsystem.generated.resources.dashboard_avg_score
+import dotnet.sort.designsystem.generated.resources.dashboard_best_score
+import dotnet.sort.designsystem.generated.resources.dashboard_latest_score
+import dotnet.sort.designsystem.generated.resources.dashboard_loading
+import dotnet.sort.designsystem.generated.resources.dashboard_quiz_summary
+import dotnet.sort.designsystem.generated.resources.dashboard_title
+import dotnet.sort.designsystem.generated.resources.dashboard_total_sessions
+import dotnet.sort.designsystem.generated.resources.dashboard_total_time
+import dotnet.sort.designsystem.generated.resources.home_card_compare_desc
+import dotnet.sort.designsystem.generated.resources.home_card_compare_title
+import dotnet.sort.designsystem.generated.resources.home_card_learn_desc
+import dotnet.sort.designsystem.generated.resources.home_card_learn_title
+import dotnet.sort.designsystem.generated.resources.home_card_quiz_desc
+import dotnet.sort.designsystem.generated.resources.home_card_quiz_title
+import dotnet.sort.designsystem.generated.resources.home_card_settings_desc
+import dotnet.sort.designsystem.generated.resources.home_card_settings_title
+import dotnet.sort.designsystem.generated.resources.home_card_visualizer_desc
+import dotnet.sort.designsystem.generated.resources.home_card_visualizer_title
+import dotnet.sort.designsystem.generated.resources.home_subtitle
+import dotnet.sort.designsystem.generated.resources.home_title
+import dotnet.sort.designsystem.generated.resources.nav_compare
+import dotnet.sort.designsystem.generated.resources.nav_home
+import dotnet.sort.designsystem.generated.resources.nav_learn
+import dotnet.sort.designsystem.generated.resources.nav_quiz
+import dotnet.sort.designsystem.generated.resources.nav_settings
+import dotnet.sort.designsystem.generated.resources.nav_sort
+import dotnet.sort.designsystem.generated.resources.prof_beginner
+import dotnet.sort.designsystem.generated.resources.prof_expert
+import dotnet.sort.designsystem.generated.resources.prof_intermediate
+import dotnet.sort.designsystem.generated.resources.prof_none
 import dotnet.sort.model.SortType
 import dotnet.sort.usecase.LearningStatistics
 import dotnet.sort.usecase.ProficiencyLevel
 import dotnet.sort.usecase.QuizScoreSummary
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * ホーム画面のオプションデータ。
  */
 private data class HomeOption(
-    val title: String,
-    val description: String,
-    val icon: String,
+    val title: StringResource,
+    val description: StringResource,
+    val icon: ImageVector,
     val onClick: () -> Unit,
     val enabled: Boolean = true,
 )
@@ -81,33 +119,33 @@ fun HomeScreen(
     val options =
         listOf(
             HomeOption(
-                title = "Visualizer",
-                description = "Visualize sorting algorithms in real-time.",
-                icon = "📊",
+                title = Res.string.home_card_visualizer_title,
+                description = Res.string.home_card_visualizer_desc,
+                icon = SortIcons.Visualizer,
                 onClick = onNavigateToSort,
             ),
             HomeOption(
-                title = "Learn",
-                description = "Learn about different sorting algorithms.",
-                icon = "🎓",
+                title = Res.string.home_card_learn_title,
+                description = Res.string.home_card_learn_desc,
+                icon = SortIcons.Learn,
                 onClick = onNavigateToLearn,
             ),
             HomeOption(
-                title = "Compare",
-                description = "Compare performance of algorithms.",
-                icon = "⚖️",
+                title = Res.string.home_card_compare_title,
+                description = Res.string.home_card_compare_desc,
+                icon = SortIcons.Compare,
                 onClick = onNavigateToCompare,
             ),
             HomeOption(
-                title = "Quiz",
-                description = "Test your algorithm knowledge.",
-                icon = "🧠",
+                title = Res.string.home_card_quiz_title,
+                description = Res.string.home_card_quiz_desc,
+                icon = SortIcons.Quiz,
                 onClick = onNavigateToQuiz,
             ),
             HomeOption(
-                title = "Settings",
-                description = "App settings and themes.",
-                icon = "⚙️",
+                title = Res.string.home_card_settings_title,
+                description = Res.string.home_card_settings_desc,
+                icon = SortIcons.Settings,
                 onClick = onNavigateToSettings,
             ),
         )
@@ -116,7 +154,7 @@ fun HomeScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             SortTopBar(
-                title = "Home",
+                title = stringResource(Res.string.home_title),
             )
         },
         bottomBar = {
@@ -125,31 +163,37 @@ fun HomeScreen(
                     listOf(
                         SortBottomBarItem(
                             icon = SortIcons.Home,
-                            contentDescription = "Home",
+                            contentDescription = stringResource(Res.string.nav_home),
                             selected = isHomeSelected,
                             onClick = onNavigateToHome,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Sort,
-                            contentDescription = "Sort",
+                            contentDescription = stringResource(Res.string.nav_sort),
                             selected = isSortSelected,
                             onClick = onNavigateToSort,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Learn,
-                            contentDescription = "Learn",
+                            contentDescription = stringResource(Res.string.nav_learn),
                             selected = isLearnSelected,
                             onClick = onNavigateToLearn,
                         ),
                         SortBottomBarItem(
                             icon = SortIcons.Compare,
-                            contentDescription = "Compare",
+                            contentDescription = stringResource(Res.string.nav_compare),
                             selected = isCompareSelected,
                             onClick = onNavigateToCompare,
                         ),
                         SortBottomBarItem(
+                            icon = SortIcons.Quiz,
+                            contentDescription = stringResource(Res.string.nav_quiz),
+                            selected = false,
+                            onClick = onNavigateToQuiz,
+                        ),
+                        SortBottomBarItem(
                             icon = SortIcons.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(Res.string.nav_settings),
                             selected = isSettingsSelected,
                             onClick = onNavigateToSettings,
                         ),
@@ -177,13 +221,13 @@ fun HomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SortText(
-                        text = "DNSort",
+                        text = stringResource(Res.string.app_name),
                         style = SortTheme.typography.displayMedium,
                         color = SortTheme.colorScheme.primary,
                     )
 
                     SortText(
-                        text = "Algorithm Visualization Tool",
+                        text = stringResource(Res.string.home_subtitle),
                         style = SortTheme.typography.titleMedium,
                         modifier = Modifier.padding(bottom = SpacingTokens.L),
                     )
@@ -201,8 +245,8 @@ fun HomeScreen(
 
             items(options) { option ->
                 SortCard(
-                    title = option.title,
-                    description = option.description,
+                    title = stringResource(option.title),
+                    description = stringResource(option.description),
                     icon = option.icon,
                     onClick = option.onClick,
                     enabled = option.enabled,
@@ -222,7 +266,7 @@ private fun LearningProgressDashboard(
     modifier: Modifier = Modifier,
 ) {
     SortSectionCard(
-        title = "📊 Learning Progress",
+        title = stringResource(Res.string.dashboard_title),
         modifier = modifier.padding(vertical = SpacingTokens.M),
     ) {
         Column(
@@ -230,7 +274,7 @@ private fun LearningProgressDashboard(
         ) {
             if (statistics == null && quizSummary == null) {
                 SortText(
-                    text = "Loading learning statistics...",
+                    text = stringResource(Res.string.dashboard_loading),
                     style = SortTheme.typography.bodyMedium,
                     color = SortTheme.colorScheme.onSurfaceVariant,
                 )
@@ -244,7 +288,7 @@ private fun LearningProgressDashboard(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     SortText(
-                        text = "Total Learning Time",
+                        text = stringResource(Res.string.dashboard_total_time),
                         style = SortTheme.typography.bodyLarge,
                     )
                     SortText(
@@ -261,7 +305,7 @@ private fun LearningProgressDashboard(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     SortText(
-                        text = "Total Sessions",
+                        text = stringResource(Res.string.dashboard_total_sessions),
                         style = SortTheme.typography.bodyLarge,
                     )
                     SortText(
@@ -275,7 +319,7 @@ private fun LearningProgressDashboard(
 
                 // アルゴリズム別習熟度
                 SortText(
-                    text = "Algorithm Proficiency",
+                    text = stringResource(Res.string.dashboard_algo_proficiency),
                     style = SortTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = SpacingTokens.S),
                 )
@@ -293,7 +337,7 @@ private fun LearningProgressDashboard(
                 Spacer(modifier = Modifier.height(SpacingTokens.M))
 
                 SortText(
-                    text = "Quiz Summary",
+                    text = stringResource(Res.string.dashboard_quiz_summary),
                     style = SortTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = SpacingTokens.S),
                 )
@@ -303,7 +347,7 @@ private fun LearningProgressDashboard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    SortText(text = "Attempts", style = SortTheme.typography.bodyLarge)
+                    SortText(text = stringResource(Res.string.dashboard_attempts), style = SortTheme.typography.bodyLarge)
                     SortText(text = "${quizSummary.totalAttempts}", style = SortTheme.typography.bodyLarge)
                 }
 
@@ -312,7 +356,7 @@ private fun LearningProgressDashboard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    SortText(text = "Best Score", style = SortTheme.typography.bodyLarge)
+                    SortText(text = stringResource(Res.string.dashboard_best_score), style = SortTheme.typography.bodyLarge)
                     SortText(
                         text = "${quizSummary.bestScore}",
                         style = SortTheme.typography.bodyLarge,
@@ -325,7 +369,7 @@ private fun LearningProgressDashboard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    SortText(text = "Average Score", style = SortTheme.typography.bodyLarge)
+                    SortText(text = stringResource(Res.string.dashboard_avg_score), style = SortTheme.typography.bodyLarge)
                     SortText(text = "${quizSummary.averageScore}", style = SortTheme.typography.bodyLarge)
                 }
 
@@ -334,7 +378,7 @@ private fun LearningProgressDashboard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    SortText(text = "Latest", style = SortTheme.typography.bodyLarge)
+                    SortText(text = stringResource(Res.string.dashboard_latest_score), style = SortTheme.typography.bodyLarge)
                     SortText(text = "${quizSummary.latestScore}", style = SortTheme.typography.bodyLarge)
                 }
             }
@@ -365,16 +409,14 @@ private fun AlgorithmProficiencyRow(
             horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            LinearProgressIndicator(
+            SortProgressIndicator(
                 progress = proficiency.progress,
-                modifier = Modifier
-                    .weight(0.5f)
-                    .height(SpacingTokens.ProgressBarHeight),
+                modifier = Modifier.weight(0.5f),
                 color = proficiency.color,
             )
 
             SortText(
-                text = proficiency.displayName,
+                text = stringResource(proficiency.displayName),
                 style = SortTheme.typography.bodySmall,
                 color = proficiency.color,
             )
@@ -407,15 +449,15 @@ private val ProficiencyLevel.progress: Float
         ProficiencyLevel.EXPERT -> 1f
     }
 
-private val ProficiencyLevel.displayName: String
+private val ProficiencyLevel.displayName: StringResource
     get() = when (this) {
-        ProficiencyLevel.NONE -> "None"
-        ProficiencyLevel.BEGINNER -> "Beginner"
-        ProficiencyLevel.INTERMEDIATE -> "Intermediate"
-        ProficiencyLevel.EXPERT -> "Expert"
+        ProficiencyLevel.NONE -> Res.string.prof_none
+        ProficiencyLevel.BEGINNER -> Res.string.prof_beginner
+        ProficiencyLevel.INTERMEDIATE -> Res.string.prof_intermediate
+        ProficiencyLevel.EXPERT -> Res.string.prof_expert
     }
 
-private val ProficiencyLevel.color: androidx.compose.ui.graphics.Color
+private val ProficiencyLevel.color: Color
     @Composable get() = when (this) {
         ProficiencyLevel.NONE -> SortTheme.colorScheme.onSurfaceVariant
         ProficiencyLevel.BEGINNER -> ColorTokens.ProficiencyBeginner

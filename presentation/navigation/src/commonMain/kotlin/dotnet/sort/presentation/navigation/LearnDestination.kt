@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import dotnet.sort.model.SortType
 import dotnet.sort.presentation.feature.learn.LearnViewModel
 import dotnet.sort.presentation.feature.learn.LearnScreen
 import org.koin.compose.viewmodel.koinViewModel
@@ -19,9 +20,10 @@ fun NavGraphBuilder.learnDestination(
     onNavigateToHome: () -> Unit,
     onNavigateToSort: () -> Unit,
     onNavigateToLearn: () -> Unit,
-    onNavigateToLearnDetail: (dotnet.sort.model.SortType) -> Unit,
+    onNavigateToLearnDetail: (SortType) -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     composable<Screen.Learn> {
@@ -38,6 +40,7 @@ fun NavGraphBuilder.learnDestination(
             onNavigateToLearn = onNavigateToLearn,
             onNavigateToCompare = onNavigateToCompare,
             onNavigateToSettings = onNavigateToSettings,
+            onNavigateToQuiz = onNavigateToQuiz,
             onNavigateToLearnDetail = onNavigateToLearnDetail,
             state = state,
             onIntent = viewModel::send,

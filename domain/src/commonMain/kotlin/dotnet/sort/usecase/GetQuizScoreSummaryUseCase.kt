@@ -14,6 +14,12 @@ import org.koin.core.annotation.Single
 class GetQuizScoreSummaryUseCase(
     private val quizScoreRepository: QuizScoreRepository,
 ) {
+    /**
+     * クイズ成績のサマリーを購読する。
+     *
+     * @param limit 集計対象の最大件数
+     * @return サマリーのFlow（成績がない場合はnull）
+     */
     operator fun invoke(limit: Int = 50): Flow<QuizScoreSummary?> =
         quizScoreRepository.observeRecentScores(limit).map { scores ->
             if (scores.isEmpty()) {

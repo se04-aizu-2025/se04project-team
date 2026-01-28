@@ -110,4 +110,18 @@ object SpacingTokens {
 
     /** プログレスバーの高さ */
     val ProgressBarHeight: Dp = 8.dp
+
+    // === Icon Sizes ===
+    
+    /** アイコンサイズ (小) */
+    val IconSizeS: Dp = 16.dp
+    
+    /** アイコンサイズ (中) */
+    val IconSizeM: Dp = 24.dp
+    
+    /** アイコンサイズ (大) */
+    val IconSizeL: Dp = 32.dp
+    
+    /** アイコンサイズ (極大) */
+    val IconSizeXL: Dp = 64.dp
 }

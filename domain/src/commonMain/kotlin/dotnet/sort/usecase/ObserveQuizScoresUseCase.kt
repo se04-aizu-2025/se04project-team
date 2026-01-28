@@ -12,6 +12,12 @@ import org.koin.core.annotation.Single
 class ObserveQuizScoresUseCase(
     private val quizScoreRepository: QuizScoreRepository,
 ) {
+    /**
+     * 最近のクイズ成績を購読する。
+     *
+     * @param limit 取得する最大件数
+     * @return クイズ成績のFlow
+     */
     operator fun invoke(limit: Int = 50): Flow<List<QuizScore>> =
         quizScoreRepository.observeRecentScores(limit)
 }

@@ -1,13 +1,11 @@
 package dotnet.sort.presentation.feature.settings
 
-import androidx.lifecycle.viewModelScope
 import dotnet.sort.domain.model.BarColorTheme
 import dotnet.sort.domain.model.Language
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import dotnet.sort.presentation.common.viewmodel.Intent
 import dotnet.sort.presentation.common.viewmodel.UiState
 import dotnet.sort.repository.SettingsRepository
-import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 
 data class SettingsState(
@@ -33,27 +31,27 @@ class SettingsViewModel(
 ) : BaseViewModel<SettingsState, SettingsIntent>(SettingsState()) {
 
     init {
-        viewModelScope.launch {
+        execute {
             repository.isDarkTheme.collect { isDark ->
                 updateState { copy(isDarkTheme = isDark) }
             }
         }
-        viewModelScope.launch {
+        execute {
             repository.barTheme.collect { theme ->
                 updateState { copy(barTheme = theme) }
             }
         }
-        viewModelScope.launch {
+        execute {
             repository.isSoundEnabled.collect { enabled ->
                 updateState { copy(isSoundEnabled = enabled) }
             }
         }
-        viewModelScope.launch {
+        execute {
             repository.soundVolume.collect { volume ->
                 updateState { copy(soundVolume = volume) }
             }
         }
-        viewModelScope.launch {
+        execute {
             repository.language.collect { language ->
                 updateState { copy(language = language) }
             }
@@ -63,27 +61,27 @@ class SettingsViewModel(
     override fun send(intent: SettingsIntent) {
         when (intent) {
             is SettingsIntent.ToggleTheme -> {
-                viewModelScope.launch {
+                execute {
                     repository.setDarkTheme(intent.isDark)
                 }
             }
             is SettingsIntent.SelectBarTheme -> {
-                viewModelScope.launch {
+                execute {
                     repository.setBarTheme(intent.theme)
                 }
             }
             is SettingsIntent.ToggleSound -> {
-                viewModelScope.launch {
+                execute {
                     repository.setSoundEnabled(intent.enabled)
                 }
             }
             is SettingsIntent.SetSoundVolume -> {
-                viewModelScope.launch {
+                execute {
                     repository.setSoundVolume(intent.volume)
                 }
             }
             is SettingsIntent.SelectLanguage -> {
-                viewModelScope.launch {
+                execute {
                     repository.setLanguage(intent.language)
                 }
             }

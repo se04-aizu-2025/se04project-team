@@ -29,6 +29,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
+            implementation(libs.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -57,6 +58,11 @@ dependencies {
     add("kspJvm", libs.koin.kspCompiler)
     add("kspJs", libs.koin.kspCompiler)
     add("kspWasmJs", libs.koin.kspCompiler)
+}
+
+compose.resources {
+    packageOfResClass = "dotnet.sort.presentation.feature.quiz.generated.resources"
+    publicResClass = true
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {

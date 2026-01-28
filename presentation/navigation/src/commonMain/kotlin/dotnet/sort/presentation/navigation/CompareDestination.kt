@@ -21,6 +21,7 @@ fun NavGraphBuilder.compareDestination(
     onNavigateToLearn: () -> Unit,
     onNavigateToCompare: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToQuiz: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     composable<Screen.Compare> {
@@ -37,6 +38,7 @@ fun NavGraphBuilder.compareDestination(
             onNavigateToLearn = onNavigateToLearn,
             onNavigateToCompare = onNavigateToCompare,
             onNavigateToSettings = onNavigateToSettings,
+            onNavigateToQuiz = onNavigateToQuiz,
             state = state,
             onIntent = viewModel::send,
             onBackClick = onBackClick,

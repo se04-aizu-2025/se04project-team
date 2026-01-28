@@ -51,6 +51,8 @@ fun SortTopBar(
         modifier =
             modifier
                 .padding(horizontal = SpacingTokens.M),
+        containerColor = SortTheme.colorScheme.primary,
+        contentColor = SortTheme.colorScheme.onPrimary,
     ) {
         resolvedStartAction?.let {
             Box(modifier = Modifier.align(Alignment.CenterStart)) {
@@ -62,7 +64,7 @@ fun SortTopBar(
             modifier = Modifier.align(Alignment.Center),
             text = title,
             style = SortTheme.typography.titleLarge,
-            color = SortTheme.colorScheme.onSurface,
+            color = SortTheme.colorScheme.onPrimary,
         )
 
         endAction?.let {
