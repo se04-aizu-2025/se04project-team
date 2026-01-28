@@ -14,6 +14,19 @@ actual class SoundEffectPlayer {
             // サウンド再生に失敗した場合は無視
         }
     }
+
+    actual fun playWithValue(value: Int, maxValue: Int, volume: Float, duration: Int) {
+        if (volume <= 0f || maxValue <= 0) return
+        try {
+            // 値を200Hz〜2000Hzの範囲にマッピング
+            val minFreq = 200
+            val maxFreq = 2000
+            val frequency = minFreq + ((maxFreq - minFreq) * value / maxValue)
+            playBeep(frequency.toDouble(), duration.toDouble(), volume.toDouble())
+        } catch (_: Throwable) {
+            // サウンド再生に失敗した場合は無視
+        }
+    }
 }
 
 private fun playBeep(frequency: Double, duration: Double, volume: Double) {

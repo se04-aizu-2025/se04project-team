@@ -50,8 +50,8 @@ object AnimationTokens {
     /** 通常速度 (1.0x) */
     const val SpeedNormalMultiplier: Float = 1.0f
 
-    /** 最高速度 (100.0x) */
-    const val SpeedMaxMultiplier: Float = 100.0f
+    /** 最高速度 (10.0x) */
+    const val SpeedMaxMultiplier: Float = 10.0f
 
     /** 速度ステップ (0.25ずつ) */
     const val SpeedStep: Float = 0.1f

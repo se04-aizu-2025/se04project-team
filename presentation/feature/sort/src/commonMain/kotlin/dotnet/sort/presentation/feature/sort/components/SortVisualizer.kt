@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.ArrayBar
 import dotnet.sort.designsystem.theme.SortTheme
@@ -52,7 +51,7 @@ fun SortVisualizer(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
+                .height(SpacingTokens.VisualizerHeight)
                 .padding(vertical = SpacingTokens.M),
             contentAlignment = Alignment.BottomCenter
         ) {
@@ -61,7 +60,7 @@ fun SortVisualizer(
                     array = array,
                     highlightIndices = highlightSet.toList(),
                     sortedIndices = sortedIndices,
-                    modifier = Modifier.fillMaxWidth().height(280.dp)
+                    modifier = Modifier.fillMaxWidth().height(SpacingTokens.VisualizerHeightCompact)
                 )
             } else {
                 SortText(

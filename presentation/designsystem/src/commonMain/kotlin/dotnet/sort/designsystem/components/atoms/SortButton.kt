@@ -7,12 +7,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -37,6 +40,7 @@ enum class SortButtonStyle {
  * @param style ボタンのスタイル [SortButtonStyle]
  * @param enabled 有効/無効状態
  * @param icon オプションのアイコン
+ * @param accessibilityDescription アクセシビリティ用の説明（省略時はtextが使用される）
  */
 @Composable
 fun SortButton(
@@ -46,8 +50,14 @@ fun SortButton(
     style: SortButtonStyle = SortButtonStyle.Primary,
     enabled: Boolean = true,
     icon: ImageVector? = null,
+    accessibilityDescription: String? = null,
 ) {
     val colorScheme = SortTheme.colorScheme
+
+    val accessibilityModifier = modifier.semantics {
+        role = Role.Button
+        contentDescription = accessibilityDescription ?: text
+    }
 
     val content: @Composable () -> Unit = {
         if (icon != null) {
@@ -57,14 +67,14 @@ fun SortButton(
             )
             Spacer(modifier = Modifier.width(SpacingTokens.S))
         }
-        Text(text = text)
+        SortText(text = text)
     }
 
     when (style) {
         SortButtonStyle.Primary -> {
             Button(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = accessibilityModifier,
                 enabled = enabled,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorScheme.primary,
@@ -80,7 +90,7 @@ fun SortButton(
         SortButtonStyle.Outlined -> {
             OutlinedButton(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = accessibilityModifier,
                 enabled = enabled,
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = colorScheme.primary,
@@ -95,7 +105,7 @@ fun SortButton(
         SortButtonStyle.Text -> {
             TextButton(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = accessibilityModifier,
                 enabled = enabled,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = colorScheme.primary,

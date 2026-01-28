@@ -15,9 +15,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.AnimationTokens
+import dotnet.sort.designsystem.tokens.SpacingTokens
 
 /**
  * ソート可視化用の単一バーコンポーネント (Atom)。
@@ -29,13 +31,15 @@ import dotnet.sort.designsystem.tokens.AnimationTokens
  * @param maxValue 配列内の最大値（高さ計算に使用）
  * @param state バーの現在の状態 [BarState]
  * @param modifier Modifier
+ * @param accessibilityLabel アクセシビリティ用のラベル（スクリーンリーダー対応）
  */
 @Composable
 fun SortBar(
     value: Int,
     maxValue: Int,
     state: BarState = BarState.Default,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    accessibilityLabel: String? = null,
 ) {
     val colorScheme = SortTheme.colorScheme
 
@@ -61,11 +65,26 @@ fun SortBar(
         0f
     }
 
+    // アクセシビリティ用の状態説明を生成
+    val stateDescription = when (state) {
+        BarState.Default -> "デフォルト状態"
+        BarState.Comparing -> "比較中"
+        BarState.Swapping -> "交換中"
+        BarState.Sorted -> "ソート済み"
+        BarState.Pivot -> "ピボット"
+        BarState.Selected -> "選択中"
+    }
+
+    val defaultAccessibilityLabel = "値 $value, $stateDescription"
+
     Box(
         modifier = modifier
             .fillMaxHeight(heightFraction)
-            .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+            .clip(RoundedCornerShape(topStart = SpacingTokens.XS, topEnd = SpacingTokens.XS))
             .background(animatedColor)
+            .semantics {
+                contentDescription = accessibilityLabel ?: defaultAccessibilityLabel
+            }
     )
 }
 
@@ -74,8 +93,8 @@ fun SortBar(
 private fun SortBarPreview() {
     SortTheme {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier.height(200.dp)
+            horizontalArrangement = Arrangement.spacedBy(SpacingTokens.XS),
+            modifier = Modifier.height(SpacingTokens.VisualizerHeightCompact)
         ) {
             SortBar(value = 30, maxValue = 100, state = BarState.Default)
             SortBar(value = 60, maxValue = 100, state = BarState.Comparing)

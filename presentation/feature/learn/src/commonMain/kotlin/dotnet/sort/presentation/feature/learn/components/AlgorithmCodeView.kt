@@ -1,6 +1,7 @@
 package dotnet.sort.presentation.feature.learn.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,25 +15,21 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import dotnet.sort.designsystem.components.atoms.SortIcon
+import dotnet.sort.designsystem.components.atoms.SortIconButton
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.designsystem.tokens.ColorTokens
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.learn.model.AlgorithmImplementation
 import dotnet.sort.designsystem.generated.resources.Res
@@ -75,7 +72,7 @@ fun AlgorithmCodeView(
                 // Code Container
                 Surface(
                     color = SortTheme.colorScheme.codeContainer,
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(SpacingTokens.CornerRadiusSmall),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column {
@@ -86,25 +83,22 @@ fun AlgorithmCodeView(
                                 .background(SortTheme.colorScheme.surfaceVariant)
                                 .padding(horizontal = SpacingTokens.M, vertical = SpacingTokens.XS),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             SortText(
                                 text = stringResource(Res.string.learn_language_kotlin),
                                 style = SortTheme.typography.labelMedium,
                                 color = SortTheme.colorScheme.onSurfaceVariant
                             )
-                            IconButton(
+                            SortIconButton(
                                 onClick = {
                                     clipboardManager.setText(AnnotatedString(implementation.code))
                                 },
-                                modifier = Modifier.height(32.dp)
-                            ) {
-                                SortIcon(
-                                    imageVector = Icons.Default.ContentCopy,
-                                    contentDescription = stringResource(Res.string.learn_copy_code),
-                                    tint = SortTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
+                                icon = Icons.Default.ContentCopy,
+                                contentDescription = stringResource(Res.string.learn_copy_code),
+                                tint = SortTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.height(SpacingTokens.CodeButtonHeight)
+                            )
                         }
 
                         // Code Content with Line Numbers
@@ -149,32 +143,27 @@ private fun highlightCode(code: String): AnnotatedString {
     return buildAnnotatedString {
         val lines = code.lines()
         lines.forEachIndexed { index, line ->
-            // Simple syntax highlighting logic
-            // Note: This is a very basic implementation and might not cover all cases perfectly
-            // For a robust solution, a proper lexer would be needed.
-            
-            var currentIndex = 0
             val words = line.split(Regex("(?<=\\W)|(?=\\W)"))
             
             words.forEach { word ->
                 when {
                     word in keywords -> {
-                        withStyle(style = SpanStyle(color = Color(0xFFCC7832))) { // Orange for keywords
+                        withStyle(style = SpanStyle(color = ColorTokens.SyntaxKeyword)) {
                             append(word)
                         }
                     }
                     word in types -> {
-                         withStyle(style = SpanStyle(color = Color(0xFFDA70D6))) { // Orchid for types
+                         withStyle(style = SpanStyle(color = ColorTokens.SyntaxType)) {
                             append(word)
                         }
                     }
                     word.startsWith("//") -> {
-                         withStyle(style = SpanStyle(color = Color(0xFF808080))) { // Grey for comments
+                         withStyle(style = SpanStyle(color = ColorTokens.SyntaxComment)) {
                             append(word)
                         }
                     }
                     word.matches(Regex("\\d+")) -> {
-                         withStyle(style = SpanStyle(color = Color(0xFF6897BB))) { // Light Blue for numbers
+                         withStyle(style = SpanStyle(color = ColorTokens.SyntaxNumber)) {
                             append(word)
                         }
                     }

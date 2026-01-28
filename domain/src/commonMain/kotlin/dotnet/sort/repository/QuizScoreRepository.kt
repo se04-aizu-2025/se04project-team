@@ -9,13 +9,5 @@ interface QuizScoreRepository {
 
     fun observeRecentScores(limit: Int): Flow<List<QuizScore>>
 
-    /**
-     * 指定した期間内のスコアを監視する。
-     * @param period 期間 (DAILY, WEEKLY, ALL)
-     * @param limit 取得件数上限
-     */
-    fun observeScoresByPeriod(
-        period: ScorePeriod,
-        limit: Int = 100,
-    ): Flow<List<QuizScore>>
+    fun observeScoresByPeriod(period: ScorePeriod, limit: Int): Flow<List<QuizScore>>
 }

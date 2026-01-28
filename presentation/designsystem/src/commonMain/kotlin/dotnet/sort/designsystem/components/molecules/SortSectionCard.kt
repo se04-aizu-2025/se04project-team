@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -43,7 +43,7 @@ fun SortSectionCard(
         Column(
             modifier = Modifier.padding(SpacingTokens.M)
         ) {
-            Text(
+            SortText(
                 text = title,
                 style = SortTheme.typography.titleMedium,
                 color = colorScheme.primary,
@@ -64,7 +64,7 @@ fun SortSectionCard(
 private fun SortSectionCardPreview() {
     SortTheme {
         SortSectionCard(title = "Section Title") {
-            Text("Content inside card")
+            SortText(text = "Content inside card")
         }
     }
 }

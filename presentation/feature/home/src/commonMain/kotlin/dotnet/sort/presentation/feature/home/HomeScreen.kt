@@ -1,6 +1,5 @@
 package dotnet.sort.presentation.feature.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,24 +13,20 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortCard
+import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.designsystem.tokens.ColorTokens
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.model.SortType
 import dotnet.sort.usecase.LearningStatistics
@@ -163,7 +158,7 @@ fun HomeScreen(
         },
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 180.dp),
+            columns = GridCells.Adaptive(minSize = SpacingTokens.GridCellMinWidth),
             modifier =
                 Modifier
                     .fillMaxSize()
@@ -226,23 +221,13 @@ private fun LearningProgressDashboard(
     quizSummary: QuizScoreSummary?,
     modifier: Modifier = Modifier,
 ) {
-    Card(
+    SortSectionCard(
+        title = "📊 Learning Progress",
         modifier = modifier.padding(vertical = SpacingTokens.M),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = SortTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        ),
     ) {
         Column(
-            modifier = Modifier.padding(SpacingTokens.L),
             verticalArrangement = Arrangement.spacedBy(SpacingTokens.M),
         ) {
-            SortText(
-                text = "📊 Learning Progress",
-                style = SortTheme.typography.titleLarge,
-                color = SortTheme.colorScheme.primary,
-            )
-
             if (statistics == null && quizSummary == null) {
                 SortText(
                     text = "Loading learning statistics...",
@@ -384,7 +369,7 @@ private fun AlgorithmProficiencyRow(
                 progress = proficiency.progress,
                 modifier = Modifier
                     .weight(0.5f)
-                    .height(8.dp),
+                    .height(SpacingTokens.ProgressBarHeight),
                 color = proficiency.color,
             )
 
@@ -430,10 +415,10 @@ private val ProficiencyLevel.displayName: String
         ProficiencyLevel.EXPERT -> "Expert"
     }
 
-private val ProficiencyLevel.color: Color
+private val ProficiencyLevel.color: androidx.compose.ui.graphics.Color
     @Composable get() = when (this) {
         ProficiencyLevel.NONE -> SortTheme.colorScheme.onSurfaceVariant
-        ProficiencyLevel.BEGINNER -> Color(0xFFFF6B35) // Orange
-        ProficiencyLevel.INTERMEDIATE -> Color(0xFFFFD23F) // Yellow
-        ProficiencyLevel.EXPERT -> Color(0xFF4CAF50) // Green
+        ProficiencyLevel.BEGINNER -> ColorTokens.ProficiencyBeginner
+        ProficiencyLevel.INTERMEDIATE -> ColorTokens.ProficiencyIntermediate
+        ProficiencyLevel.EXPERT -> ColorTokens.ProficiencyExpert
     }

@@ -24,13 +24,11 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
 import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
-import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.sort.components.AlgorithmSelector
 import dotnet.sort.presentation.feature.sort.components.DescriptionDisplay
@@ -186,7 +184,7 @@ fun SortContent(
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(modifier = modifier) {
-        val isLandscape = maxWidth > 600.dp
+        val isLandscape = maxWidth > SpacingTokens.LandscapeBreakpoint
 
         if (isLandscape) {
             Row(
@@ -225,7 +223,7 @@ fun SortContent(
                 Column(
                     modifier =
                         Modifier
-                            .width(320.dp)
+                            .width(SpacingTokens.SidePanelWidth)
                             .verticalScroll(rememberScrollState())
                             .padding(start = SpacingTokens.M),
                 ) {
@@ -298,7 +296,10 @@ fun SortContent(
                     highlightIndices = state.highlightingIndices,
                     sortedIndices = state.sortedIndices,
                     description = state.stepDescription,
-                    modifier = Modifier.heightIn(min = 240.dp, max = 440.dp),
+                    modifier = Modifier.heightIn(
+                        min = SpacingTokens.VisualizerMinHeight,
+                        max = SpacingTokens.VisualizerMaxHeight,
+                    ),
                 )
 
                 Spacer(modifier = Modifier.height(SpacingTokens.L))

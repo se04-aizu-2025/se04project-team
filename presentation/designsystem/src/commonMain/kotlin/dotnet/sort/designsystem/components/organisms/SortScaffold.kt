@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +24,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -127,13 +127,13 @@ private fun SortScaffoldPreview() {
     SortTheme {
         SortScaffold(
             topBar = {
-                Text("Top Bar")
+                SortText(text = "Top Bar")
             },
             bottomBar = {
-                Text("Bottom Bar")
+                SortText(text = "Bottom Bar")
             },
         ) {
-            Text("Content")
+            SortText(text = "Content")
         }
     }
 }

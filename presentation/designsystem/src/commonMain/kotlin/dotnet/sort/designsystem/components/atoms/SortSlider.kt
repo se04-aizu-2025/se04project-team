@@ -7,11 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -28,6 +29,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
  * @param label オプションのラベル
  * @param valueLabel 現在の値を表示するラベル（nullの場合は非表示）
  * @param enabled 有効/無効状態
+ * @param accessibilityDescription アクセシビリティ用の説明
  */
 @Composable
 fun SortSlider(
@@ -39,6 +41,7 @@ fun SortSlider(
     label: String? = null,
     valueLabel: String? = null,
     enabled: Boolean = true,
+    accessibilityDescription: String? = null,
 ) {
     val colorScheme = SortTheme.colorScheme
 
@@ -49,7 +52,7 @@ fun SortSlider(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (label != null) {
-                    Text(
+                    SortText(
                         text = label,
                         style = SortTheme.typography.labelMedium,
                         color = colorScheme.onSurface,
@@ -57,7 +60,7 @@ fun SortSlider(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 if (valueLabel != null) {
-                    Text(
+                    SortText(
                         text = valueLabel,
                         style = SortTheme.typography.bodyMedium,
                         color = colorScheme.primary,
@@ -67,10 +70,20 @@ fun SortSlider(
             Spacer(modifier = Modifier.height(SpacingTokens.XS))
         }
 
+        // アクセシビリティ用の説明を生成
+        val defaultAccessibilityDescription = buildString {
+            label?.let { append("$it: ") }
+            valueLabel?.let { append(it) } ?: append("${(value * 100).toInt()}%")
+        }
+
         Slider(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics {
+                    contentDescription = accessibilityDescription ?: defaultAccessibilityDescription
+                },
             enabled = enabled,
             valueRange = valueRange,
             steps = steps,

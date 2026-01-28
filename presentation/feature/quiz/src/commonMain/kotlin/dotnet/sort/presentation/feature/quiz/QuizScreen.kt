@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.unit.dp
 import dotnet.sort.model.QuizDifficulty
 import dotnet.sort.model.QuizMode
 import dotnet.sort.model.ScorePeriod
@@ -31,6 +30,7 @@ import dotnet.sort.designsystem.components.molecules.SortBottomBarItem
 import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.components.molecules.SortTopBar
 import dotnet.sort.designsystem.components.organisms.SortScaffold
+import dotnet.sort.designsystem.tokens.ColorTokens
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
 /**
@@ -277,7 +277,7 @@ fun QuizScreen(
                         scores = state.scoreHistory,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(140.dp),
+                            .height(SpacingTokens.ChartHeightSmall),
                     )
 
                     Spacer(modifier = Modifier.height(SpacingTokens.S))
@@ -333,7 +333,7 @@ private fun ScoreTrendChart(
                 path.lineTo(x, y)
             }
             drawCircle(
-                color = androidx.compose.ui.graphics.Color(0xFF7F52FF),
+                color = ColorTokens.KotlinPurple,
                 radius = 4f,
                 center = Offset(x, y),
             )
@@ -341,7 +341,7 @@ private fun ScoreTrendChart(
 
         drawPath(
             path = path,
-            color = androidx.compose.ui.graphics.Color(0xFF7F52FF),
+            color = ColorTokens.KotlinPurple,
             style = Stroke(width = 4f, cap = StrokeCap.Round, join = StrokeJoin.Round),
         )
     }

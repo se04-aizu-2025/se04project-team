@@ -72,4 +72,42 @@ object SpacingTokens {
 
     /** フローティングボトムバーの余白 */
     val FloatingBottomBarInset: Dp = 96.dp
+
+    // === Layout Specific ===
+
+    /** ビジュアライザーの高さ (通常) */
+    val VisualizerHeight: Dp = 300.dp
+
+    /** ビジュアライザーの高さ (コンパクト) */
+    val VisualizerHeightCompact: Dp = 280.dp
+
+    /** チャートの高さ (小) */
+    val ChartHeightSmall: Dp = 140.dp
+
+    /** ランドスケープ判定幅 */
+    val LandscapeBreakpoint: Dp = 600.dp
+
+    /** サイドパネル幅 */
+    val SidePanelWidth: Dp = 320.dp
+
+    /** グリッドの最小セル幅 */
+    val GridCellMinWidth: Dp = 180.dp
+
+    /** ビジュアライザーの最小高さ */
+    val VisualizerMinHeight: Dp = 240.dp
+
+    /** ビジュアライザーの最大高さ */
+    val VisualizerMaxHeight: Dp = 440.dp
+
+    /** 角丸 (小) */
+    val CornerRadiusSmall: Dp = 8.dp
+
+    /** 角丸 (中) */
+    val CornerRadiusMedium: Dp = 16.dp
+
+    /** コード表示のボタン高さ */
+    val CodeButtonHeight: Dp = 32.dp
+
+    /** プログレスバーの高さ */
+    val ProgressBarHeight: Dp = 8.dp
 }

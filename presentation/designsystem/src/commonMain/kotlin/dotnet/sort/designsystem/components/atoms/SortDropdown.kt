@@ -9,7 +9,6 @@ import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.getValue
@@ -17,6 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -33,6 +36,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
  * @param itemLabel アイテムの表示ラベルを返す関数
  * @param enabled 有効/無効状態
  * @param modifier Modifier
+ * @param accessibilityDescription アクセシビリティ用の説明
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,15 +47,23 @@ fun <T> SortDropdown(
     onItemSelected: (T) -> Unit,
     itemLabel: @Composable (T) -> String,
     enabled: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    accessibilityDescription: String? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
+    // アクセシビリティ用の説明を生成
+    val selectedLabel = itemLabel(selectedItem)
+    val defaultAccessibilityDescription = "$label: $selectedLabel が選択されています"
+
     Column(
-        modifier = modifier,
+        modifier = modifier.semantics {
+            role = Role.DropdownList
+            contentDescription = accessibilityDescription ?: defaultAccessibilityDescription
+        },
         verticalArrangement = Arrangement.spacedBy(SpacingTokens.XS)
     ) {
-        Text(
+        SortText(
             text = label,
             style = SortTheme.typography.labelMedium,
             color = SortTheme.colorScheme.onSurface
@@ -80,7 +92,7 @@ fun <T> SortDropdown(
             ) {
                 items.forEach { item ->
                     DropdownMenuItem(
-                        text = { Text(itemLabel(item)) },
+                        text = { SortText(text = itemLabel(item)) },
                         onClick = {
                             onItemSelected(item)
                             expanded = false

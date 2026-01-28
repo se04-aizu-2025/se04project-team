@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.BarState
@@ -28,6 +30,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
  * @param selectedIndex 選択中の要素のインデックス (SelectionSort用)
  * @param modifier Modifier
  * @param barHeight バーの最大高さ
+ * @param accessibilityLabel アクセシビリティ用のラベル
  */
 @Composable
 fun ArrayBar(
@@ -39,15 +42,23 @@ fun ArrayBar(
     selectedIndex: Int? = null,
     modifier: Modifier = Modifier,
     barHeight: Dp = 200.dp,
+    accessibilityLabel: String? = null,
 ) {
     if (array.isEmpty()) return
 
     val maxValue = array.maxOrNull() ?: 1
 
+    // アクセシビリティ用の情報を生成
+    val sortedCount = sortedIndices.size
+    val defaultAccessibilityLabel = "ソート可視化: ${array.size}個の要素, ${sortedCount}個がソート済み"
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(barHeight),
+            .height(barHeight)
+            .semantics {
+                contentDescription = accessibilityLabel ?: defaultAccessibilityLabel
+            },
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.Bottom,
     ) {

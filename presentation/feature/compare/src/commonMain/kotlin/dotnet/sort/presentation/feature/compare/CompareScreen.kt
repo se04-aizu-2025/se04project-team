@@ -193,18 +193,47 @@ private fun CompareContent(
             }
         }
 
-        SortSectionCard(title = "Metrics") {
+        SortSectionCard(title = "Metrics Comparison") {
             val left = state.leftResult?.complexityMetrics
             val right = state.rightResult?.complexityMetrics
-            SortText(
-                text = "Comparisons: L=${left?.comparisonCount ?: "-"}, R=${right?.comparisonCount ?: "-"}",
-            )
-            SortText(
-                text = "Swaps: L=${left?.swapCount ?: "-"}, R=${right?.swapCount ?: "-"}",
-            )
-            SortText(
-                text = "Time(ns): L=${left?.executionTimeNs ?: "-"}, R=${right?.executionTimeNs ?: "-"}",
-            )
+            
+            Column(verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)) {
+                MetricsRow(
+                    label = "Comparisons",
+                    leftValue = left?.comparisonCount,
+                    rightValue = right?.comparisonCount,
+                    leftName = state.leftAlgorithm.displayName,
+                    rightName = state.rightAlgorithm.displayName,
+                )
+                MetricsRow(
+                    label = "Swaps",
+                    leftValue = left?.swapCount,
+                    rightValue = right?.swapCount,
+                    leftName = state.leftAlgorithm.displayName,
+                    rightName = state.rightAlgorithm.displayName,
+                )
+                MetricsRow(
+                    label = "Time (ns)",
+                    leftValue = left?.executionTimeNs,
+                    rightValue = right?.executionTimeNs,
+                    leftName = state.leftAlgorithm.displayName,
+                    rightName = state.rightAlgorithm.displayName,
+                )
+                if (left != null && right != null) {
+                    Spacer(modifier = Modifier.height(SpacingTokens.S))
+                    val totalComparison = left.comparisonCount + left.swapCount
+                    val totalRight = right.comparisonCount + right.swapCount
+                    val winner = when {
+                        totalComparison < totalRight -> state.leftAlgorithm.displayName
+                        totalRight < totalComparison -> state.rightAlgorithm.displayName
+                        else -> "Tie"
+                    }
+                    SortText(
+                        text = "🏆 Winner: $winner",
+                        style = SortTheme.typography.titleMedium,
+                    )
+                }
+            }
         }
 
         SortSectionCard(title = "Steps") {
@@ -228,5 +257,35 @@ private fun CompareContent(
         }
 
         Spacer(modifier = Modifier.height(SpacingTokens.FloatingBottomBarInset))
+    }
+}
+
+@Composable
+private fun MetricsRow(
+    label: String,
+    leftValue: Long?,
+    rightValue: Long?,
+    leftName: String,
+    rightName: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        val leftStr = leftValue?.toString() ?: "-"
+        val rightStr = rightValue?.toString() ?: "-"
+        val winner = when {
+            leftValue == null || rightValue == null -> null
+            leftValue < rightValue -> leftName
+            rightValue < leftValue -> rightName
+            else -> null
+        }
+        val leftPrefix = if (winner == leftName) "✅ " else ""
+        val rightPrefix = if (winner == rightName) "✅ " else ""
+        
+        SortText(text = label, modifier = Modifier.weight(1f))
+        SortText(text = "$leftPrefix$leftStr", modifier = Modifier.weight(1f))
+        SortText(text = "$rightPrefix$rightStr", modifier = Modifier.weight(1f))
     }
 }

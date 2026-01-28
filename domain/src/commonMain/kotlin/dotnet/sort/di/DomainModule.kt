@@ -6,3 +6,4 @@ import org.koin.core.annotation.Module
 @Module
 @ComponentScan("dotnet.sort")
 class DomainModule
+// Trigger KSP regeneration

@@ -120,4 +120,30 @@ object ColorTokens {
 
     /** Kotlinロゴのグラデーション終了色 */
     val GradientEnd = KotlinOrange
+
+    // === Proficiency Level Colors ===
+    /** 初心者レベル */
+    val ProficiencyBeginner = KotlinOrange
+
+    /** 中級者レベル */
+    val ProficiencyIntermediate = Color(0xFFFFD23F)
+
+    /** エキスパートレベル */
+    val ProficiencyExpert = BarSorted
+
+    // === Syntax Highlighting Colors ===
+    /** キーワード色 */
+    val SyntaxKeyword = Color(0xFFCC7832)
+
+    /** 型名色 */
+    val SyntaxType = Color(0xFFDA70D6)
+
+    /** コメント色 */
+    val SyntaxComment = Color(0xFF808080)
+
+    /** 数値色 */
+    val SyntaxNumber = Color(0xFF6897BB)
+
+    /** 文字列色 */
+    val SyntaxString = Color(0xFF6A8759)
 }

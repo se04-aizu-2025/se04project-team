@@ -326,10 +326,24 @@ class SortViewModel(
 
     private fun playStepSound(description: String) {
         if (!soundEnabled) return
+        val currentState = state.value
         val lower = description.lowercase()
+
+        // 値ベースの周波数マッピングを使用
+        val highlightIndices = currentState.highlightingIndices
+        val numbers = currentState.currentNumbers
+        val maxValue = numbers.maxOrNull() ?: 1
+
         when {
-            "swap" in lower -> playSound(SoundEffect.SWAP)
-            "compare" in lower -> playSound(SoundEffect.COMPARE)
+            "swap" in lower || "compare" in lower -> {
+                // ハイライトされている要素の値に基づいて音を再生
+                highlightIndices.forEach { index ->
+                    if (index in numbers.indices) {
+                        val value = numbers[index]
+                        soundPlayer.playWithValue(value, maxValue, soundVolume)
+                    }
+                }
+            }
         }
     }
 

@@ -34,8 +34,8 @@ abstract class BaseViewModel<S : UiState, I : Intent>(
      *
      * @param block 実行するコルーチンのコードブロック。
      */
-    protected fun execute(block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(exceptionHandler) {
+    protected fun execute(block: suspend CoroutineScope.() -> Unit): kotlinx.coroutines.Job {
+        return viewModelScope.launch(exceptionHandler) {
             block()
         }
     }

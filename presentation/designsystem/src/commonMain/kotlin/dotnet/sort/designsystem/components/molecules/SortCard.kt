@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
@@ -64,19 +64,19 @@ fun SortCard(
             Column(
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
-                Text(
+                SortText(
                     text = icon,
                     style = SortTheme.typography.displayMedium,
                     color = if (enabled) colorScheme.primary else colorScheme.onSurface.copy(alpha = 0.3f)
                 )
                 Spacer(modifier = Modifier.height(SpacingTokens.S))
-                Text(
+                SortText(
                     text = title,
                     style = SortTheme.typography.titleMedium,
                     color = colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(SpacingTokens.XS))
-                Text(
+                SortText(
                     text = description,
                     style = SortTheme.typography.bodySmall,
                     color = colorScheme.onSurface.copy(alpha = 0.7f)

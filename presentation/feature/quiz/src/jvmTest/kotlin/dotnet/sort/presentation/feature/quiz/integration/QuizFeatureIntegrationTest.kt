@@ -79,20 +79,18 @@ class QuizFeatureIntegrationTest {
     fun `Integration Test - Quiz Start and Answer Flow`() = runTest {
         // Start quiz
         viewModel.send(QuizIntent.StartQuiz)
-        advanceUntilIdle()
 
+        // Check initial running state immediately (before timer completes)
         assertTrue(viewModel.state.value.isRunning)
         assertEquals(0, viewModel.state.value.questionIndex)
 
         // Select an option
         viewModel.send(QuizIntent.SelectOption(0))
-        advanceUntilIdle()
 
         assertEquals(0, viewModel.state.value.selectedIndex)
 
         // Submit answer
         viewModel.send(QuizIntent.SubmitAnswer)
-        advanceUntilIdle()
 
         assertFalse(viewModel.state.value.isRunning)
         assertTrue(viewModel.state.value.isCorrect != null)

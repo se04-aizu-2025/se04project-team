@@ -3,14 +3,16 @@ package dotnet.sort.presentation.feature.quiz
 import dotnet.sort.model.QuizDifficulty
 import dotnet.sort.model.QuizMode
 import dotnet.sort.model.QuizScore
-import dotnet.sort.model.ScorePeriod
 import dotnet.sort.model.SortType
 import dotnet.sort.presentation.common.viewmodel.BaseViewModel
 import dotnet.sort.presentation.common.viewmodel.Intent
 import dotnet.sort.presentation.common.viewmodel.UiState
-import dotnet.sort.usecase.ObserveQuizScoresByPeriodUseCase
 import dotnet.sort.usecase.ObserveQuizScoresUseCase
 import dotnet.sort.usecase.RecordQuizScoreUseCase
+import dotnet.sort.model.ScorePeriod
+import dotnet.sort.usecase.ObserveQuizScoresByPeriodUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.annotation.Factory
@@ -64,23 +66,24 @@ sealed class QuizIntent : Intent {
     data class SelectMode(val mode: QuizMode) : QuizIntent()
     data class SelectDifficulty(val difficulty: QuizDifficulty) : QuizIntent()
     data class SelectOption(val index: Int) : QuizIntent()
-    data class SelectScorePeriod(val period: ScorePeriod) : QuizIntent()
     data object StartQuiz : QuizIntent()
     data object SubmitAnswer : QuizIntent()
     data object NextQuestion : QuizIntent()
     data object ToggleHint : QuizIntent()
+    data class SelectScorePeriod(val period: ScorePeriod) : QuizIntent()
 }
 
 @OptIn(ExperimentalTime::class)
 @Factory
 class QuizViewModel(
     private val recordQuizScoreUseCase: RecordQuizScoreUseCase,
-    private val observeQuizScoresUseCase: ObserveQuizScoresUseCase,
     private val observeQuizScoresByPeriodUseCase: ObserveQuizScoresByPeriodUseCase,
 ) : BaseViewModel<QuizState, QuizIntent>(QuizState()) {
 
+    private var scoreObservationJob: Job? = null
+
     init {
-        observeScoresByPeriod(ScorePeriod.ALL)
+        observeScores()
     }
 
     override fun send(intent: QuizIntent) {
@@ -130,7 +133,7 @@ class QuizViewModel(
             QuizIntent.ToggleHint -> updateState { copy(showHint = !showHint) }
             is QuizIntent.SelectScorePeriod -> {
                 updateState { copy(scorePeriod = intent.period) }
-                observeScoresByPeriod(intent.period)
+                observeScores()
             }
         }
     }
@@ -226,9 +229,12 @@ class QuizViewModel(
         startTimer()
     }
 
-    private fun observeScoresByPeriod(period: ScorePeriod) {
-        execute {
-            observeQuizScoresByPeriodUseCase(period)
+    private fun observeScores() {
+        if (scoreObservationJob?.isActive == true) {
+            scoreObservationJob?.cancel()
+        }
+        scoreObservationJob = execute {
+            observeQuizScoresByPeriodUseCase(state.value.scorePeriod)
                 .collectLatest { scores ->
                     val history =
                         scores.map { score ->
