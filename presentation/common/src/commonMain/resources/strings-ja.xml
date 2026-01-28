@@ -1,0 +1,15 @@
+<resources>
+    <string name="settings_title">設定</string>
+    <string name="settings_dark_mode_title">ダークモード</string>
+    <string name="settings_dark_mode_desc">ライト/ダークテーマを切り替えます</string>
+    <string name="settings_visualization_title">可視化</string>
+    <string name="settings_bar_theme">バーのテーマ</string>
+    <string name="settings_sound_title">サウンド</string>
+    <string name="settings_sound_effects">効果音</string>
+    <string name="settings_sound_effects_desc">比較/交換の効果音を有効化</string>
+    <string name="settings_volume">音量</string>
+    <string name="settings_language_title">言語</string>
+    <string name="settings_app_language">アプリ言語</string>
+    <string name="settings_app_info">アプリ情報</string>
+    <string name="settings_version">バージョン: %s</string>
+</resources>

@@ -4,10 +4,13 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("com.android.library")
     alias(libs.plugins.ksp)
 }
 
 kotlin {
+    androidTarget()
+    jvmToolchain(21)
     jvm()
 
     js {
@@ -26,9 +29,10 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material) // For Icons
-            implementation(compose.material3)
+
             implementation(compose.ui)
             implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
@@ -54,5 +58,13 @@ dependencies {
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+android {
+    namespace = "dotnet.sort.presentation.feature.settings"
+    compileSdk = 35
+    defaultConfig {
+        minSdk = 24
     }
 }

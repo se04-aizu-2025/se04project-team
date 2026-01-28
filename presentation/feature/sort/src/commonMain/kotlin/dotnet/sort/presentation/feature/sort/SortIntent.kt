@@ -51,6 +51,11 @@ sealed class SortIntent : Intent {
     data object ResetSort : SortIntent()
 
     /**
+     * 配列をシャッフル（再生成）する。
+     */
+    data object ShuffleArray : SortIntent()
+
+    /**
      * 1ステップ進める。
      */
     data object StepForward : SortIntent()
@@ -62,7 +67,7 @@ sealed class SortIntent : Intent {
 
     /**
      * 再生速度を設定する。
-     * @param speedMultiplier 速度倍率（0.25x ~ 4.0x）
+        * @param speedMultiplier 速度倍率（0.25x ~ 100.0x）
      */
     data class SetSpeed(val speedMultiplier: Float) : SortIntent()
 

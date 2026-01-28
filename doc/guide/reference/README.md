@@ -1,16 +1,20 @@
+---
+title: リファレンス
+version: 1.0.0
+last_updated: 2026-01-16
+maintainer: Team
+parent: "[📚 ベストプラクティスガイド](../README.md)"
+---
+
 # リファレンス
 
 このディレクトリには、プロジェクトの詳細な仕様・規約を記載したリファレンスドキュメントが格納されています。
-
----
 
 ## このディレクトリの目的
 
 - タスクガイドでは扱いきれない**詳細な仕様**を提供
 - プロジェクト全体で適用される**規約の正規ソース**
 - 深い理解が必要な時の**リファレンス資料**
-
----
 
 ## 対象読者
 
@@ -45,6 +49,7 @@
 | [VIEWMODEL_SCREEN.md](./VIEWMODEL_SCREEN.md) | ViewModel + Screen の構造 |
 | [STATE_MANAGEMENT.md](./STATE_MANAGEMENT.md) | MVIパターンの詳細 |
 | [COMPOSE_COMPONENTS.md](./COMPOSE_COMPONENTS.md) | Atomic Design、Modifier規約 |
+| [PREVIEWS.md](./PREVIEWS.md) | Preview 実装規約、トラブルシューティング |
 | [NAVIGATION.md](./NAVIGATION.md) | NavGraphBuilder、Routes の設計 |
 
 ### ⚡ 処理

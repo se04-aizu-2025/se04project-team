@@ -38,10 +38,12 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.navigation.compose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeViewModel)
             implementation(projects.presentation.common)
+            implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -52,7 +54,6 @@ kotlin {
         }
     }
 }
-
 
 compose.desktop {
     application {
@@ -70,17 +71,19 @@ compose.desktop {
 tasks.register<JavaExec>("runCli") {
     group = "application"
     description = "Runs the CLI application"
-    classpath = kotlin.targets["jvm"].compilations["main"].output.allOutputs + 
-                configurations["jvmRuntimeClasspath"]
+    classpath = kotlin.targets["jvm"]
+        .compilations["main"]
+        .output.allOutputs +
+        configurations["jvmRuntimeClasspath"]
     mainClass.set("dotnet.sort.CliMainKt")
-    args = if (project.hasProperty("args")) {
-        project.property("args").toString().split(" ")
-    } else {
-        emptyList()
-    }
+    args =
+        if (project.hasProperty("args")) {
+            project.property("args").toString().split(" ")
+        } else {
+            emptyList()
+        }
     standardInput = System.`in`
 }
-
 
 dependencies {
     add("kspCommonMainMetadata", libs.koin.kspCompiler)

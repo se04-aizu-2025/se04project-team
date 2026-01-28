@@ -110,6 +110,16 @@ dotnet/
 | [ユーザーガイド](./doc/USER_GUIDE.md) | アプリの使い方 |
 | [コーディングガイドライン](./doc/CODING_GUIDELINES.md) | Kotlin/Compose規約 |
 
+### ⚡ クイックタスクリンク
+
+| やりたいこと | ガイド |
+|--------------|--------|
+| 画面を追加 | [ADD_SCREEN.md](./doc/guide/tasks/ADD_SCREEN.md) |
+| アルゴリズムを追加 | [ADD_ALGORITHM.md](./doc/guide/tasks/ADD_ALGORITHM.md) |
+| UIコンポーネントを追加 | [ADD_UI_COMPONENT.md](./doc/guide/tasks/ADD_UI_COMPONENT.md) |
+| テストを追加 | [ADD_TEST.md](./doc/guide/tasks/ADD_TEST.md) |
+| デバッグ | [DEBUG_GUIDE.md](./doc/guide/tasks/DEBUG_GUIDE.md) |
+
 ---
 
 ## 🎮 使用例

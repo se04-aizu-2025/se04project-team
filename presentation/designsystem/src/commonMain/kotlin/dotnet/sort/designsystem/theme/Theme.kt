@@ -7,6 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import dotnet.sort.domain.model.BarColorTheme
 
 /**
  * カスタムカラースキームへのアクセス用CompositionLocal。
@@ -29,9 +30,10 @@ val LocalSortTypography = staticCompositionLocalOf { DefaultTypography }
 @Composable
 fun SortTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    barTheme: BarColorTheme = BarColorTheme.KOTLIN,
     content: @Composable () -> Unit
 ) {
-    val sortColorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val sortColorScheme = (if (darkTheme) DarkColorScheme else LightColorScheme).withBarTheme(barTheme)
 
     val materialColorScheme = if (darkTheme) {
         darkColorScheme(

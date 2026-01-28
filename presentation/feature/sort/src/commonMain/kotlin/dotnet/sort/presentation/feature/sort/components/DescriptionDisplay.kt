@@ -5,14 +5,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import dotnet.sort.designsystem.components.atoms.SortText
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
+/**
+ * ソート処理の説明を表示するコンポーネント。
+ *
+ * @param description 表示する説明テキスト
+ * @param modifier Modifier
+ */
 @Composable
 fun DescriptionDisplay(
     description: String,
@@ -28,7 +34,7 @@ fun DescriptionDisplay(
             .padding(SpacingTokens.M),
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        SortText(
             text = description.ifEmpty { "Ready" },
             style = SortTheme.typography.bodyLarge,
             color = SortTheme.colorScheme.onPrimaryContainer,

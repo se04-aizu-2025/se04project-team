@@ -43,8 +43,10 @@ kotlin {
             // Feature modules (navigation aggregates all features)
             api(projects.presentation.feature.home)
             api(projects.presentation.feature.sort)
+            api(projects.domain)
             api(projects.presentation.feature.learn)
             api(projects.presentation.feature.compare)
+            api(projects.presentation.feature.quiz)
             api(projects.presentation.feature.settings)
         }
         commonTest.dependencies {

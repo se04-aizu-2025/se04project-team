@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortButtonStyle
 import dotnet.sort.designsystem.components.atoms.SortSlider
+import dotnet.sort.designsystem.tokens.AnimationTokens
 import dotnet.sort.designsystem.tokens.SpacingTokens
 
 @Composable
@@ -18,6 +19,7 @@ fun SortControlPanel(
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
     onResetClick: () -> Unit,
+    onShuffleClick: () -> Unit,
     onStepForwardClick: () -> Unit,
     onStepBackwardClick: () -> Unit,
     arraySize: Int,
@@ -52,10 +54,36 @@ fun SortControlPanel(
             valueLabel = "${(playbackSpeed * 10).toInt() / 10f}x",
             value = playbackSpeed,
             onValueChange = onSpeedChange,
-            valueRange = 0.25f..4.0f,
+            valueRange = AnimationTokens.SpeedMinMultiplier..AnimationTokens.SpeedMaxMultiplier,
             steps = 0,
             enabled = enabled
         )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S),
+        ) {
+            SortButton(
+                text = "1x",
+                onClick = { onSpeedChange(1f) },
+                style = SortButtonStyle.Text,
+                enabled = enabled,
+                modifier = Modifier.weight(1f),
+            )
+            SortButton(
+                text = "2x",
+                onClick = { onSpeedChange(2f) },
+                style = SortButtonStyle.Text,
+                enabled = enabled,
+                modifier = Modifier.weight(1f),
+            )
+            SortButton(
+                text = "4x",
+                onClick = { onSpeedChange(4f) },
+                style = SortButtonStyle.Text,
+                enabled = enabled,
+                modifier = Modifier.weight(1f),
+            )
+        }
 
         // Array Size Control
         SortSlider(
@@ -91,6 +119,15 @@ fun SortControlPanel(
                 modifier = Modifier.weight(1f)
             )
         }
+
+        // Shuffle Button
+        SortButton(
+            text = "Shuffle Array",
+            onClick = onShuffleClick,
+            style = SortButtonStyle.Outlined,
+            enabled = enabled && !isPlaying,
+            modifier = Modifier.fillMaxWidth()
+        )
         
         // Manual Step Buttons
         Row(

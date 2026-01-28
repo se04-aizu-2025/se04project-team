@@ -1,7 +1,7 @@
 ---
 title: デザインシステム
-version: 1.0.0
-last_updated: 2026-01-13
+version: 1.2.0
+last_updated: 2026-01-23
 maintainer: Team
 ---
 
@@ -22,6 +22,9 @@ designsystem/
 └── components/   # UI コンポーネント
     ├── atoms/    # 最小単位のコンポーネント
     └── molecules/# 複合コンポーネント
+
+※ コンポーネントの粒度定義については [こちら](../presentation/designsystem/README.md) を参照してください。
+※ ドメイン依存の共通コンポーネントについては [こちら](../presentation/common/README.md) を参照してください。
 ```
 
 ---
@@ -72,6 +75,8 @@ Box(
 | `L` | 24.dp | 大スペース |
 | `XL` | 32.dp | 特大スペース |
 | `XXL` | 48.dp | 最大スペース |
+| `FloatingTopBarInset` | 80.dp | フローティングトップバー余白 |
+| `FloatingBottomBarInset` | 96.dp | フローティングボトムバー余白 |
 
 **使用方法**:
 
@@ -101,28 +106,36 @@ Spacer(modifier = Modifier.height(SpacingTokens.M))
 Material 3 ベースのカスタムテーマ：
 
 ```kotlin
+// 📁 designsystem/theme/Theme.kt (検証済み: 2026-01-16)
 @Composable
 fun SortTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
-        typography = SortTypography,
-        content = content
-    )
+    val sortColorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    
+    CompositionLocalProvider(
+        LocalSortColorScheme provides sortColorScheme,
+        LocalSortTypography provides DefaultTypography,
+    ) {
+        MaterialTheme(
+            colorScheme = materialColorScheme,
+            content = content
+        )
+    }
 }
 ```
 
 **テーマ値へのアクセス**:
 
 ```kotlin
+// 📁 Composable 関数内 (検証済み: 2026-01-16)
 @Composable
 fun MyComponent() {
     Text(
         text = "Hello",
-        style = SortTheme.typography.titleMedium,
-        color = SortTheme.colorScheme.primary
+        style = SortTheme.typography.body,  // SortTypography
+        color = SortTheme.colorScheme.primary  // SortColorScheme
     )
 }
 ```
@@ -131,7 +144,7 @@ fun MyComponent() {
 
 ## コンポーネント
 
-### Atoms
+### Atoms (9)
 
 **SortBar** - ソート可視化のバー：
 
@@ -145,39 +158,30 @@ fun SortBar(
 )
 ```
 
-**BarState**:
+**BarState** - バーの状態:
 - `Default` - 通常状態
 - `Comparing` - 比較中
 - `Swapping` - 交換中
 - `Sorted` - ソート完了
 - `Pivot` - ピボット
 
-**SortButton** - アクションボタン：
+**SortButton** - アクションボタン
 
-```kotlin
-@Composable
-fun SortButton(
-    onClick: () -> Unit,
-    text: String,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true
-)
-```
+**SortSlider** - 値調整スライダー
 
-**SortSlider** - 値調整スライダー：
+**SortText** - テキスト表示 (+ `SortHeadline`, `SortTitle`, `SortLabel` バリエーション)
 
-```kotlin
-@Composable
-fun SortSlider(
-    value: Float,
-    onValueChange: (Float) -> Unit,
-    valueRange: ClosedFloatingPointRange<Float>,
-    label: String,
-    modifier: Modifier = Modifier
-)
-```
+**SortIcon** - アイコン表示
 
-### Molecules
+**SortIconButton** - アイコンボタン
+
+**SortDivider** - 区切り線
+
+**SortDropdown** - ドロップダウン選択
+
+---
+
+### Molecules (7)
 
 **ArrayBar** - 配列全体の可視化：
 
@@ -189,6 +193,36 @@ fun ArrayBar(
     sortedIndices: Set<Int> = emptySet(),
     pivotIndex: Int? = null,
     modifier: Modifier = Modifier
+)
+```
+
+**SortBarBase** - バー可視化の基盤コンポーネント
+
+**SortCard** - 汎用カード
+
+**SortSectionCard** - タイトル付きセクションカード
+
+**SortTopBar** - トップバー
+
+**SortBottomBar** - ボトムバー
+
+**SortSettingsRow** - 設定行コンポーネント
+
+**SortInfoRow** - 情報表示行コンポーネント
+
+---
+
+### Organisms (1)
+
+**SortScaffold** - 画面レイアウト：
+
+```kotlin
+@Composable
+fun SortScaffold(
+    modifier: Modifier = Modifier,
+    topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
+    content: @Composable (PaddingValues) -> Unit
 )
 ```
 

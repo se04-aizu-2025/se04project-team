@@ -4,10 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import dotnet.sort.designsystem.theme.SortTheme
+import dotnet.sort.domain.model.Language
+import dotnet.sort.presentation.common.i18n.ProvideAppLanguage
 import dotnet.sort.presentation.common.viewmodel.ThemeViewModel
 import dotnet.sort.presentation.navigation.AppNavigation
-import org.koin.compose.KoinContext
+import org.koin.compose.koinInject
+import dotnet.sort.repository.SettingsRepository
 import org.koin.compose.viewmodel.koinViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.Modifier
 
 /**
  * The common entry point for the application.
@@ -20,12 +25,13 @@ import org.koin.compose.viewmodel.koinViewModel
  * We can wrap in `KoinContext` just in case, or leave it to standard CompositionLocal.
  */
 @Composable
-fun App() {
-    KoinContext {
-        val themeViewModel = koinViewModel<ThemeViewModel>()
-        val state by themeViewModel.state.collectAsState()
+fun App(modifier: Modifier = Modifier, viewModel: ThemeViewModel = koinViewModel<ThemeViewModel>()) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val settingsRepository = koinInject<SettingsRepository>()
+    val language by settingsRepository.language.collectAsState(initial = Language.ENGLISH)
 
-        SortTheme(darkTheme = state.isDarkTheme) {
+    ProvideAppLanguage(language = language) {
+        SortTheme(darkTheme = state.isDarkTheme, barTheme = state.barTheme) {
             AppNavigation()
         }
     }

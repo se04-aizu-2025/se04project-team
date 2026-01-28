@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DNSort</string>
+    <string name="app_description">Algorithm Visualization Tool</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_sort">Visualizer</string>
+    <string name="nav_learn">Learn</string>
+    <string name="nav_compare">Compare</string>
+    <string name="nav_quiz">Quiz</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_back">Back</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Home</string>
+    <string name="home_card_visualizer_title">Visualizer</string>
+    <string name="home_card_visualizer_desc">Visualize sorting algorithms in real-time.</string>
+    <string name="home_card_learn_title">Learn</string>
+    <string name="home_card_learn_desc">Learn about different sorting algorithms.</string>
+    <string name="home_card_compare_title">Compare</string>
+    <string name="home_card_compare_desc">Compare performance of algorithms.</string>
+    <string name="home_card_quiz_title">Quiz</string>
+    <string name="home_card_quiz_desc">Test your algorithm knowledge.</string>
+    <string name="home_card_settings_title">Settings</string>
+    <string name="home_card_settings_desc">App settings and themes.</string>
+
+    <!-- Sort Screen -->
+    <string name="sort_title">Visualizer</string>
+    <string name="sort_algorithm_selector_label">Algorithm</string>
+    <string name="sort_controls_play">Play</string>
+    <string name="sort_controls_pause">Pause</string>
+    <string name="sort_controls_reset">Reset</string>
+    <string name="sort_controls_shuffle">Shuffle</string>
+    <string name="sort_label_size">Size</string>
+    <string name="sort_label_speed">Speed</string>
+    <string name="sort_metrics_comparisons">Comparisons</string>
+    <string name="sort_metrics_swaps">Swaps</string>
+    <string name="sort_metrics_title">Performance Metrics</string>
+    <string name="sort_metrics_time">Time (Measured)</string>
+    <string name="sort_metrics_time_complexity">Time Complexity</string>
+    <string name="sort_metrics_space_complexity">Space Complexity</string>
+    <string name="sort_metrics_no_data">No data available</string>
+    
+    <string name="sort_controls_progress">Progress</string>
+    <string name="sort_controls_sort_resume">Sort / Resume</string>
+    <string name="sort_controls_step_prev">&lt; Step</string>
+    <string name="sort_controls_step_next">Step &gt;</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_section_language">Language</string>
+    <string name="settings_language_label">Language</string>
+    <string name="settings_dark_mode_title">Dark Mode</string>
+    <string name="settings_dark_mode_desc">Switch between light and dark themes</string>
+    <string name="settings_section_visualization">Visualization</string>
+    <string name="settings_bar_theme_label">Bar Theme</string>
+    <string name="settings_section_sound">Sound</string>
+    <string name="settings_sound_effects_title">Sound Effects</string>
+    <string name="settings_sound_effects_desc">Enable compare/swap sounds</string>
+    <string name="settings_volume_label">Volume</string>
+    <string name="settings_section_about">App Info</string>
+    <string name="settings_version_prefix">Version: </string>
+    
+    <!-- Bar Themes -->
+    <string name="theme_kotlin">Kotlin</string>
+    <string name="theme_ocean">Ocean</string>
+    <string name="theme_forest">Forest</string>
+
+    <!-- Algorithms -->
+    <string name="algo_bubble">Bubble Sort</string>
+    <string name="algo_selection">Selection Sort</string>
+    <string name="algo_insertion">Insertion Sort</string>
+    <string name="algo_shell">Shell Sort</string>
+    <string name="algo_merge">Merge Sort</string>
+    <string name="algo_quick">Quick Sort</string>
+    <string name="algo_heap">Heap Sort</string>
+    <string name="algo_counting">Counting Sort</string>
+    <string name="algo_radix">Radix Sort</string>
+    <string name="algo_bucket">Bucket Sort</string>
+    <string name="algo_tim">Tim Sort</string>
+    <string name="algo_comb">Comb Sort</string>
+    <string name="algo_cocktail">Cocktail Sort</string>
+    <string name="algo_gnome">Gnome Sort</string>
+    <string name="algo_oddeven">Odd-Even Sort</string>
+    <string name="algo_bogo">Bogo Sort</string>
+    <string name="algo_bitonic">Bitonic Sort</string>
+
+    <!-- Learn Descriptions -->
+    <string name="learn_desc_bubble">Adjacent swaps, simple but slow.</string>
+    <string name="learn_desc_selection">Find min and place it.</string>
+    <string name="learn_desc_insertion">Build sorted prefix gradually.</string>
+    <string name="learn_desc_shell">Gap-based insertion optimization.</string>
+    <string name="learn_desc_merge">Divide and merge efficiently.</string>
+    <string name="learn_desc_quick">Partition around a pivot.</string>
+    <string name="learn_desc_heap">Heap-based selection of max/min.</string>
+
+    <!-- Learn Detail Tabs -->
+    <string name="learn_tab_overview">Overview</string>
+    <string name="learn_tab_analysis">Analysis</string>
+    <string name="learn_tab_complexity">Complexity</string>
+    <string name="learn_tab_usecase">Use Case</string>
+    <string name="learn_tab_implementation">Implementation</string>
+
+    <!-- Learn Overview -->
+    <string name="learn_history_origin">History &amp; Origin</string>
+    <string name="learn_discover_origins">Discover the origins of %s</string>
+    <string name="learn_details">Details</string>
+    <string name="learn_label_inventor">Inventor</string>
+    <string name="learn_label_year">Year</string>
+    <string name="learn_background">Background</string>
+
+    <!-- Learn Concepts -->
+    <string name="learn_how_it_works">How It Works</string>
+    <string name="learn_key_idea">Key Idea</string>
+    <string name="learn_algorithm_steps">Algorithm Steps</string>
+
+    <!-- Learn Complexity -->
+    <string name="learn_time_complexity">Time Complexity</string>
+    <string name="learn_space_complexity">Space Complexity</string>
+    <string name="learn_intuition">Intuition</string>
+    <string name="learn_best_case">Best Case</string>
+    <string name="learn_average_case">Average Case</string>
+    <string name="learn_worst_case">Worst Case</string>
+
+    <!-- Learn Use Cases -->
+    <string name="learn_best_use_cases">Best Use Cases</string>
+    <string name="learn_not_recommended">Not Recommended</string>
+    <string name="learn_real_world_examples">Real World Examples</string>
+
+    <!-- Learn Code -->
+    <string name="learn_description">Description</string>
+    <string name="learn_implementation_kotlin">Implementation (Kotlin)</string>
+    <string name="learn_language_kotlin">Kotlin</string>
+    <string name="learn_copy_code">Copy code</string>
+
+    <string name="learn_detail_history">History</string>
+    <string name="learn_detail_how_it_works">How it works</string>
+    <string name="learn_detail_complexity">Complexity</string>
+    <string name="learn_detail_space_fmt">Space: %s</string>
+    <string name="learn_detail_use_cases">Use cases</string>
+    <string name="learn_detail_kotlin">Kotlin example</string>
+    <string name="learn_detail_example_steps">Example steps</string>
+    <string name="learn_detail_view_in_sort">View in Sort</string>
+    <string name="learn_detail_algorithm_default">Algorithm</string>
+    <string name="learn_detail_select_prompt">Select an algorithm from Learn list.</string>
+
+    <!-- Quiz UI -->
+    <string name="quiz_mode_label">Mode</string>
+    <string name="quiz_difficulty_label">Difficulty</string>
+    <string name="quiz_status_label">Status</string>
+    <string name="quiz_time_format">Time: %.1fs</string>
+    <string name="quiz_question_progress_format">Question: %d/%d</string>
+    <string name="quiz_score_section">Score</string>
+    <string name="quiz_score_format">Score: %d</string>
+    <string name="quiz_streak_format">Streak: %d</string>
+    <string name="quiz_correct_format">Correct: %d/%d</string>
+    <string name="quiz_longest_streak_format">Longest streak: %d</string>
+    <string name="quiz_question_section">Question</string>
+    <string name="quiz_hint_show">Show Hint</string>
+    <string name="quiz_hint_hide">Hide Hint</string>
+    <string name="quiz_hint_prefix">Hint: </string>
+    <string name="quiz_options_section">Options</string>
+    <string name="quiz_action_start">Start</string>
+    <string name="quiz_action_submit">Submit</string>
+    <string name="quiz_action_next">Next</string>
+    <string name="quiz_result_label">Result</string>
+    <string name="quiz_result_correct">Correct!</string>
+    <string name="quiz_result_incorrect">Incorrect.</string>
+    <string name="quiz_summary_label">Summary</string>
+    <string name="quiz_action_play_again">Play Again</string>
+    <string name="quiz_leaderboard_label">Leaderboard</string>
+
+    <!-- Quiz Modes/Difficulty -->
+    <string name="quiz_mode_speed_swap">Speed Swap</string>
+    <string name="quiz_mode_guess_algo">Guess Algo</string>
+    <string name="quiz_diff_easy">Easy</string>
+    <string name="quiz_diff_medium">Medium</string>
+    <string name="quiz_diff_hard">Hard</string>
+
+    <!-- Quiz Questions -->
+    <string name="quiz_q_bubble_next_swap">Which pair will swap next in Bubble Sort?</string>
+    <string name="quiz_q_check_pair_0_1">(0,1)</string>
+    <string name="quiz_q_check_pair_1_2">(1,2)</string>
+    <string name="quiz_q_check_pair_2_3">(2,3)</string>
+    
+    <string name="quiz_q_selection_move_end">Which element moves to the end in Selection Sort?</string>
+    <string name="quiz_opt_min">Minimum</string>
+    <string name="quiz_opt_max">Maximum</string>
+    <string name="quiz_opt_middle">Middle</string>
+
+    <string name="quiz_q_pivot_partition">Uses pivot-based partitioning.</string>
+    <string name="quiz_hint_n_log_n_avg">Average complexity $O(n \log n)$</string>
+    
+    <string name="quiz_q_heap_extract">Repeatedly extracts max/min from a heap.</string>
+    <string name="quiz_hint_binary_heap">Uses a binary heap structure</string>
+    
+    <string name="quiz_q_divide_merge">Divide and merge halves.</string>
+    <string name="quiz_q_gap_insertion">Gapped insertion passes.</string>
+
+    
+    <string name="language_english">English</string>
+    <string name="language_japanese">日本語</string>
+</resources>

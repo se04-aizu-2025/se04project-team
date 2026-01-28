@@ -26,6 +26,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.ui)
+            implementation(compose.components.resources)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.koin.core)
             implementation(libs.koin.annotations)
@@ -34,5 +35,18 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+    }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", libs.koin.kspCompiler)
+    add("kspJvm", libs.koin.kspCompiler)
+    add("kspJs", libs.koin.kspCompiler)
+    add("kspWasmJs", libs.koin.kspCompiler)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }
