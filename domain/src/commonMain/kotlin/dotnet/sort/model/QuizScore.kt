@@ -33,3 +33,17 @@ enum class QuizMode {
     SPEED_SWAP,
     GUESS_ALGORITHM,
 }
+
+/**
+ * スコア推移の表示期間。
+ */
+enum class ScorePeriod {
+    /** 直近24時間 */
+    DAILY,
+
+    /** 直近7日間 */
+    WEEKLY,
+
+    /** 全期間 */
+    ALL,
+}

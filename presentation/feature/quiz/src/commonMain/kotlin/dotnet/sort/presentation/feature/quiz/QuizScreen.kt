@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import dotnet.sort.model.QuizDifficulty
 import dotnet.sort.model.QuizMode
+import dotnet.sort.model.ScorePeriod
 import dotnet.sort.designsystem.components.atoms.SortButton
 import dotnet.sort.designsystem.components.atoms.SortButtonStyle
 import dotnet.sort.designsystem.components.atoms.SortIcons
@@ -213,15 +214,65 @@ fun QuizScreen(
                     SortText(text = "Score: ${state.score}")
                     SortText(text = "Correct: ${state.correctCount}/${state.totalQuestions}")
                     SortText(text = "Longest streak: ${state.longestStreak}")
-                    SortButton(text = "Play Again", onClick = { onIntent(QuizIntent.StartQuiz) })
+
+                    if (state.scoreHistory.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(SpacingTokens.M))
+
+                        val bestScore = state.scoreHistory.maxOf { it.score }
+                        val averageScore = state.scoreHistory.map { it.score }.average().toInt()
+                        val improvement = if (state.scoreHistory.size > 1) {
+                            state.score - state.scoreHistory[1].score
+                        } else {
+                            0
+                        }
+
+                        SortText(
+                            text = if (state.score >= bestScore) "🏆 New Best Score!" else "Best: $bestScore",
+                        )
+                        SortText(text = "Average: $averageScore")
+                        if (improvement != 0) {
+                            SortText(
+                                text = "vs Previous: ${if (improvement > 0) "+$improvement" else "$improvement"}",
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(SpacingTokens.M))
+                    SortButton(
+                        text = "Play Again",
+                        onClick = { onIntent(QuizIntent.StartQuiz) },
+                        style = SortButtonStyle.Primary,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
                 }
             }
 
-            if (state.scoreHistory.isNotEmpty()) {
-                val bestScore = state.scoreHistory.maxOf { it.score }
-                val averageScore = state.scoreHistory.map { it.score }.average().toInt()
-                val latestScore = state.scoreHistory.first().score
-                SortSectionCard(title = "Score Trend") {
+            SortSectionCard(title = "Score Trend") {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(SpacingTokens.S),
+                ) {
+                    ScorePeriod.entries.forEach { period ->
+                        SortButton(
+                            text = when (period) {
+                                ScorePeriod.DAILY -> "Day"
+                                ScorePeriod.WEEKLY -> "Week"
+                                ScorePeriod.ALL -> "All"
+                            },
+                            onClick = { onIntent(QuizIntent.SelectScorePeriod(period)) },
+                            style = if (state.scorePeriod == period) SortButtonStyle.Primary else SortButtonStyle.Outlined,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(SpacingTokens.S))
+
+                if (state.scoreHistory.isNotEmpty()) {
+                    val bestScore = state.scoreHistory.maxOf { it.score }
+                    val averageScore = state.scoreHistory.map { it.score }.average().toInt()
+                    val latestScore = state.scoreHistory.first().score
+
                     ScoreTrendChart(
                         scores = state.scoreHistory,
                         modifier = Modifier
@@ -234,6 +285,8 @@ fun QuizScreen(
                     SortText(text = "Latest: $latestScore")
                     SortText(text = "Best: $bestScore")
                     SortText(text = "Average: $averageScore")
+                } else {
+                    SortText(text = "No scores in this period")
                 }
             }
 

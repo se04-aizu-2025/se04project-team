@@ -1,8 +1,9 @@
 ---
 title: 開発計画
-version: 1.2.0
-last_updated: 2026-01-17
+version: 2.0.0
+last_updated: 2026-01-28
 maintainer: Team
+status: v2.0 Complete
 ---
 
 # Development Plan / 開発計画

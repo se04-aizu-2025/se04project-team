@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.SortText
@@ -31,8 +34,18 @@ fun SortVisualizer(
     description: String,
     modifier: Modifier = Modifier,
 ) {
+    // パフォーマンス最適化: highlightIndicesをSetに変換してO(1)ルックアップ
+    val highlightSet = remember(highlightIndices) { highlightIndices.toSet() }
+
+    // アクセシビリティ: ビジュアライザーの説明
+    val accessibilityDescription = remember(array.size, sortedIndices.size) {
+        "Sort visualizer with ${array.size} elements, ${sortedIndices.size} sorted"
+    }
+
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics { contentDescription = accessibilityDescription },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Visualizer Area
@@ -46,7 +59,7 @@ fun SortVisualizer(
             if (array.isNotEmpty()) {
                 ArrayBar(
                     array = array,
-                    highlightIndices = highlightIndices,
+                    highlightIndices = highlightSet.toList(),
                     sortedIndices = sortedIndices,
                     modifier = Modifier.fillMaxWidth().height(280.dp)
                 )

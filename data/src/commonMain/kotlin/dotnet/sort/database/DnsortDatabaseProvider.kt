@@ -125,4 +125,35 @@ class DnsortDatabaseProvider(
                     },
             )
         }
+
+    fun observeScoresSince(
+        sinceMillis: Long,
+        limit: Int,
+    ): Flow<List<QuizScore>> =
+        flow {
+            ensureDatabaseReady()
+            emitAll(
+                quizQueries
+                    .selectQuizScoresSince(sinceMillis, limit.toLong())
+                    .asFlow()
+                    .mapToList(Dispatchers.Default)
+                    .map { rows ->
+                        rows.map { row ->
+                            QuizScore(
+                                id = row.id,
+                                correctCount = row.correct_count.toInt(),
+                                incorrectCount = row.incorrect_count.toInt(),
+                                longestStreak = row.longest_streak.toInt(),
+                                score = row.score.toInt(),
+                                durationMillis = row.duration_millis,
+                                difficulty = quizDifficultyFromDb(row.difficulty),
+                                mode = quizModeFromDb(row.mode),
+                                algorithmType = row.algorithm_type?.let { sortTypeFromDb(it) },
+                                quizVersion = row.quiz_version,
+                                createdAtMillis = row.created_at_millis,
+                            )
+                        }
+                    },
+            )
+        }
 }

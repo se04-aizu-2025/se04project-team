@@ -43,3 +43,20 @@ SELECT id,
 FROM quiz_score
 ORDER BY created_at_millis DESC
 LIMIT ?;
+
+selectQuizScoresSince:
+SELECT id,
+       correct_count,
+       incorrect_count,
+       longest_streak,
+       score,
+       duration_millis,
+       difficulty,
+       mode,
+       algorithm_type,
+       quiz_version,
+       created_at_millis
+FROM quiz_score
+WHERE created_at_millis >= ?
+ORDER BY created_at_millis DESC
+LIMIT ?;
