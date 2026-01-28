@@ -1,0 +1,15 @@
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="settings_dark_mode_title">Dark Mode</string>
+    <string name="settings_dark_mode_desc">Switch between light and dark themes</string>
+    <string name="settings_visualization_title">Visualization</string>
+    <string name="settings_bar_theme">Bar Theme</string>
+    <string name="settings_sound_title">Sound</string>
+    <string name="settings_sound_effects">Sound Effects</string>
+    <string name="settings_sound_effects_desc">Enable compare/swap sounds</string>
+    <string name="settings_volume">Volume</string>
+    <string name="settings_language_title">Language</string>
+    <string name="settings_app_language">App Language</string>
+    <string name="settings_app_info">App Info</string>
+    <string name="settings_version">Version: %s</string>
+</resources>

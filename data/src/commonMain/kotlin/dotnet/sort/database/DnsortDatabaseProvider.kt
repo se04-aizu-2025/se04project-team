@@ -6,8 +6,11 @@ import app.cash.sqldelight.coroutines.mapToList
 import dotnet.sort.data.DnsortDatabase
 import dotnet.sort.model.AlgorithmHistoryEntry
 import dotnet.sort.model.HistoryEventType
+import dotnet.sort.model.QuizScore
 import dotnet.sort.model.SortType
 import dotnet.sort.repository.historyEventTypeFromDb
+import dotnet.sort.repository.quizDifficultyFromDb
+import dotnet.sort.repository.quizModeFromDb
 import dotnet.sort.repository.sortTypeFromDb
 import dotnet.sort.repository.toDbValue
 import kotlinx.coroutines.CompletableDeferred
@@ -28,6 +31,7 @@ class DnsortDatabaseProvider(
     private val driver = driverFactory.createDriver()
     private val database = DnsortDatabase(driver)
     private val queries = database.algorithm_historyQueries
+    private val quizQueries = database.quiz_scoreQueries
     private val databaseReady = CompletableDeferred<Unit>()
 
     init {
@@ -56,6 +60,22 @@ class DnsortDatabaseProvider(
         )
     }
 
+    suspend fun insertQuizScore(score: QuizScore) {
+        ensureDatabaseReady()
+        quizQueries.insertQuizScore(
+            correct_count = score.correctCount.toLong(),
+            incorrect_count = score.incorrectCount.toLong(),
+            longest_streak = score.longestStreak.toLong(),
+            score = score.score.toLong(),
+            duration_millis = score.durationMillis,
+            difficulty = score.difficulty.toDbValue(),
+            mode = score.mode.toDbValue(),
+            algorithm_type = score.algorithmType?.toDbValue(),
+            quiz_version = score.quizVersion,
+            created_at_millis = score.createdAtMillis,
+        )
+    }
+
     fun observeRecent(limit: Int): Flow<List<AlgorithmHistoryEntry>> =
         flow {
             ensureDatabaseReady()
@@ -72,6 +92,34 @@ class DnsortDatabaseProvider(
                                 eventType = historyEventTypeFromDb(row.event_type),
                                 createdAtMillis = row.created_at_millis,
                                 metadata = row.metadata,
+                            )
+                        }
+                    },
+            )
+        }
+
+    fun observeRecentScores(limit: Int): Flow<List<QuizScore>> =
+        flow {
+            ensureDatabaseReady()
+            emitAll(
+                quizQueries
+                    .selectQuizScores(limit.toLong())
+                    .asFlow()
+                    .mapToList(Dispatchers.Default)
+                    .map { rows ->
+                        rows.map { row ->
+                            QuizScore(
+                                id = row.id,
+                                correctCount = row.correct_count.toInt(),
+                                incorrectCount = row.incorrect_count.toInt(),
+                                longestStreak = row.longest_streak.toInt(),
+                                score = row.score.toInt(),
+                                durationMillis = row.duration_millis,
+                                difficulty = quizDifficultyFromDb(row.difficulty),
+                                mode = quizModeFromDb(row.mode),
+                                algorithmType = row.algorithm_type?.let { sortTypeFromDb(it) },
+                                quizVersion = row.quiz_version,
+                                createdAtMillis = row.created_at_millis,
                             )
                         }
                     },

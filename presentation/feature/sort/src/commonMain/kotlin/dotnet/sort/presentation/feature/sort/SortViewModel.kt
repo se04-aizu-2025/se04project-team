@@ -10,10 +10,14 @@ import dotnet.sort.presentation.common.viewmodel.UiState
 import dotnet.sort.usecase.ExecuteSortUseCase
 import dotnet.sort.usecase.GenerateArrayUseCase
 import dotnet.sort.usecase.RecordHistoryEventUseCase
+import dotnet.sort.presentation.common.sound.SoundEffect
+import dotnet.sort.presentation.common.sound.SoundEffectPlayer
+import dotnet.sort.repository.SettingsRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withTimeout
 import org.koin.core.annotation.Factory
 // import org.koin.core.annotation.KoinViewModel
 
@@ -29,6 +33,8 @@ data class SortState(
     val isPlaying: Boolean = false,
     val playbackSpeed: Float = 1.0f,
     val highlightingIndices: List<Int> = emptyList(),
+    val sortedIndices: Set<Int> = emptySet(),
+    val isCompleted: Boolean = false,
     val stepDescription: String = "",
 ) : UiState
 
@@ -37,7 +43,24 @@ class SortViewModel(
     private val executeSortUseCase: ExecuteSortUseCase,
     private val generateArrayUseCase: GenerateArrayUseCase,
     private val recordHistoryEventUseCase: RecordHistoryEventUseCase,
+    private val settingsRepository: SettingsRepository,
 ) : BaseViewModel<SortState, SortIntent>(SortState()) {
+    private val soundPlayer = SoundEffectPlayer()
+    private var soundEnabled: Boolean = true
+    private var soundVolume: Float = 0.6f
+
+    init {
+        execute {
+            settingsRepository.isSoundEnabled.collect { enabled ->
+                soundEnabled = enabled
+            }
+        }
+        execute {
+            settingsRepository.soundVolume.collect { volume ->
+                soundVolume = volume
+            }
+        }
+    }
     override fun send(intent: SortIntent) {
         when (intent) {
             is SortIntent.SelectAlgorithm -> {
@@ -90,6 +113,8 @@ class SortViewModel(
                     currentNumbers = array,
                     sortResult = null,
                     currentStepIndex = 0,
+                    sortedIndices = emptySet(),
+                    isCompleted = false,
                     stepDescription = "Ready to sort",
                     highlightingIndices = emptyList(),
                 )
@@ -97,29 +122,66 @@ class SortViewModel(
         }
     }
 
+    private suspend fun prepareArrayIfNeeded(): List<Int> {
+        val currentState = state.value
+        if (currentState.initialNumbers.isNotEmpty()) {
+            return currentState.initialNumbers
+        }
+
+        val array = generateArrayUseCase(currentState.arraySize, currentState.generatorType)
+        updateState {
+            copy(
+                initialNumbers = array,
+                currentNumbers = array,
+                sortResult = null,
+                currentStepIndex = 0,
+                sortedIndices = emptySet(),
+                isCompleted = false,
+                stepDescription = "Ready to sort",
+                highlightingIndices = emptyList(),
+            )
+        }
+        return array
+    }
+
     /**
      * ソートを実行し、結果を取得する（自動再生なし）
      */
     private fun executeSort() {
-        val currentState = state.value
-        if (currentState.initialNumbers.isEmpty()) generateArray()
-
         execute {
             updateState { copy(isLoading = true) }
-            // Use initialNumbers to ensure clean sort
-            val result = executeSortUseCase.execute(state.value.algorithm, state.value.initialNumbers)
-            recordHistoryEventUseCase(
-                algorithmType = state.value.algorithm,
-                eventType = HistoryEventType.SortExecuted,
-            )
-            updateState {
-                copy(
-                    isLoading = false,
-                    sortResult = result,
-                    currentStepIndex = 0,
-                )
+            try {
+                val targetArray = prepareArrayIfNeeded()
+                val result = executeSortUseCase.execute(state.value.algorithm, targetArray)
+                updateState {
+                    copy(
+                        isLoading = false,
+                        sortResult = result,
+                        currentStepIndex = 0,
+                        sortedIndices = emptySet(),
+                        isCompleted = false,
+                    )
+                }
+                updateVisualizerState(0)
+                execute {
+                    runCatching {
+                        withTimeout(1_000) {
+                            recordHistoryEventUseCase(
+                                algorithmType = state.value.algorithm,
+                                eventType = HistoryEventType.SortExecuted,
+                            )
+                        }
+                    }
+                }
+            } catch (throwable: Throwable) {
+                updateState {
+                    copy(
+                        isLoading = false,
+                        isPlaying = false,
+                        stepDescription = "Sort failed: ${throwable.message ?: "Unknown error"}",
+                    )
+                }
             }
-            updateVisualizerState(0)
         }
     }
 
@@ -127,13 +189,42 @@ class SortViewModel(
      * ソートを開始し、自動再生を開始する
      */
     private fun startSort() {
-        executeSort()
         execute {
-            // Wait for executeSort to complete, then start playback
-            // Small delay to ensure state is updated
-            delay(50)
-            updateState { copy(isPlaying = true) }
-            startAutoPlay()
+            updateState { copy(isLoading = true) }
+            try {
+                val targetArray = prepareArrayIfNeeded()
+                val result = executeSortUseCase.execute(state.value.algorithm, targetArray)
+                updateState {
+                    copy(
+                        isLoading = false,
+                        sortResult = result,
+                        currentStepIndex = 0,
+                        isPlaying = true,
+                        sortedIndices = emptySet(),
+                        isCompleted = false,
+                    )
+                }
+                updateVisualizerState(0)
+                execute {
+                    runCatching {
+                        withTimeout(1_000) {
+                            recordHistoryEventUseCase(
+                                algorithmType = state.value.algorithm,
+                                eventType = HistoryEventType.SortExecuted,
+                            )
+                        }
+                    }
+                }
+                startAutoPlay()
+            } catch (throwable: Throwable) {
+                updateState {
+                    copy(
+                        isLoading = false,
+                        isPlaying = false,
+                        stepDescription = "Sort failed: ${throwable.message ?: "Unknown error"}",
+                    )
+                }
+            }
         }
     }
 
@@ -157,6 +248,7 @@ class SortViewModel(
                 } else {
                     // Finished or no result
                     updateState { copy(isPlaying = false) }
+                    startCompletionWave()
                     break
                 }
             }
@@ -169,6 +261,8 @@ class SortViewModel(
                 currentNumbers = initialNumbers,
                 currentStepIndex = 0,
                 isPlaying = false,
+                sortedIndices = emptySet(),
+                isCompleted = false,
                 highlightingIndices = emptyList(),
                 stepDescription = "Reset",
             )
@@ -201,8 +295,46 @@ class SortViewModel(
                     highlightingIndices = snapshot.highlightingIndices,
                     stepDescription = snapshot.description,
                     currentStepIndex = index,
+                    sortedIndices = if (isCompleted) sortedIndices else emptySet(),
                 )
             }
+            playStepSound(snapshot.description)
+            if (index == steps.lastIndex) {
+                startCompletionWave()
+            }
         }
+    }
+
+    private fun startCompletionWave() {
+        val currentState = state.value
+        val size = currentState.currentNumbers.size
+        if (size == 0 || currentState.isCompleted) return
+        updateState { copy(isCompleted = true) }
+        execute {
+            for (i in 0 until size) {
+                updateState {
+                    copy(
+                        sortedIndices = (0..i).toSet(),
+                        stepDescription = if (i == size - 1) "Completed" else stepDescription,
+                    )
+                }
+                delay(20)
+            }
+            playSound(SoundEffect.COMPLETE)
+        }
+    }
+
+    private fun playStepSound(description: String) {
+        if (!soundEnabled) return
+        val lower = description.lowercase()
+        when {
+            "swap" in lower -> playSound(SoundEffect.SWAP)
+            "compare" in lower -> playSound(SoundEffect.COMPARE)
+        }
+    }
+
+    private fun playSound(effect: SoundEffect) {
+        if (!soundEnabled) return
+        soundPlayer.play(effect, soundVolume)
     }
 }

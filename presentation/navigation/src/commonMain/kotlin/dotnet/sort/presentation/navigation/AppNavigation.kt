@@ -20,8 +20,10 @@ fun AppNavigation() {
             "Home" -> Screen.Home
             "Sort" -> Screen.Sort
             "Learn" -> Screen.Learn
+            "LearnDetail" -> Screen.Learn
             "Compare" -> Screen.Compare
             "Settings" -> Screen.Settings
+            "Quiz" -> Screen.Home
             else -> Screen.Home
         }
 
@@ -43,6 +45,9 @@ fun AppNavigation() {
             },
             onNavigateToCompare = {
                 if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToQuiz = {
+                navController.navigate(Screen.Quiz)
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
@@ -100,23 +105,59 @@ fun AppNavigation() {
             onNavigateToLearn = {
                 if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
             },
+            onNavigateToLearnDetail = { sortType ->
+                navController.navigate(Screen.LearnDetail(sortTypeName = sortType.name))
+            },
             onNavigateToCompare = {
                 if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
             },
             onNavigateToSettings = {
                 if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
-            onNavigateToDetail = { sortType ->
-                navController.navigateToAlgorithmDetail(sortType)
+            onBackClick = { navController.popBackStack() },
+        )
+
+        learnDetailDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
             },
             onBackClick = { navController.popBackStack() },
         )
 
-        algorithmDetailDestination(
+        compareDestination(
+            currentScreen = currentScreen,
+            onNavigateToHome = {
+                if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)
+            },
+            onNavigateToSort = {
+                if (currentScreen !is Screen.Sort) navController.navigate(Screen.Sort)
+            },
+            onNavigateToLearn = {
+                if (currentScreen !is Screen.Learn) navController.navigate(Screen.Learn)
+            },
+            onNavigateToCompare = {
+                if (currentScreen !is Screen.Compare) navController.navigate(Screen.Compare)
+            },
+            onNavigateToSettings = {
+                if (currentScreen !is Screen.Settings) navController.navigate(Screen.Settings)
+            },
             onBackClick = { navController.popBackStack() },
         )
 
-        compareDestination(
+        quizDestination(
             currentScreen = currentScreen,
             onNavigateToHome = {
                 if (currentScreen !is Screen.Home) navController.navigate(Screen.Home)

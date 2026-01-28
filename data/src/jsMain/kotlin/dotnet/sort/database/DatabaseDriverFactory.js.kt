@@ -6,6 +6,7 @@ import org.koin.core.annotation.Single
 import org.w3c.dom.Worker
 
 @Single
+@OptIn(ExperimentalWasmJsInterop::class)
 actual class DatabaseDriverFactory {
     actual fun createDriver(): SqlDriver {
         val worker =

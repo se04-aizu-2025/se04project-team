@@ -3,7 +3,11 @@ package dotnet.sort.presentation.feature.sort.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dotnet.sort.designsystem.components.atoms.SortDropdown
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.sort_algorithm_selector_label
+import dotnet.sort.designsystem.utils.toDisplayName
 import dotnet.sort.model.SortType
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * アルゴリズム選択コンポーネント。
@@ -21,11 +25,11 @@ fun AlgorithmSelector(
     modifier: Modifier = Modifier
 ) {
     SortDropdown(
-        label = "Algorithm",
+        label = stringResource(Res.string.sort_algorithm_selector_label),
         selectedItem = selectedAlgorithm,
         items = SortType.entries.toList(),
         onItemSelected = onAlgorithmSelected,
-        itemLabel = { it.displayName },
+        itemLabel = { stringResource(it.toDisplayName()) },
         enabled = enabled,
         modifier = modifier
     )

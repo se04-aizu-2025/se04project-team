@@ -32,6 +32,7 @@ kotlin {
             implementation(libs.components.resources)
             implementation(libs.ui.tooling.preview)
             implementation(compose.materialIconsExtended)
+            implementation(projects.domain)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -41,6 +42,11 @@ kotlin {
             implementation(compose.desktop.currentOs)
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "dotnet.sort.designsystem.generated.resources"
+    publicResClass = true
 }
 
 android {

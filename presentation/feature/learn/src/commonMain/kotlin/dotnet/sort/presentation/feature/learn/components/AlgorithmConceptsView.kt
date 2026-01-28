@@ -14,6 +14,9 @@ import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.learn.model.AlgorithmConcept
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * アルゴリズムの動作原理・概念を表示するコンポーネント。
@@ -33,29 +36,29 @@ fun AlgorithmConceptsView(
             .padding(SpacingTokens.M)
     ) {
         // How It Works Section
-        SortSectionCard(title = "How It Works") {
+        SortSectionCard(title = stringResource(Res.string.learn_how_it_works)) {
             SortText(
                 text = concept.howItWorks,
                 style = SortTheme.typography.bodyLarge,
                 color = SortTheme.colorScheme.onSurface
             )
         }
-        
+
         Spacer(modifier = Modifier.height(SpacingTokens.M))
 
         // Key Idea Section
-        SortSectionCard(title = "Key Idea") {
+        SortSectionCard(title = stringResource(Res.string.learn_key_idea)) {
             SortText(
                 text = concept.keyIdea,
                 style = SortTheme.typography.bodyLarge,
                 color = SortTheme.colorScheme.onSurface
             )
         }
-        
+
         Spacer(modifier = Modifier.height(SpacingTokens.M))
 
         // Steps Section
-        SortSectionCard(title = "Algorithm Steps") {
+        SortSectionCard(title = stringResource(Res.string.learn_algorithm_steps)) {
             concept.steps.forEachIndexed { index, step ->
                 SortText(
                     text = "${index + 1}. $step",

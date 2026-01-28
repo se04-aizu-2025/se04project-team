@@ -35,6 +35,9 @@ import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.learn.model.AlgorithmImplementation
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AlgorithmCodeView(
@@ -51,7 +54,7 @@ fun AlgorithmCodeView(
     ) {
         // Description
         if (implementation.description.isNotEmpty()) {
-            SortSectionCard(title = "Description") {
+            SortSectionCard(title = stringResource(Res.string.learn_description)) {
                 Box(modifier = Modifier.padding(SpacingTokens.M)) {
                     SortText(
                         text = implementation.description,
@@ -63,7 +66,7 @@ fun AlgorithmCodeView(
         }
 
         // Code Block
-        SortSectionCard(title = "Implementation (Kotlin)") {
+        SortSectionCard(title = stringResource(Res.string.learn_implementation_kotlin)) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -86,7 +89,7 @@ fun AlgorithmCodeView(
                             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
                         ) {
                             SortText(
-                                text = "Kotlin",
+                                text = stringResource(Res.string.learn_language_kotlin),
                                 style = SortTheme.typography.labelMedium,
                                 color = SortTheme.colorScheme.onSurfaceVariant
                             )
@@ -98,7 +101,7 @@ fun AlgorithmCodeView(
                             ) {
                                 SortIcon(
                                     imageVector = Icons.Default.ContentCopy,
-                                    contentDescription = "Copy code",
+                                    contentDescription = stringResource(Res.string.learn_copy_code),
                                     tint = SortTheme.colorScheme.onSurfaceVariant
                                 )
                             }

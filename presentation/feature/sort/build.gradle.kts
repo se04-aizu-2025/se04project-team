@@ -76,3 +76,7 @@ android {
         minSdk = 24
     }
 }
+
+compose.resources {
+    packageOfResClass = "dotnet.sort.presentation.feature.sort.generated.resources"
+}

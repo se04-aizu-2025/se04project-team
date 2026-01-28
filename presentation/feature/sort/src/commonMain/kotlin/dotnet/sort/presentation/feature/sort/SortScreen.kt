@@ -1,4 +1,6 @@
 package dotnet.sort.presentation.feature.sort
+
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,8 +14,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import dotnet.sort.designsystem.components.atoms.SortIcons
 import dotnet.sort.designsystem.components.molecules.SortBottomBar
@@ -63,8 +73,53 @@ fun SortScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // Keyboard Focus Requester
+    val focusRequester = remember { FocusRequester() }
+
+    // Launch effect to request focus when screen is shown
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     SortScaffold(
-        modifier = modifier,
+        modifier =
+            modifier
+                .onKeyEvent { event ->
+                    if (event.type == KeyEventType.KeyDown) {
+                        when (event.key) {
+                            Key.Spacebar -> {
+                                if (state.isPlaying) {
+                                    onIntent(SortIntent.PauseSort)
+                                } else if (state.sortResult != null) {
+                                    onIntent(SortIntent.ResumeSort)
+                                } else {
+                                    onIntent(SortIntent.StartSort)
+                                }
+                                true
+                            }
+                            Key.DirectionRight -> {
+                                if (!state.isPlaying && state.sortResult != null) {
+                                    onIntent(SortIntent.StepForward)
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            Key.DirectionLeft -> {
+                                if (!state.isPlaying && state.sortResult != null) {
+                                    onIntent(SortIntent.StepBackward)
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            else -> false
+                        }
+                    } else {
+                        false
+                    }
+                }.focusRequester(focusRequester)
+                .focusable(),
         topBar = {
             SortTopBar(
                 title = "Visualizer",
@@ -160,6 +215,7 @@ fun SortContent(
                     SortVisualizer(
                         array = state.currentNumbers,
                         highlightIndices = state.highlightingIndices,
+                        sortedIndices = state.sortedIndices,
                         description = state.stepDescription,
                         modifier = Modifier.weight(1f),
                     )
@@ -240,6 +296,7 @@ fun SortContent(
                 SortVisualizer(
                     array = state.currentNumbers,
                     highlightIndices = state.highlightingIndices,
+                    sortedIndices = state.sortedIndices,
                     description = state.stepDescription,
                     modifier = Modifier.heightIn(min = 240.dp, max = 440.dp),
                 )

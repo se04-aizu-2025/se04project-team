@@ -20,8 +20,11 @@ sealed interface Screen {
     data object Learn : Screen
 
     @Serializable
+    data class LearnDetail(val sortTypeName: String) : Screen
+
+    @Serializable
     data object Compare : Screen
 
     @Serializable
-    data class AlgorithmDetail(val sortTypeString: String) : Screen
+    data object Quiz : Screen
 }

@@ -17,6 +17,9 @@ import dotnet.sort.designsystem.components.molecules.SortSectionCard
 import dotnet.sort.designsystem.theme.SortTheme
 import dotnet.sort.designsystem.tokens.SpacingTokens
 import dotnet.sort.presentation.feature.learn.model.AlgorithmUseCase
+import dotnet.sort.designsystem.generated.resources.Res
+import dotnet.sort.designsystem.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AlgorithmUseCaseView(
@@ -30,7 +33,7 @@ fun AlgorithmUseCaseView(
         verticalArrangement = Arrangement.spacedBy(SpacingTokens.M)
     ) {
         // Best Use Cases
-        SortSectionCard(title = "Best Use Cases") {
+        SortSectionCard(title = stringResource(Res.string.learn_best_use_cases)) {
             Column(
                 modifier = Modifier.padding(SpacingTokens.M),
                 verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)
@@ -45,7 +48,7 @@ fun AlgorithmUseCaseView(
         }
 
         // Not Recommended
-        SortSectionCard(title = "Not Recommended") {
+        SortSectionCard(title = stringResource(Res.string.learn_not_recommended)) {
             Column(
                 modifier = Modifier.padding(SpacingTokens.M),
                 verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)
@@ -58,9 +61,9 @@ fun AlgorithmUseCaseView(
                 }
             }
         }
-        
+
         // Real World Examples
-        SortSectionCard(title = "Real World Examples") {
+        SortSectionCard(title = stringResource(Res.string.learn_real_world_examples)) {
             Column(
                 modifier = Modifier.padding(SpacingTokens.M),
                 verticalArrangement = Arrangement.spacedBy(SpacingTokens.S)

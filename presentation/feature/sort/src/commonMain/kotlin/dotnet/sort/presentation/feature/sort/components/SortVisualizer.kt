@@ -27,6 +27,7 @@ import dotnet.sort.designsystem.tokens.SpacingTokens
 fun SortVisualizer(
     array: List<Int>,
     highlightIndices: List<Int>,
+    sortedIndices: Set<Int> = emptySet(),
     description: String,
     modifier: Modifier = Modifier,
 ) {
@@ -46,6 +47,7 @@ fun SortVisualizer(
                 ArrayBar(
                     array = array,
                     highlightIndices = highlightIndices,
+                    sortedIndices = sortedIndices,
                     modifier = Modifier.fillMaxWidth().height(280.dp)
                 )
             } else {
