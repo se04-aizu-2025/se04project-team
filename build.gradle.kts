@@ -36,6 +36,13 @@ subprojects {
             dependsOn(":installGitHooks")
         }
     }
+
+    // Kotlinコンパイラオプションを全サブプロジェクトに適用
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
+    }
 }
 
 // タスク: Git hooksを手動でインストール
