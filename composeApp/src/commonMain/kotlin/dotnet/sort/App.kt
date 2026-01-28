@@ -12,6 +12,7 @@ import org.koin.compose.koinInject
 import dotnet.sort.repository.SettingsRepository
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.Modifier
 
 /**
  * The common entry point for the application.
@@ -24,7 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
  * We can wrap in `KoinContext` just in case, or leave it to standard CompositionLocal.
  */
 @Composable
-fun App(viewModel: ThemeViewModel = koinViewModel<ThemeViewModel>()) {
+fun App(modifier: Modifier = Modifier, viewModel: ThemeViewModel = koinViewModel<ThemeViewModel>()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val settingsRepository = koinInject<SettingsRepository>()
     val language by settingsRepository.language.collectAsState(initial = Language.ENGLISH)
